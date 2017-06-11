@@ -1,0 +1,977 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Android性能优化主要几个方面:
+
+布局优化
+绘制优化
+内存泄漏优化
+响应速度优化
+ListView, Bitmap, 线程优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化（三）之读书笔记">
+<meta property="og:url" content="https://geekmu.github.io/2017/04/23/Android性能优化（三）之读书笔记/index.html">
+<meta property="og:site_name" content="鸿少爷的城">
+<meta property="og:description" content="Android性能优化主要几个方面:
+
+布局优化
+绘制优化
+内存泄漏优化
+响应速度优化
+ListView, Bitmap, 线程优化">
+<meta property="og:updated_time" content="2017-06-11T02:33:03.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化（三）之读书笔记">
+<meta name="twitter:description" content="Android性能优化主要几个方面:
+
+布局优化
+绘制优化
+内存泄漏优化
+响应速度优化
+ListView, Bitmap, 线程优化">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://geekmu.github.io/2017/04/23/Android性能优化（三）之读书笔记/"/>
+
+
+
+
+
+  <title> Android性能优化（三）之读书笔记 | 鸿少爷的城 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261447884&web_id=1261447884" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鸿少爷的城</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code and poem</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/04/23/Android性能优化（三）之读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chicxiaomu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸿少爷的城">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能优化（三）之读书笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T14:30:56+08:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Android性能优化主要几个方面:</p>
+<ul>
+<li>布局优化</li>
+<li>绘制优化</li>
+<li>内存泄漏优化</li>
+<li>响应速度优化</li>
+<li>ListView, Bitmap, 线程优化<a id="more"></a></li>
+</ul>
+<p>##布局优化<br><strong>布局优化的思想就是尽量较少布局文件的层级,这就可以让Android绘制时的工作量减少</strong></p>
+<p>删除无用的控件和层级, 有选择地使用ViewGroup. 例如RelativeLayout和LinearLayout. 都可以的话那么就采用LinearLayout. 因为RelativeLayout的功能比较复杂, 它的布局过程需要花费更多的CPU时间. FrameLayout和LinearLayout都是一种简单高效的ViewGroup. </p>
+<p><em>如果需要嵌套才可以实现的布局那么就是用RelativeLayout.</em></p>
+<p>布局优化的另外一个方法就是采用<include>标签, <merge>标签和ViewStub.</merge></include></p>
+<ul>
+<li>include主要用于布局的重用</li>
+<li>merge一般和include标签配合使用, 它可以减少布局的层级</li>
+<li>ViewStub: 提供了按需加载的功能, 当需要时才会将ViewStub中的布局加载到内存,这可以提高程序的初始化.  </li>
+</ul>
+<p><strong>include标签</strong></p>
+<p>可以将一个指定的布局文件加载到当前布局文件中:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+android:layout_width=&quot;match_parent&quot;
+android:layout_height=&quot;match_parent&quot;
+android:orientation=&quot;horizontal&quot;&gt;
+&lt;include
+    android:id=&quot;@+id/hah&quot;
+    android:layout=&quot;@layout/layout_titlebar&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:visibility=&quot;invisible&quot;/&gt;
+&lt;/LinearLayout&gt;
+</code></pre><p>这个标签里面支持的属性很少, 根据编辑器的提示只有5个, 而且width和height如果要出现需要同时出现, 也可以不写, 最重要的就是一个必须指定导入的布局layout=”xxxxxx”.</p>
+<p><strong>merge</strong></p>
+<p>这个标签一般和include标签一起使用从而减少布局的层级. 有时候会有这样一个场景, 如果include导入的布局的根布局是竖直方向的, 而当前布局也是竖直方向的, 那么和显然有一个层级是多余的. 这个时候使用<merge>就可以去掉重复布局.</merge></p>
+<p><strong>ViewStub</strong></p>
+<p>ViewStub继承了View, 这是一个非常轻量级的且宽高都是0, 因此它本身不参与任何的布局和绘制过程. 而ViewStub存在的意义在于按需加载所需的布局文件, 在实际开发中, 有很多布局文件在正常情况系不会显示, 如网络异常等. 这个时候就没有必要再整个界面初始化的时候将其加载.</p>
+<p>首先布局中添加<viewstub></viewstub></p>
+<pre><code>&lt;ViewStub
+android:id=&quot;@+id/stub_import&quot;
+android:inflatedId=&quot;@+id/stin_root&quot;
+android:layout=&quot;@layout/layout_stubview&quot;
+android:layout_width=&quot;match_parent&quot;
+android:layout_height=&quot;60dp&quot;/&gt;
+</code></pre><p>这里android:layout属性还是导入外部布局的意思. inflatedId这个添加的id的属性是给导入进来的布局layout_stubview的根布局设定了一个id值.</p>
+<p>然后在代码中有两种方式让其显示</p>
+<pre><code>// 方式一 通过设置visibility
+((ViewStub)findViewById(R.id.stub_import)).setVisibility(View.VISIBLE);
+// 方式二 通过inflate加载显示
+//View inflate =  ((ViewStub) findViewById(R.id.stub_import)).inflate();
+// 通过inflatedId这个id可以得到加载进来的布局的根布局
+LinearLayout commLv = (LinearLayout) findViewById(R.id.stin_root);
+</code></pre><p>##绘制优化</p>
+<p>绘制优化是指View#onDraw()方法要避免执行大量的操作.两个方面</p>
+<ol>
+<li>onDraw中不要创建新的局部对象, 因为onDraw()方法可能会被频繁调用, 这样就会在一瞬间产生大量的临时对象, 这不仅占用了过多的内存而且还会导致系统频繁的gc, 降低了程序的执行效率.</li>
+<li>不要做耗时任务, 也不能执行成千上万次的循环操作. 即使每次循环都很轻量级, 但是大量的循环仍然十分抢占CPU的时间片, 这会造成View的绘制流程不流畅. 按照官方的规范, View的绘制帧率保证60fps最佳. 也就是16ms的为每一阵帧的绘制时间.</li>
+</ol>
+<p>##内存泄漏优化</p>
+<p>###情况1. 静态变量导致的内存泄漏</p>
+<pre><code>private static View sView;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+sView = new View(this);
+}
+</code></pre><p>如非必须传递Activity的引用不要这么做, 如果需要上下文可以传递getApplicationContext()返回的上下文</p>
+<p>###情况2. 单例模式导致的内存泄漏</p>
+<p>常见的就是在使用注册监听的时候, 往往会往一个单例类中传入this本类对象,进行注册, 然后却没有解注册的动作. 那么这个Activity被引用的时间也就是和Application的生命周期持平.</p>
+<p>###情况3. 属性动画导致的内存泄漏</p>
+<p>在Android 3.0中加入了属性动画, 属性动画有一类无限循环的动画, 如果在Activity中播放此类动画且没有在Activity退出的时候没有停止动画. 尽管无法界面上看到效果, 但是创建这个动画所关联的View被动画所持有, 而View又持有了Activity, 最终Activity无法释放. 解决方案, 就是在onDestroy()中调用动画的cancel()来停止动画.</p>
+<p>##响应速度和ANR日志分析<br>响应速度的优化核心就是避免主线程做耗时操作, 响应速度过慢更多体现在Activity启动的速度上. 如果主线程内做太多的事情, 会导致Activity启动时出现黑屏现象, 甚至出现ANR.</p>
+<p>Android中规定如果Activity5秒钟之内无法响应屏幕事件或者键盘输入事件就会出现ANR. 而BroadCastReceiver如果10秒之内还未执行完操作也会出现ANR.</p>
+<p>如果进程发生了ANR以后, 系统会在data/anr目录下创建一个文件traces.txt. 通过分析这个文件就定位出原因.(这个文件很长如果需要分析, 请先删除文件生成一个在分析来进行了解)</p>
+<p>通过一个例子来了解如何去分析文件, 首先在onCreate()添加如下代码, 让主线程等待一个锁,然后点击返回5秒后会出现ANR, 贴代码</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+// 以下代码是为了模拟一个ANR的场景来分析日志
+new Thread(new Runnable() {
+   @Override
+   public void run() {
+       testANR();
+   }
+}).start();
+SystemClock.sleep(10);
+initView();
+}
+/**
+*  以下两个方法用来模拟出一个稍微不好发现的ANR
+ */
+private synchronized void testANR(){
+SystemClock.sleep(3000 * 1000);
+}
+private synchronized void initView(){}
+</code></pre><p>这样会出现ANR, 然后导出/data/anr/straces.txt文件. 因为内容比较多只贴出关键部分</p>
+<pre><code>DALVIK THREADS (15):
+&quot;main&quot; prio=5 tid=1 Blocked
+| group=&quot;main&quot; sCount=1 dsCount=0 obj=0x73db0970 self=0xf4306800
+| sysTid=19949 nice=0 cgrp=apps sched=0/0 handle=0xf778d160
+| state=S schedstat=( 151056979 25055334 199 ) utm=5 stm=9 core=1 HZ=100
+| stack=0xff5b2000-0xff5b4000 stackSize=8MB
+| held mutexes=
+at com.szysky.note.androiddevseek_15.MainActivity.initView(MainActivity.java:0)
+- waiting to lock &lt;0x2fbcb3de&gt; (a com.szysky.note.androiddevseek_15.MainActivity) 
+- held by thread 15
+at com.szysky.note.androiddevseek_15.MainActivity.onCreate(MainActivity.java:42)
+</code></pre><p>这段可以看出最后指明了ANR发生的位置在ManiActivity的42行. 并且通过上面看出initView方法正在等待一个锁<0x2fbcb3de>锁的类型是一个MainActivity对象. 并且这个锁已经被线程id为15(tid=15)的线程持有了. 接下来找一下线程15</0x2fbcb3de></p>
+<pre><code>&quot;Thread-404&quot; prio=5 tid=15 Sleeping
+| group=&quot;main&quot; sCount=1 dsCount=0 obj=0x12c00f80 self=0xeb95bc00
+| sysTid=19985 nice=0 cgrp=apps sched=0/0 handle=0xef34be80
+| state=S schedstat=( 391248 0 1 ) utm=0 stm=0 core=2 HZ=100
+| stack=0xe2bfe000-0xe2c00000 stackSize=1036KB
+| held mutexes=
+at java.lang.Thread.sleep!(Native method)
+- sleeping on &lt;0x2e3896a7&gt; (a java.lang.Object)
+at java.lang.Thread.sleep(Thread.java:1031)
+- locked &lt;0x2e3896a7&gt; (a java.lang.Object)
+at java.lang.Thread.sleep(Thread.java:985)
+at android.os.SystemClock.sleep(SystemClock.java:120)
+at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
+- locked &lt;0x2fbcb3de&gt; (a com.szysky.note.androiddevseek_15.MainActivity)
+- tid = 15 就是相关信息如上, 首行已经标出线程的状态为Sleeping, 原因在50行, 就是SystemClock.sleep(3000 * 1000);这句话. 也就是testANR(). 而最后一行也表明了持有的locked&lt;0x2fbcb3de&gt;就是主线程在等待的那个锁对象.
+</code></pre><p>##ListView和Bitmap优化</p>
+<ul>
+<li><p>ListView: 在前面已经说过了, 主要三个方面: 采用ViewHolder避免在getView中执行耗时操作; 其次要根据列表的滑动状态来控制任务的执行频率; 最后可以尝试开启硬件加速是ListView滑动更加流畅. ListView的优化策略也完全适用于GridView</p>
+</li>
+<li><p>Bitmap: 也已经说过, 主要是通过BitmapFactory.Options根据需要对图片进行采样, 采样率的设置通过inSampleSize属性.</p>
+</li>
+</ul>
+<p>##线程优化</p>
+<p>主要思想就是采用线程池, 避免程序中存在大量的Thread. 线程池可以重用内部的线程, 避免了线程创建和销毁的性能开销. 同时线程池还能有效的控制线程的最大并发数, 避免了大量线程因互相巷战系统资源从而导致阻塞现象的发生.</p>
+<p>##额外的性能优化建议</p>
+<ul>
+<li>避免创建过多的对象</li>
+<li>不要过多使用枚举, 枚举占用的内存空间比整形还要大,使用Android官方提供的方法可参考另一篇博客链接跳转</li>
+<li>常量请使用 static final 来修饰</li>
+<li>使用一些Android特有的数据结构, 比如SparseArray和Pair等</li>
+<li>适当的使用软引用和弱引用</li>
+<li>采用内存缓存和磁盘缓存</li>
+<li>尽量采用静态内部类, 避免潜在的由于内部类而导致的内存泄漏</li>
+</ul>
+<p>##内存泄漏分析工具MAT<br>MAT全程Eclipse Memory Analyzer, 是一个内存泄漏分析工具. 下载后解压即可. 下载地址<a href="http://www.eclipse.org/mat/downloads.php" target="_blank" rel="external">http://www.eclipse.org/mat/downloads.php</a>. 这里仅简单说一下. 这个我没有手动去实践, 就当个记录, 因为现在Android Studio可以直接分析hprof文件.</p>
+<p>可以手动写一个会造成内存泄漏的代码, 然后打开DDMS, 然后选中要分析的进程, 然后单击Dump HPROF file这个按钮. 等一小段会生成一个文件. 这个文件不能被MAT直接识别. 需要使用Android SDK中的工具进行格式转换一下.这个工具在platform-conv文件夹下</p>
+<p>hprof-conv 要转换的文件名 输出的文件名 文件名的签名有包名.</p>
+<p>然后打开MAT通过菜单打开转换后的这个文件. 这里常用的就有两个</p>
+<ul>
+<li>Histogram: 可以直观的看出内存中不同类型的buffer的数量和占用内存大小</li>
+<li>Dominator Tree: 把内存中的对象按照从大到小的顺序进行排序, 并且可以分析对象之间的引用关系, 内</li>
+</ul>
+<p>存泄漏分析就是通过这个完成的.<br>分析内存泄漏的时候需要分析Dominator Tree里面的内存信息, 一般会不直接显示出来, 可以按照从大到小的顺序去排查一遍. 如果发生了了泄漏, 那么在泄漏对象处右键单击Path To GC Roots-&gt;exclude wake/soft references. 可以看到最终是什么对象导致的无法释放. 刚才的操作之所以排除软引用和弱引用是因为,大部分情况下这两种类型都可以被gc回收掉,所以基本也就不会造成内存泄漏.</p>
+<p>同样这里也可以使用搜索功能, 假如我们手动模拟了内存泄漏, 泄漏的对象就是Activity那么我们back退出重进循环几次, 会发现其实很多个Activit对象.</p>
+<p>更多的东西我也不会,作者也没有说.. 不过这些以后Android Studio都会很有好用对应功能.</p>
+<p>##提高程序的可维护性<br>这里主要说Android的程序设计思想. 主旨是如何提高代码的可维护性和可扩展性, 而程序的可维护性也包含可扩展性. 这里的切入点为: 代码风格, 代码的层次性和单一职责原则, 面向扩展编程以及设计模式</p>
+<p>可读性是代码可维护性的前提, 一段只能让机器读懂的代码即使可以跑也属于”坏味道的代码”, 而良好的代码风格在一定程度上可以提高从程序的可读性. 代码的风格有 命名规范, 代码排版, 注释说明.</p>
+<ol>
+<li>命名要规范, 正确传达出变量或者方法的定义, 少用缩写除非业界通用的缩写如String-&gt;str.能让人一眼明白的. 私有成员要以m开头. 静态成员要以s开头. 常量要全部大写.</li>
+<li>代码排版上留出合理的空白来区分不同的代码块, 其中同类变量的声明放在一组, 两类变量之间留出一行作为空白.</li>
+<li>仅为非常关键的代码添加注释, 其他地方不写注释, 这就对变量和方法的命名风格提出了很高的要求. 一个合理的命名风格可以让读者阅读源码的时候就如阅读注释一样. 因此根本不需要为代码额外写注释</li>
+</ol>
+<p>代码的层次是指代码要有分层的概念, 对于一段业务逻辑, 不要试图在一个方法或者一个类中去全部实现, 而是将其分成几个子逻辑, 然后每个逻辑做自己的事情, 这样即显得代码层次分明, 又可以分解任务从而实现简单逻辑的效果.</p>
+<p>单一职责是和层次性相关联的. 代码分层以后, 每一层仅仅关注少量的逻辑, 这样就做到了单一职责.</p>
+<p>程序的扩展性, 由于很多时候在开发过程中无法保证已经做好的需求不在后面的版本发生更改, 因此在写程序的时候要时刻考虑到扩展的问题, 考虑如果这个逻辑以后发生了改变那么哪些需要修改, 以及怎样在以后修改的时候降低工作量, 而面向扩展编程可以让程序具有很好的扩展性.</p>
+<p>适当使用设计模式可以提高代码的可维护性和可扩展性. 但是一定控制设计的度, 千万别过度设计.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/15/Android性能优化（二）之Monkey性能测试/" rel="next" title="Android性能优化（二）之Monkey性能测试">
+                <i class="fa fa-chevron-left"></i> Android性能优化（二）之Monkey性能测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="chicxiaomu" />
+          <p class="site-author-name" itemprop="name">chicxiaomu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Android,PHP,Google,Github,技术博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chicxiaomu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chicxiaomu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme by -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
