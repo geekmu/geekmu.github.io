@@ -87,19 +87,37 @@
 
 
 
-<meta name="description" content="Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。
-先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因">
+<meta name="description" content="一、简单调试
+step over：一步步往下走。点击单步调试按钮或按快捷键F8  
+step into：看到方法往里走。点击进入方法或按快捷键F7  
+force step into :所有方法看完整,可以看到你所调用的所有方法的实现会让你跟着它走一遍，研究源码使用非常方便  
+step out ：有断点下一个，走完断点继续走  
+run to Cursor ：下个断点我们见">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android插件化（二）之调用外部dex文件中的代码">
-<meta property="og:url" content="https://geekmu.github.io/2017/05/21/Android插件化（二）之调用外部dex文件中的代码/index.html">
+<meta property="og:title" content="Android Studio调试技巧">
+<meta property="og:url" content="https://geekmu.github.io/2017/06/11/Android Studio调试技巧/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。
-先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因">
-<meta property="og:updated_time" content="2017-06-11T02:53:03.893Z">
+<meta property="og:description" content="一、简单调试
+step over：一步步往下走。点击单步调试按钮或按快捷键F8  
+step into：看到方法往里走。点击进入方法或按快捷键F7  
+force step into :所有方法看完整,可以看到你所调用的所有方法的实现会让你跟着它走一遍，研究源码使用非常方便  
+step out ：有断点下一个，走完断点继续走  
+run to Cursor ：下个断点我们见">
+<meta property="og:image" content="https://geekmu.github.io/stepover.png">
+<meta property="og:image" content="https://geekmu.github.io/stepinto.png">
+<meta property="og:image" content="https://geekmu.github.io/forcestepinto.png">
+<meta property="og:image" content="https://geekmu.github.io/stepout.png">
+<meta property="og:image" content="https://geekmu.github.io/runtoCursor.png">
+<meta property="og:updated_time" content="2017-06-11T03:14:36.757Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android插件化（二）之调用外部dex文件中的代码">
-<meta name="twitter:description" content="Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。
-先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因">
+<meta name="twitter:title" content="Android Studio调试技巧">
+<meta name="twitter:description" content="一、简单调试
+step over：一步步往下走。点击单步调试按钮或按快捷键F8  
+step into：看到方法往里走。点击进入方法或按快捷键F7  
+force step into :所有方法看完整,可以看到你所调用的所有方法的实现会让你跟着它走一遍，研究源码使用非常方便  
+step out ：有断点下一个，走完断点继续走  
+run to Cursor ：下个断点我们见">
+<meta name="twitter:image" content="https://geekmu.github.io/stepover.png">
 
 
 
@@ -127,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/2017/05/21/Android插件化（二）之调用外部dex文件中的代码/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/06/11/Android Studio调试技巧/"/>
 
 
 
 
 
-  <title> Android插件化（二）之调用外部dex文件中的代码 | 鸿少爷的城 </title>
+  <title> Android Studio调试技巧 | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -292,7 +310,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/05/21/Android插件化（二）之调用外部dex文件中的代码/">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/11/Android Studio调试技巧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chicxiaomu">
@@ -313,7 +331,7 @@
             
             
               
-                Android插件化（二）之调用外部dex文件中的代码
+                Android Studio调试技巧
               
             
           </h1>
@@ -328,8 +346,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-21T10:50:44+08:00">
-                2017-05-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-11T09:13:57+08:00">
+                2017-06-11
               </time>
             
 
@@ -364,55 +382,13 @@
       
 
       
-        <p>Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。</p>
-<p>先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因为这个.jar文件已经经过优化，只不过后缀名没改（其实已经是.dex文件）。<a id="more"></a></p>
-<p>##一、jar文件优化成.dex文件</p>
-<p>首先我们可以通过JDK的编译命令javac把Java代码编译成.class文件，再使用jar命令把.class文件封装成.jar文件，这与编译普通Java程序的时候完全一样。<br>之后再用Android SDK的DX工具把.jar文件优化成.dex文件（在“android-sdk\build-tools\具体版本\”路径下）  </p>
-<pre><code>dx --dex --output=target.dex origin.jar // target.dex就是我们要的了  
-</code></pre><p>此外，我们可以现把代码编译成APK文件，再把APK里面的.dex文件解压出来，或者直接把APK文件当成.dex使用（只是APK里面的静态资源文件我们暂时还用不到）。至此我们发现，无论加载.jar，还是.apk，其实都和加载.dex是等价的，Android能加载.jar和.apk，是因为它们都包含有.dex，直接加载.apk文件时，ClassLoader也会自动把.apk里的.dex解压出来。</p>
-<p>##二、加载并调用.dex里面的方法</p>
-<p>与JVM不同，Android的虚拟机不能用ClassCload直接加载.dex，而是要用DexClassLoader或者PathClassLoader,他们都是ClassLoader的子类，这两者的区别是<br>1) DexClassLoader：可以加载jar/apk/dex，可以从SD卡中加载未安装的apk；<br>2) PathClassLoader：要传入系统中apk的存放Path，所以只能加载已经安装的apk文件；<br>使用前，先看看DexClassLoader的构造方法  </p>
-<pre><code>public DexClassLoader(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent) {
-super((String) null, (File) null, (String) null, (ClassLoader) null);
-throw new RuntimeException(&quot;Stub!&quot;);
-}  
-</code></pre><p>注意，我们之前提到的，DexClassLoader并不能直接加载外部存储的.dex文件，而是要先拷贝到内部存储里。这里的dexPath就是.dex的外部存储路径，而optimizedDirectory则是内部路径，libraryPath用null即可，parent则是要传入当前应用的ClassLoader，这与ClassLoader的“双亲代理模式”有关。  </p>
-<pre><code>File optimizedDexOutputPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + &quot;test_dexloader.jar&quot;);// 外部路径
-File dexOutputDir = this.getDir(&quot;dex&quot;, 0);// 无法直接从外部路径加载.dex文件，需要指定APP内部路径作为缓存目录（.dex文件会被解压到此目录）
-DexClassLoader dexClassLoader = new DexClassLoader(optimizedDexOutputPath.getAbsolutePath(), dexOutputDir.getAbsolutePath(), null, getClassLoader());  
-</code></pre><p>到这里，我们已经成功把.dex文件给加载进来了，接下来就是如何调用.dex里面的代码，主要有两种方式。</p>
-<p>##三、如何调用.dex里面的代码</p>
-<p>使用反射的方式</p>
-<p>使用DexClassLoader加载进来的类，我们本地并没有这些类的源码，所以无法直接调用，不过可以通过反射的方法调用，简单粗暴。  </p>
-<pre><code>DexClassLoader dexClassLoader = new DexClassLoader(optimizedDexOutputPath.getAbsolutePath(), dexOutputDir.getAbsolutePath(), null, getClassLoader());
-Class libProviderClazz = null;
-try{
-libProviderClazz=dexClassLoader.loadClass(&quot;com.dexclassloader.MyLoader&quot;);
-// 遍历类里所有方法
-Method[]methods=libProviderClazz.getDeclaredMethods();
-for(int i=0;i&lt;methods.length;i++){
-Log.e(TAG,methods[i].toString());
-}
-Method start=libProviderClazz.getDeclaredMethod(&quot;func&quot;);// 获取方法
-start.setAccessible(true);// 把方法设为public，让外部可以调用
-String string=(String)start.invoke(libProviderClazz.newInstance());// 调用方法并获取返回值
-Toast.makeText(this,string,Toast.LENGTH_LONG).show();
-}catch(Exception exception){
-// Handle exception gracefully here.
-exception.printStackTrace();
-}  
-</code></pre><p>使用接口的方式<br>毕竟.dex文件也是我们自己维护的，所以可以把方法抽象成公共接口，把这些接口也复制到主项目里面去，就可以通过这些接口调用动态加载得到的实例的方法了。  </p>
-<pre><code>pulic interface IFunc{
-public String func();
-}
-
-// 调用
-IFunc ifunc = (IFunc)libProviderClazz;
-String string = ifunc.func();
-Toast.makeText(this, string, Toast.LENGTH_LONG).show();  
-</code></pre><p>到这里，我们已经成功从外部路径动态加载一个.dex文件，并执行里面的代码逻辑了。通过从服务器下载最新的.dex文件并替换本地的旧文件，就能初步实现“APP的动态升级了”。</p>
-<p>虽然我们已经能调用插件的方法了，但是还有如下问题</p>
-<p>无法使用res目录下的资源，特别是使用XML布局，以及无法通过res资源到达自适应<br>无法动态加载新的Activity等组件，因为这些组件需要在Manifest中注册，动态加载无法更改当前APK的Manifest<br>这些问题的解决方案，将在以后的博客进行说明。  </p>
+        <h3 id="一、简单调试"><a href="#一、简单调试" class="headerlink" title="一、简单调试"></a>一、简单调试</h3><ol>
+<li>step over：一步步往下走。点击单步调试按钮或按快捷键F8<br><img src="/stepover.png" alt="">  </li>
+<li>step into：看到方法往里走。点击进入方法或按快捷键F7<br><img src="/stepinto.png" alt="">  </li>
+<li>force step into :所有方法看完整,可以看到你所调用的所有方法的实现会让你跟着它走一遍，研究源码使用非常方便<br><img src="/forcestepinto.png" alt="">  </li>
+<li>step out ：有断点下一个，走完断点继续走<br><img src="/stepout.png" alt="">  </li>
+<li>run to Cursor ：下个断点我们见<br><img src="/runtoCursor.png" alt="">  </li>
+</ol>
 
       
     </div>
@@ -443,8 +419,8 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/14/Android插件化（一）之谈谈ClassLoader/" rel="next" title="Android插件化（一）之谈谈ClassLoader">
-                <i class="fa fa-chevron-left"></i> Android插件化（一）之谈谈ClassLoader
+              <a href="/2017/06/07/Android Service保活（三）之JobService/" rel="next" title="Android Service保活（三）之JobService">
+                <i class="fa fa-chevron-left"></i> Android Service保活（三）之JobService
               </a>
             
           </div>
@@ -453,8 +429,8 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/27/Android Service保活（一）之常用套路/" rel="prev" title="Android Service保活（一）之常用套路">
-                Android Service保活（一）之常用套路 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/11/Android琐碎知识/" rel="prev" title="Android琐碎知识">
+                Android琐碎知识 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -502,8 +478,17 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -558,6 +543,22 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、简单调试"><span class="nav-number">1.</span> <span class="nav-text">一、简单调试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
