@@ -1,0 +1,997 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Android性能优化相关的开发工具有很多很多种，这里对如下六个工具做个简单的使用介绍，主要有：
+
+Android开发者选项
+分析具体耗时的Trace view
+布局复杂度工具Hierarchy View
+应用启动时间
+Memory、CPU、Network分析
+静态代码检查工具Lint
+程序稳定性monkey">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android性能优化（一）之常用工具">
+<meta property="og:url" content="https://geekmu.github.io/2017/04/09/Android性能优化（一）之常用工具/index.html">
+<meta property="og:site_name" content="鸿少爷的城">
+<meta property="og:description" content="Android性能优化相关的开发工具有很多很多种，这里对如下六个工具做个简单的使用介绍，主要有：
+
+Android开发者选项
+分析具体耗时的Trace view
+布局复杂度工具Hierarchy View
+应用启动时间
+Memory、CPU、Network分析
+静态代码检查工具Lint
+程序稳定性monkey">
+<meta property="og:image" content="https://geekmu.github.io/images/monitor.png">
+<meta property="og:image" content="https://geekmu.github.io/images/ddms.png">
+<meta property="og:image" content="https://geekmu.github.io/images/trace.jpg">
+<meta property="og:image" content="https://geekmu.github.io/images/timeline.png">
+<meta property="og:image" content="https://geekmu.github.io/images/profile.png">
+<meta property="og:image" content="https://geekmu.github.io/images/hierarchy.png">
+<meta property="og:image" content="https://geekmu.github.io/images/memory_cpu_network.png">
+<meta property="og:image" content="https://geekmu.github.io/images/lint.png">
+<meta property="og:image" content="https://geekmu.github.io/images/lintresult.png">
+<meta property="og:updated_time" content="2017-06-11T02:28:58.845Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android性能优化（一）之常用工具">
+<meta name="twitter:description" content="Android性能优化相关的开发工具有很多很多种，这里对如下六个工具做个简单的使用介绍，主要有：
+
+Android开发者选项
+分析具体耗时的Trace view
+布局复杂度工具Hierarchy View
+应用启动时间
+Memory、CPU、Network分析
+静态代码检查工具Lint
+程序稳定性monkey">
+<meta name="twitter:image" content="https://geekmu.github.io/images/monitor.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://geekmu.github.io/2017/04/09/Android性能优化（一）之常用工具/"/>
+
+
+
+
+
+  <title> Android性能优化（一）之常用工具 | 鸿少爷的城 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261447884&web_id=1261447884" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">鸿少爷的城</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code and poem</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/04/09/Android性能优化（一）之常用工具/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chicxiaomu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸿少爷的城">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android性能优化（一）之常用工具
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-09T09:57:41+08:00">
+                2017-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> Android性能优化相关的开发工具有很多很多种，这里对如下六个工具做个简单的使用介绍，主要有：</p>
+<ul>
+<li>Android开发者选项</li>
+<li>分析具体耗时的Trace view</li>
+<li>布局复杂度工具Hierarchy View</li>
+<li>应用启动时间</li>
+<li>Memory、CPU、Network分析</li>
+<li>静态代码检查工具Lint</li>
+<li>程序稳定性monkey<a id="more"></a></li>
+</ul>
+<p>###一、Android开发者选项</p>
+<p>Andorid手机自带的开发者选项： </p>
+<ol>
+<li>Take bug report（进行漏洞报告）: 点击这个选项会获取当前设备的log信息文件，打包并准备发送我们想要发送的人。这会花费1、2分钟，然后会看到一个准备好的提示信息，然后可以点击发送。 </li>
+<li>Desktop backup password（桌面备份密码）：可以使用adb备份和存储app和他们的关联数据到你的电脑。这个选项强制需要一个密码备份和存储。 </li>
+<li>Stay awake（保持唤醒）：选中这个复选框会强制屏幕唤醒，只要连接上usb线或者充电的时候都会不进入休眠，当需要调试的时候不用老是去解锁了，相当方便。 </li>
+<li>Select runtime（选择运行时）：你可以选择Dalvik或者ART。ART仍然是实验性的，直到Android L才最终release。 </li>
+<li>Enable Bluetooth HCI snoop log（蓝牙HCI搜索日志）：有时，开发者需要获取和分析蓝牙的HCI包，使能这个会在设备storage（路径为：/sdcard/btsnoop_hco.log）中保存包的信息。接着你可以使用类似wireshark等软件分析。 </li>
+<li>Process stats（程序状态）：你需要知道的所有运行在手机上的程序的任何信息。包括了ram使用量，运行时间等。 </li>
+<li>USB debugging（USB调试）：USB调试时使用，使用DDMS和ADB命令的时候也需要这个使能，不勾选这个就不能调试我们的应用了。 </li>
+<li>Revoke USB debugging authorizations（撤回USB除错授权）：当第一次USB线连接电脑的时候，需要认证并且建立密钥，这个操作删除这个认证，强制重新来一遍。 </li>
+<li>Power menu bug reports（电源菜单中包括漏洞报告）：在电源菜单中包括用于进行漏洞报告的选项。</li>
+<li>Allow mock locations（允许虚拟位置）：允许手动写入位置信息，对于需要模拟位置的应用来说十分方便，可以干一些坏事，你懂得。 </li>
+<li>Select debug app（选择待调试的应用程序）：这个设置让你选择一个待调试的应用。 </li>
+<li>Wait for debugger（等待调试程序）：等待调试程序 </li>
+<li>Show touches（显示触摸位置）：显示触摸的位置，一般是一个小圈圈。 </li>
+<li>Pointer location（显示指针位置）：显示出当前位置的坐标。 </li>
+<li>Show surface updates（显示屏幕更新）：屏幕更新时会闪烁。 </li>
+<li>Show layout bounds（显示布局边界）：显示剪切边界、边缘。 </li>
+<li>Force RTL layout direction（强制RTL布局）：界面布局从右至左。 </li>
+<li>Window animation scale（窗口动画比例）：窗口动画的比例，数字越小，速度越快。 </li>
+<li>Transition animation scale（过渡动画比例）：过渡动画的比例，同上。 </li>
+<li>Simulate secondary displays（模拟二级显示）：允许开发者模拟不同尺寸的表现。 </li>
+<li>Force GPU rendering（强制GPU渲染）：强制应用使用硬件2D渲染除非应用本身不需要。 </li>
+<li>Show GPU view updates（显示GPU视图更新）：任何用硬件GPU来绘制视图的会有红色的覆盖层。 </li>
+<li>Show hardware layer updates（显示硬件层更新）：这个设置会告诉你什么时候硬件层在更新。 </li>
+<li>Debug GPU overdraw（调试GPU过度渲染）：过度渲染发生在任何时候当应用请求系统绘制一些视图在其他视图之上的时候。 </li>
+<li>Force 4x MSAA（启动4x MSAA）：这个设置强制多重采样抗锯齿。MSAA就是寻找出物体边缘部分的像素，然后再把画缩放到当前的显示器上。会降低性能提升视觉的美感。 </li>
+<li>Strict mode enabled（严格模式）：应用程序在主线程上执行长时间操作屏幕会闪烁。 </li>
+<li>Show CPU usage（显示CPU使用情况）：在屏幕右上角显示当前CPU的信息。</li>
+<li>Profile GPU rendering（GPU显示配置文件）：这个设置可以在屏幕上显示也可以写入到文件中。 </li>
+<li>Enable OpenGL traces（启动OpenGL跟踪）：这个设置是观察OpenGL的错误，并把log保存到文件中。 </li>
+<li>Don’t keep activities（不保留活动）：用户离开后立即清理每个活动。 </li>
+<li>Background process limit（限制后台进程）：允许当前后台运行多少个进程的一个选择。 </li>
+<li>Show all ANRs（显示全部ANR）：当应用有bug的时候回显示应用无响应对话框。</li>
+</ol>
+<p>###二、应用具体耗时工具Trace view</p>
+<p>Trace view用于查找程序运行时具体耗时在哪，它显示两个面板，一个是Timeline面板，描述每一个线程和方法启动和结束的时间。另一个是Profile面板，提供一个所有方法内部发生了什么的概要。</p>
+<p>先新建工程PerformanceTool，然后新建布局main_activity_layout.xml，一个按钮用来加载一个网页；另一个页面就是一个webview。<br>然后编写代码，首先是MainActivity.java:</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+private Button mBtnOpenWevView = null;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    initView();
+}
+
+private void initView() {
+    mBtnOpenWevView = (Button) findViewById(R.id.button);
+    mBtnOpenWevView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this , WebViewActivity.class);
+            startActivity(intent);
+        }
+    });
+}
+}
+</code></pre><p>接着是WebviewActivity.java：</p>
+<pre><code>public class WebViewActivity extends AppCompatActivity {
+private WebView mWebView = null;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_webview);
+
+    //Debug.startMethodTracing(&quot;perform&quot;);
+    initView();
+    //Debug.stopMethodTracing();
+}
+
+private void initView() {
+    mWebView = (WebView) findViewById(R.id.mWebView);
+    mWebView.loadUrl(&quot;http://www.baidu.com&quot;);
+    mWebView.setWebViewClient(new WebViewClient(){
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    });
+}
+
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    mWebView = null;
+}
+}
+</code></pre><p>####view形式</p>
+<p>traceview有两种使用方法，一种是直接通过DDMS工具来start和stop trace，使用方法如下：<br>接着运行程序，成功运行后</p>
+<ol>
+<li>点击菜单栏的Tools -&gt; Android -&gt; Android Device Monitor ：<br><img src="images/monitor.png" alt="open monitor"> </li>
+<li>进入Monitor之后，点击DDMS,这个时候在monitor的左边面板会出现当前设备上的包名列表<br><img src="images/ddms.png" alt="ddms"></li>
+<li>点击对应要trace的包名，然后点击Stop左边的有个小红点的按钮<br><img src="images/trace.jpg" alt="trace"><br>点击ok之后便开始执行trace了，这个时候再点击那个app里面的加载网页的按钮，加载完后，再次点击那个STOP左边那个变成小黑点的按钮。 </li>
+</ol>
+<p>接着便trace完成了，就可以查看如下两个面板了。<br><img src="images/timeline.png" alt="timeline"><br>上图就是Timeline面板，左边就是每行都是显示一个线程，右边对应它的时间线。可以看出来主要就是main线程在做事情。<br><img src="images/profile.png" alt="profile"><br>上图就是Profile面板，首先是左边的name，比如序号为14，这里展开有Parents和Children，其中Parents就是调用该方法的方法，这里onCreate在performCreate中被调用，Children就是该方法内部调用的方法，这里调用了loadUrl。与项目中的真实的代码完全相符。<br>接着看下右边一排的Incl Cpu Time、Excl Cpu Time、Incl Real Time、Excl Real Time、Call+Recur Calls/Total、Cpu Time/Call、Real Time/Call。 </p>
+<ul>
+<li>Incl Cpu Time：某方法占用CPU的时间，包含内部调用其他方法占用CPU的时间。 </li>
+<li>Excl Cpu Time：某方法占用CPU的时间，不包含内部调用其他方法所占用的CPU时间。 </li>
+<li>Incl Real Time：某方法运行的真实的时间（单位ms），包含内部调用其他方法所占用的真实时间。 </li>
+<li>Excl Real Time：某方法运行的真实的时间（单位ms），不包含内部调用其他方法所占用的真实时间。 </li>
+<li>Call+Recur Calls/Total：某方法被调用的次数以及递归调用占总调用次数的百分比。 </li>
+<li>Cpu Time/Call：某方法占用CPU的时间和次数的比例。 </li>
+<li>Cpu Time/Call：某方法占用CPI真实时间和调用次数的比例。</li>
+</ul>
+<p>####代码形式</p>
+<p>  另一种是通过注入代码来实现：<br>  在WebviewActivity的onCreate代码中加入两行代码如下：</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_webview);
+
+    Debug.startMethodTracing(&quot;perform&quot;);
+    initView();
+    Debug.stopMethodTracing();
+}
+</code></pre><p>别忘了加上SD卡的读写权限，然后运行app，点击加载网页按钮，就会在/sdcard目录下生产perform.trace文件，通过adb pull可以把文件导出来。</p>
+<pre><code>adb pull /sdcard/perform.trace Downloads/
+</code></pre><p>这里导出到了Downloads目录下，然后通过AndroidMonitor的file-&gt;open file选择这个文件打开：<br>然后就可以查看分析了。通过代码的好处就是比较精确的得到我们想要测试的，不过代价就是要写代码编译，导出来，步骤相对来说比较繁琐。而直接使用工具的话只是一个大概的范围，但是方便快捷。可以视情况使用其中之一。</p>
+<p>###三、布局复杂度工具Hierarchy View</p>
+<p>Hierarchy View主要是检测布局复杂度，各视图的布局耗时情况的一个工具，它需要在模拟器上进行，真机好像也有方法解决，不过很懒没去折腾，主要还是学习工具为主嘛。</p>
+<ol>
+<li>点击菜单Tools -&gt; Android -&gt; Android Device Monitor：</li>
+<li>然后进入到Android Device Monitor，选中Hierarchy View<br><img src="images/hierarchy.png" alt="Hierarchy"><br>选中后会出现层级树<br>然后我们点击那个加载网页的button，可以看到对应的加载耗时，分别有Measure，Layout和Draw的耗时。   我们可以根据其耗时来优化我们界面。</li>
+</ol>
+<p>###四、应用启动时间</p>
+<p>一般我们都会比较关注一个app启动的时间，如果启动太慢了，用户可能就不想玩了，这里有个方法可以测试应用启动的时间：<br>命令行如下：</p>
+<pre><code>adb shell am start -W packagename/activity
+</code></pre><p>这里举个例子，比如说是上述项目中的PerformaceDemo app，那么首先打开终端，连接上usb线，然后终端输入:</p>
+<pre><code>adb shell am start -W com.performance.demo/.MainActivity
+</code></pre><p>等待会儿，app会启动，并且输出如下所示信息：</p>
+<pre><code>Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER]cmp=com.performance.demo/.MainActivity }
+Status: ok
+Activity: com.performance.demo/.MainActivity
+ThisTime: 791
+TotalTime: 791
+WaitTime: 808
+Complete
+</code></pre><p>如上所示可以看出用时791ms。</p>
+<p>###五、Memory、CPU、Network</p>
+<p>很多时候我们需要了解app的内存使用情况，CPU占用怎样，网络速度如何。为了提高性能，我们总是想把内存减少到最小，CPU占用率近可能小，网络情况适宜。当然这些可以用命令行实现，毕竟androd基于linux操作系统的，但是那样显得很麻烦又不是很直观，很庆幸Android Studio自带了功能。<br>Android Studio的Android Monitor里面有logcat和Monitors，选中monitors就有对于Memory，CPU和Network的展示。如下图所示：<br><img src="images/memory_cpu_network.png" alt="Android Monitor"></p>
+<p>这里展示了Memory的使用量，CPU的占用量，以及网络的速度。上图就是点击了加载网页时候的一个分布情况。它可以帮我们查看并优化我们的程序，从而显得非常的直观。</p>
+<p>###六、 静态代码检查工具Lint</p>
+<p>Lint主要是提供一套静态代码分析的工具，它可以帮助我们检查项目中存在的问题，让我们更有规范性的开发App。运行菜单的analyze-&gt;Inspect Code<br><img src="images/lint.png" alt="Lint"></p>
+<p>稍息片刻系统就会分析完成，如下所示：<br><img src="images/lintresult.png" alt=""></p>
+<p>Lint分很多子项。Internationalization国际化问题，硬编码的文字都是需要添加进@string资源，Security安全性问题，Usability可用性问题，未使用到资源、资源缺少的问题等等，具体可以根据分析后的结果来一步步改善。</p>
+<p>###七、程序稳定性：monkey</p>
+<p>通过monkey对程序在提交测试前做自测，可以检测出明显的导致程序不稳定的问题，执行monkey只需要一行命令，提交测试前跑一次可以避免应用刚提交就被打回的问题。</p>
+<pre><code>adb shell monkey -p com.performance.demo -v 500
+</code></pre><p>-p表示包名，-v表示反馈级别 500就是500个伪随机事件<br>若在压力测试中程序崩溃或者接收到任何失控异常，就会自动停止。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/21/Java服务端开发环境搭建/" rel="next" title="Java服务端开发环境搭建">
+                <i class="fa fa-chevron-left"></i> Java服务端开发环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/15/Android性能优化（二）之Monkey性能测试/" rel="prev" title="Android性能优化（二）之Monkey性能测试">
+                Android性能优化（二）之Monkey性能测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="chicxiaomu" />
+          <p class="site-author-name" itemprop="name">chicxiaomu</p>
+           
+              <p class="site-description motion-element" itemprop="description">Android,PHP,Google,Github,技术博客</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/chicxiaomu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chicxiaomu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme by -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
