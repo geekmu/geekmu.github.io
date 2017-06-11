@@ -104,7 +104,7 @@
 <meta property="og:image" content="https://geekmu.github.io/images/cold-launch.png">
 <meta property="og:image" content="https://geekmu.github.io/images/displaytime.png">
 <meta property="og:image" content="https://geekmu.github.io/images/MethodTracing.png">
-<meta property="og:updated_time" content="2017-06-11T02:36:12.189Z">
+<meta property="og:updated_time" content="2017-06-11T02:38:07.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能优化（四）之启动速度优化">
 <meta name="twitter:description" content="##一、前言
@@ -382,7 +382,7 @@
 <p>那么第一篇文章我就从应用的启动优化开始，根据实际案例，打造闪电般的App启动速度。</p>
 <p>##二、初识启动加速</p>
 <p>来看一下Google官方文档<a href="https://developer.android.com/topic/performance/launch-time.html" target="_blank" rel="external">《Launch-Time Performance》</a>对应用启动优化的概述；</p>
-<p>应用的启动分为冷启动、热启动、温启动，而启动最慢、挑战最大的就是冷启动：系统和App本身都有更多的工作要从头开始！<br>应用在冷启动之前，要执行三个任务：</p>
+<p>应用的启动分为冷启动、热启动、温启动，而启动最慢、挑战最大的就是冷启动：系统和App本身都有更多的工作要从头开始！<a id="more"></a><br>应用在冷启动之前，要执行三个任务：</p>
 <ol>
 <li>加载启动App；  </li>
 <li>App启动之后立即展示出一个空白的Window；  </li>
