@@ -473,11 +473,11 @@ protected void onDestroy() {
 </code></pre><p>####view形式</p>
 <p>traceview有两种使用方法，一种是直接通过DDMS工具来start和stop trace，使用方法如下：<br>接着运行程序，成功运行后</p>
 <ol>
-<li>点击菜单栏的Tools -&gt; Android -&gt; Android Device Monitor ：<br><img src="/monitor.png" alt="open monitor"> </li>
-<li>进入Monitor之后，点击DDMS,这个时候在monitor的左边面板会出现当前设备上的包名列表<br><img src="/ddms.png" alt="ddms"></li>
-<li>点击对应要trace的包名，然后点击Stop左边的有个小红点的按钮<br><img src="/trace.jpg" alt="trace"><br>点击ok之后便开始执行trace了，这个时候再点击那个app里面的加载网页的按钮，加载完后，再次点击那个STOP左边那个变成小黑点的按钮。 </li>
+<li>点击菜单栏的Tools -&gt; Android -&gt; Android Device Monitor ：<br><img src="images/monitor.png" alt="open monitor"> </li>
+<li>进入Monitor之后，点击DDMS,这个时候在monitor的左边面板会出现当前设备上的包名列表<br><img src="images/ddms.png" alt="ddms"></li>
+<li>点击对应要trace的包名，然后点击Stop左边的有个小红点的按钮<br><img src="images/trace.jpg" alt="trace"><br>点击ok之后便开始执行trace了，这个时候再点击那个app里面的加载网页的按钮，加载完后，再次点击那个STOP左边那个变成小黑点的按钮。 </li>
 </ol>
-<p>接着便trace完成了，就可以查看如下两个面板了。<br><img src="/timeline.png" alt="timeline"><br>上图就是Timeline面板，左边就是每行都是显示一个线程，右边对应它的时间线。可以看出来主要就是main线程在做事情。<br><img src="/profile.png" alt="profile"><br>上图就是Profile面板，首先是左边的name，比如序号为14，这里展开有Parents和Children，其中Parents就是调用该方法的方法，这里onCreate在performCreate中被调用，Children就是该方法内部调用的方法，这里调用了loadUrl。与项目中的真实的代码完全相符。<br>接着看下右边一排的Incl Cpu Time、Excl Cpu Time、Incl Real Time、Excl Real Time、Call+Recur Calls/Total、Cpu Time/Call、Real Time/Call。 </p>
+<p>接着便trace完成了，就可以查看如下两个面板了。<br><img src="images/timeline.png" alt="timeline"><br>上图就是Timeline面板，左边就是每行都是显示一个线程，右边对应它的时间线。可以看出来主要就是main线程在做事情。<br><img src="images/profile.png" alt="profile"><br>上图就是Profile面板，首先是左边的name，比如序号为14，这里展开有Parents和Children，其中Parents就是调用该方法的方法，这里onCreate在performCreate中被调用，Children就是该方法内部调用的方法，这里调用了loadUrl。与项目中的真实的代码完全相符。<br>接着看下右边一排的Incl Cpu Time、Excl Cpu Time、Incl Real Time、Excl Real Time、Call+Recur Calls/Total、Cpu Time/Call、Real Time/Call。 </p>
 <ul>
 <li>Incl Cpu Time：某方法占用CPU的时间，包含内部调用其他方法占用CPU的时间。 </li>
 <li>Excl Cpu Time：某方法占用CPU的时间，不包含内部调用其他方法所占用的CPU时间。 </li>
@@ -505,7 +505,7 @@ protected void onCreate(Bundle savedInstanceState) {
 <p>Hierarchy View主要是检测布局复杂度，各视图的布局耗时情况的一个工具，它需要在模拟器上进行，真机好像也有方法解决，不过很懒没去折腾，主要还是学习工具为主嘛。</p>
 <ol>
 <li>点击菜单Tools -&gt; Android -&gt; Android Device Monitor：</li>
-<li>然后进入到Android Device Monitor，选中Hierarchy View<br><img src="/hierarchy.png" alt="Hierarchy"><br>选中后会出现层级树<br>然后我们点击那个加载网页的button，可以看到对应的加载耗时，分别有Measure，Layout和Draw的耗时。   我们可以根据其耗时来优化我们界面。</li>
+<li>然后进入到Android Device Monitor，选中Hierarchy View<br><img src="images/hierarchy.png" alt="Hierarchy"><br>选中后会出现层级树<br>然后我们点击那个加载网页的button，可以看到对应的加载耗时，分别有Measure，Layout和Draw的耗时。   我们可以根据其耗时来优化我们界面。</li>
 </ol>
 <p>###四、应用启动时间</p>
 <p>一般我们都会比较关注一个app启动的时间，如果启动太慢了，用户可能就不想玩了，这里有个方法可以测试应用启动的时间：<br>命令行如下：</p>
@@ -522,11 +522,11 @@ WaitTime: 808
 Complete
 </code></pre><p>如上所示可以看出用时791ms。</p>
 <p>###五、Memory、CPU、Network</p>
-<p>很多时候我们需要了解app的内存使用情况，CPU占用怎样，网络速度如何。为了提高性能，我们总是想把内存减少到最小，CPU占用率近可能小，网络情况适宜。当然这些可以用命令行实现，毕竟androd基于linux操作系统的，但是那样显得很麻烦又不是很直观，很庆幸Android Studio自带了功能。<br>Android Studio的Android Monitor里面有logcat和Monitors，选中monitors就有对于Memory，CPU和Network的展示。如下图所示：<br><img src="/memory_cpu_network.png" alt="Android Monitor"></p>
+<p>很多时候我们需要了解app的内存使用情况，CPU占用怎样，网络速度如何。为了提高性能，我们总是想把内存减少到最小，CPU占用率近可能小，网络情况适宜。当然这些可以用命令行实现，毕竟androd基于linux操作系统的，但是那样显得很麻烦又不是很直观，很庆幸Android Studio自带了功能。<br>Android Studio的Android Monitor里面有logcat和Monitors，选中monitors就有对于Memory，CPU和Network的展示。如下图所示：<br><img src="images/memory_cpu_network.png" alt="Android Monitor"></p>
 <p>这里展示了Memory的使用量，CPU的占用量，以及网络的速度。上图就是点击了加载网页时候的一个分布情况。它可以帮我们查看并优化我们的程序，从而显得非常的直观。</p>
 <p>###六、 静态代码检查工具Lint</p>
-<p>Lint主要是提供一套静态代码分析的工具，它可以帮助我们检查项目中存在的问题，让我们更有规范性的开发App。运行菜单的analyze-&gt;Inspect Code<br><img src="/lint.png" alt="Lint"></p>
-<p>稍息片刻系统就会分析完成，如下所示：<br><img src="/lintresult.png" alt=""></p>
+<p>Lint主要是提供一套静态代码分析的工具，它可以帮助我们检查项目中存在的问题，让我们更有规范性的开发App。运行菜单的analyze-&gt;Inspect Code<br><img src="images/lint.png" alt="Lint"></p>
+<p>稍息片刻系统就会分析完成，如下所示：<br><img src="images/lintresult.png" alt=""></p>
 <p>Lint分很多子项。Internationalization国际化问题，硬编码的文字都是需要添加进@string资源，Security安全性问题，Usability可用性问题，未使用到资源、资源缺少的问题等等，具体可以根据分析后的结果来一步步改善。</p>
 <p>###七、程序稳定性：monkey</p>
 <p>通过monkey对程序在提交测试前做自测，可以检测出明显的导致程序不稳定的问题，执行monkey只需要一行命令，提交测试前跑一次可以避免应用刚提交就被打回的问题。</p>
