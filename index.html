@@ -366,47 +366,20 @@
 
       
         
-          
-            <h2 id="1-一个App有多少个Context"><a href="#1-一个App有多少个Context" class="headerlink" title="1.一个App有多少个Context"></a>1.一个App有多少个Context</h2><p>应用程序创建Context实例的情况有如下几种情况：</p>
+          <h2 id="1-一个App有多少个Context"><a href="#1-一个App有多少个Context" class="headerlink" title="1.一个App有多少个Context"></a>1.一个App有多少个Context</h2><p>应用程序创建Context实例的情况有如下几种情况：</p>
 <ol>
 <li>创建Application 对象时， 而且整个App共一个Application对象</li>
 <li>创建Service对象时</li>
 <li>创建Activity对象时</li>
 </ol>
-<p>因此应用程序App共有的Context数目公式为：</p>
-<pre><code>总Context实例个数 = Service个数 + Activity个数 + 1（Application对应的Context实例）  
-</code></pre><h2 id="2-getApplication-和getApplicationContext有什么区别"><a href="#2-getApplication-和getApplicationContext有什么区别" class="headerlink" title="2.getApplication 和getApplicationContext有什么区别"></a>2.getApplication 和getApplicationContext有什么区别</h2><p>###相同点<br>二者使用结果相同，我们写个代码分别打印二者返回结果，发现两个方法获取的是同一个对象。</p>
-<pre><code>public class   MainActivity extends Activity {
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    Application application = getApplication();
-    Log.i(&quot;WY&quot;, &quot;打印getApplication：&quot; + application);
-    Context pContext = getApplicationContext();
-    Log.i(&quot;WY&quot;, &quot;打印getApplicationContext：&quot; + pContext);
-}
-}
-</code></pre><p>###不同点</p>
-<ol>
-<li>getApplication()是用来获取Application实例的，getApplicationContext是用来获取Application的上下文。</li>
-<li>getApplication只在Activity和Service中才能调用</li>
-<li>在BroadcastReceiver中获取Application实例，需要使用getApplicationContext()方法</li>
-</ol>
-<h2 id="3-设置configChanges避免横竖屏切换Activity重建"><a href="#3-设置configChanges避免横竖屏切换Activity重建" class="headerlink" title="3.设置configChanges避免横竖屏切换Activity重建"></a>3.设置configChanges避免横竖屏切换Activity重建</h2><pre><code>//当minSsdkVersion 和 targetSdkVersion高于13时，需要增加screenSize
-android：configChanges=&quot;oriention | screenSize&quot;
-</code></pre><h2 id="4-Android中的多进程"><a href="#4-Android中的多进程" class="headerlink" title="4.Android中的多进程"></a>4.Android中的多进程</h2><ol>
-<li>进程名以“：”开头的进程属于当前应用的私有进程，其他应用的组件不可以和它跑在同一个进程中</li>
-<li><p>进程名不以“：”开头的进程属于全局进程，其他应用可以通过ShareUID方式和它跑在同一个进程中。（需要这两个应用有相同的ShareUID并且签名相同）</p>
-</li>
-<li><p>多进程存在的问题</p>
-</li>
-</ol>
-<p>（1）静态成员和单例模式完全失效；<br>（2）线程同步机制完全失效；<br>（3）SharedPreferences的可靠性下降；<br>（4）Application会多次创建。</p>
-<h2 id="4-序列化Serializable"><a href="#4-序列化Serializable" class="headerlink" title="4.序列化Serializable"></a>4.序列化Serializable</h2><p>1.serialVersionUID作用<br>序列化的时候系统会把当前类的serialVersionUID写入序列化文件中，当反序列化的时候系统会去检测文件中的serialVersionUID，看它是否和当前类的serialVersionUID一致，如果一致说明序列化的类的版本和当前类的版本是相同的，这个时候可以成功反序列化；否则说明当前类的和序列化的类相比发生了某些变换，比如成员变量的数量、类型可能发生了变换，这个时候是无法正常反序列化的，并且会报错java.io.InvalidClassException.</p>
-
-          
+<p>因此应用程序App共有的Context数目公式为：
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/11/Android琐碎知识/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
