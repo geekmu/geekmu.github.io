@@ -87,15 +87,19 @@
 
 
 
-<meta name="description" content="Android,PHP,Google,Github,技术博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="鸿少爷的城">
-<meta property="og:url" content="https://geekmu.github.io/archives/2017/05/index.html">
+<meta name="description" content="##一、什么是ClassLoader?Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android插件化（一）之谈谈ClassLoader">
+<meta property="og:url" content="https://geekmu.github.io/2017/05/14/Android插件化（一）之谈谈ClassLoader/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="Android,PHP,Google,Github,技术博客">
+<meta property="og:description" content="##一、什么是ClassLoader?Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。">
+<meta property="og:image" content="https://geekmu.github.io/log.png">
+<meta property="og:image" content="https://geekmu.github.io/loader.png">
+<meta property="og:updated_time" content="2017-06-11T02:48:30.045Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鸿少爷的城">
-<meta name="twitter:description" content="Android,PHP,Google,Github,技术博客">
+<meta name="twitter:title" content="Android插件化（一）之谈谈ClassLoader">
+<meta name="twitter:description" content="##一、什么是ClassLoader?Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。">
+<meta name="twitter:image" content="https://geekmu.github.io/log.png">
 
 
 
@@ -123,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/archives/2017/05/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/05/14/Android插件化（一）之谈谈ClassLoader/"/>
 
 
 
 
 
-  <title> 归档 | 鸿少爷的城 </title>
+  <title> Android插件化（一）之谈谈ClassLoader | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -160,7 +164,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -278,103 +282,194 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 8 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/14/Android插件化（一）之谈谈ClassLoader/" itemprop="url">
-              
-                <span itemprop="name">Android插件化（一）之谈谈ClassLoader</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-14T22:46:01+08:00"
-              content="2017-05-14" >
-          05-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/05/06/Android系统版本差异及注意事项/" itemprop="url">
-              
-                <span itemprop="name">Android系统版本差异及注意事项</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-05-06T21:39:56+08:00"
-              content="2017-05-06" >
-          05-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/05/14/Android插件化（一）之谈谈ClassLoader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chicxiaomu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸿少爷的城">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android插件化（一）之谈谈ClassLoader
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-14T22:46:01+08:00">
+                2017-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##一、什么是ClassLoader?<br>Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。<a id="more"></a></p>
+<p>##二、Android中的ClassLoader</p>
+<pre><code>@Override  
+protected void onCreate(Bundle savedInstanceState) {  
+    super.onCreate(savedInstanceState);  
+    ClassLoader classLoader = getClassLoader();  
+    if (classLoader != null) {  
+        Log.i(TAG, &quot;onCreate classLoader &quot; + i + &quot; : &quot; + classLoader.toString());  
+        while (classLoader.getParent() != null) {  
+            classLoader = classLoader.getParent();
+            i = i + 1;  
+            Log.i(TAG, &quot;onCreate classLoader &quot; + i + &quot; : &quot; + classLoader.toString());  
+        }  
+    }  
+}  
+</code></pre><p><img src="/log.png" alt="log">   </p>
+<p>可以看见有2个Classloader实例，一个是BootClassLoader，另一个是PathClassLoader,由此也可以看出，一个运行的Android应用至少有2个ClassLoader。<br>查看<a href="https://developer.android.com/reference/java/lang/ClassLoader.html" target="_blank" rel="external">官方文档</a>我们可以知道Android中类加载器有BootClassLoader,URLClassLoader,<br>PathClassLoader,DexClassLoader,BaseDexClassLoader 等都最终继承自java.lang.ClassLoader。  </p>
+<p>##三、使用ClassLoader加载类<br>在前面我们看到，Android程序启动过程中，会有一个dalvik.system.PathClassLoader,查看官方文档<a href="https://developer.android.com/reference/dalvik/system/PathClassLoader.html" target="_blank" rel="external">PathClassLoader</a>,可以得知，PathClassLoader是ClassLoader的一个简单实现，主要用于加载系统类和加载应用中的类。<br><img src="/loader.png" alt="pathClassLoader">   </p>
+<p>查看父类BaseDexClassLoader可以看到ClassLoader还有一个实现：<a href="https://developer.android.com/reference/dalvik/system/DexClassLoader.html" target="_blank" rel="external">DexClassLoader</a>,通过官方文档可以得知，DexClassLoader加载.jar或者apk里面的class.dex文件，可以用于加载未安装的代码。而我们研究动态加载的目的主要是用于插件化或者热更新功能，加载的代码必然也是未安装的，所以我们要用的就是DexClassLoader。</p>
+<ol>
+<li>实例化DexClassLoader<br>首先我们看下DexClassLoader的构造函数<br> public class DexClassLoader extends BaseDexClassLoader {<br> public DexClassLoader(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent) {<pre><code>super(dexPath, new File(optimizedDirectory), libraryPath, parent);
+</code></pre> }<br> }<br>参数详解：<br>dexPath：dex文件路径列表，多个路径使用”:”分隔<br>optimizedDirectory：经过优化的dex文件输出目录，必须是应用私有目录<br>libraryPath：动态库路径（将被添加到app动态库搜索路径列表中）<br>parent：现有的ClassLoader实例，这个参数的主要作用是保留java中ClassLoader的双亲代理模型（优先父类加载器加载classes，由上而下的加载机制，防止重复加载类字节码）  </li>
+<li><p>loadClass<br>JVM中ClassLoader通过defineClass方法加载jar里面的Class，而Android中这个方法被弃用了。 </p>
+<p> @Deprecated<br> protected final Class&lt;?&gt; defineClass(byte[] classRep, int offset, int length) throws ClassFormatError {<br> throw new UnsupportedOperationException(“can’t load this type of class file”);<br> }<br>DexClassLoader中使用loadClass方法  </p>
+<p> public Class&lt;?&gt; loadClass(String className) throws ClassNotFoundException {</p>
+<pre><code>return loadClass(className, false);
+</code></pre><p> }</p>
+<p> protected Class&lt;?&gt; loadClass(String className, boolean resolve) throws ClassNotFoundException {<br> Class&lt;?&gt; clazz = findLoadedClass(className);<br> if (clazz == null) {</p>
+<pre><code>ClassNotFoundException suppressed = null;
+try {
+    clazz = parent.loadClass(className, false);
+} catch (ClassNotFoundException e) {
+    suppressed = e;
+}
+if (clazz == null) {
+    try {
+        clazz = findClass(className);
+    } catch (ClassNotFoundException e) {
+        e.addSuppressed(suppressed);
+        throw e;
+    }
+}
+</code></pre><p> }<br> return clazz;<br>从源码中我们也可以看出，loadClass方法在加载一个类的实例的时候<br>1) 会先查询当前ClassLoader实例是否加载过此类，有就返回；</p>
+</li>
+</ol>
+<p>2) 如果没有。查询Parent是否已经加载过此类，如果已经加载过，就直接返回Parent加载的类；</p>
+<p>3) 如果继承路线上的ClassLoader都没有加载，才由Child执行类的加载工作；</p>
+<p>这样做有个明显的特点，如果一个类被位于树根的ClassLoader加载过，那么在以后整个系统的生命周期内，这个类永远不会被重新加载。也就是双亲代理模型体现。 </p>
+<p>##四、结束语<br>通过上面的分析，我们知道使用ClassLoader动态加载一个外部的类是非常容易的事情，所以很容易就能实现动态加载新的可执行代码的功能，但是比起一般的Java程序，在Android程序中使用动态加载主要有两个麻烦的问题：</p>
+<p>1) Android中许多组件类（如Activity、Service等）是需要在Manifest文件里面注册后才能工作的（系统会检查该组件有没有注册），所以即使动态加载了一个新的组件类进来，没有注册的话还是无法工作；</p>
+<p>2) Res资源是Android开发中经常用到的，而Android是把这些资源用对应的R.id注册好，运行时通过这些ID从Resource实例中获取对应的资源。如果是运行时动态加载进来的新类，那类里面用到R.id的地方将会抛出找不到资源或者用错资源的异常，因为新类的资源ID根本和现有的Resource实例中保存的资源ID对不上。<br>这两个问题，将在后续章节讲解。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/06/Android系统版本差异及注意事项/" rel="next" title="Android系统版本差异及注意事项">
+                <i class="fa fa-chevron-left"></i> Android系统版本差异及注意事项
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
           
           </div>
@@ -382,6 +477,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -562,11 +661,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
