@@ -93,7 +93,7 @@
 <meta property="og:url" content="https://geekmu.github.io/2017/04/01/谈谈Android MVP模式/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
 <meta property="og:description" content="按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常">
-<meta property="og:updated_time" content="2017-06-12T15:13:03.579Z">
+<meta property="og:updated_time" content="2017-06-13T14:56:14.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Android MVP模式">
 <meta name="twitter:description" content="按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常">
@@ -362,13 +362,11 @@
 
       
         <p>按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常有的事，而且如果是一些可以通用的业务逻辑（比如用户登录），写在具体的Activity里就意味着这个逻辑不能复用了。如果有进行代码重构经验的人，看到1000+行的类肯定会有所顾虑。因此，Activity不仅承担了View的角色，还承担了一部分的Controller角色，这样一来V和C就耦合在一起了，虽然这样写方便，但是如果业务调整的话，要维护起来就难了，而且在一个臃肿的Activity类查找业务逻辑的代码也会非常蛋疼，所以看起来有必要在Activity中，把View和Controller抽离开来，而这就是MVP模式的工作了。<a id="more"></a></p>
-<p>###MVP模式的核心思想：</p>
-<ul>
+<h3 id="MVP模式的核心思想："><a href="#MVP模式的核心思想：" class="headerlink" title="MVP模式的核心思想："></a>MVP模式的核心思想：</h3><ul>
 <li>MVP把Activity中的UI逻辑抽象成View接口，把业务逻辑抽象成Presenter接口，Model类还是原来的Model。</li>
 </ul>
 <p>这就是MVP模式，现在这样的话，Activity的工作的简单了，只用来响应生命周期，其他工作都丢到Presenter中去完成。从上图可以看出，Presenter是Model和View之间的桥梁，为了让结构变得更加简单，View并不能直接对Model进行操作，这也是MVP与MVC最大的不同之处。</p>
-<p>###MVP模式的作用</p>
-<ul>
+<h3 id="MVP模式的作用"><a href="#MVP模式的作用" class="headerlink" title="MVP模式的作用"></a>MVP模式的作用</h3><ul>
 <li>分离了视图逻辑和业务逻辑，降低了耦合</li>
 <li>Activity只处理生命周期的任务，代码变得更加简洁</li>
 <li>视图逻辑和业务逻辑分别抽象到了View和Presenter的接口中去，提高代码的可阅读性</li>
@@ -479,8 +477,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -545,6 +552,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP模式的核心思想："><span class="nav-number">1.</span> <span class="nav-text">MVP模式的核心思想：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP模式的作用"><span class="nav-number">2.</span> <span class="nav-text">MVP模式的作用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

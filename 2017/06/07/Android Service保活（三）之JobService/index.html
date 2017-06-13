@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="鸿少爷的城">
 <meta property="og:description" content="在前两章中，我们系统的学习了Android Service防杀套路和双进程守护的实现，本篇博文，我将带领大家学习更高端的APP进行防杀技巧，该技巧除了能够应对卫士、管家的清杀以外，更能够在类似于某米、某为系统的清理内存软件清理下确保进程存活下来。它就是我们今天的主角JobShedulerService。通常在5.0之前，我们可以使用广播或者闹钟等方式让我们的进程防杀自启，而5.0以后的Androi">
 <meta property="og:image" content="https://geekmu.github.io/jobService.png">
-<meta property="og:updated_time" content="2017-06-12T15:09:28.931Z">
+<meta property="og:updated_time" content="2017-06-13T14:59:54.267Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Service保活（三）之JobService">
 <meta name="twitter:description" content="在前两章中，我们系统的学习了Android Service防杀套路和双进程守护的实现，本篇博文，我将带领大家学习更高端的APP进行防杀技巧，该技巧除了能够应对卫士、管家的清杀以外，更能够在类似于某米、某为系统的清理内存软件清理下确保进程存活下来。它就是我们今天的主角JobShedulerService。通常在5.0之前，我们可以使用广播或者闹钟等方式让我们的进程防杀自启，而5.0以后的Androi">
@@ -376,10 +376,8 @@ abstract boolean onStopJob(JobParameters params)
 <li>APP有希望作为一个批次定期运行的许多任务  </li>
 </ul>
 <p>接下来，我们使用JobService来实现APP进程防杀。  </p>
-<p>####首先声明权限</p>
-<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;  
-</code></pre><p>####自定义一个Service类，继承自JobService  </p>
-<pre><code>@SuppressLint(&quot;NewApi&quot;)
+<h4 id="首先声明权限"><a href="#首先声明权限" class="headerlink" title="首先声明权限"></a>首先声明权限</h4><pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;  
+</code></pre><h4 id="自定义一个Service类，继承自JobService"><a href="#自定义一个Service类，继承自JobService" class="headerlink" title="自定义一个Service类，继承自JobService"></a>自定义一个Service类，继承自JobService</h4><pre><code>@SuppressLint(&quot;NewApi&quot;)
 public class JobCastielService extends JobService{
 private int kJobId = 0;
 
@@ -545,8 +543,17 @@ public boolean isServiceWork(Context mContext, String serviceName) {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -611,6 +618,22 @@ public boolean isServiceWork(Context mContext, String serviceName) {
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#首先声明权限"><span class="nav-number">1.</span> <span class="nav-text">首先声明权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义一个Service类，继承自JobService"><span class="nav-number">2.</span> <span class="nav-text">自定义一个Service类，继承自JobService</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

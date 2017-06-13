@@ -105,7 +105,7 @@ ListView, Bitmap, 线程优化">
 内存泄漏优化
 响应速度优化
 ListView, Bitmap, 线程优化">
-<meta property="og:updated_time" content="2017-06-12T15:05:44.155Z">
+<meta property="og:updated_time" content="2017-06-13T14:58:13.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能优化（三）之读书笔记">
 <meta name="twitter:description" content="Android性能优化主要几个方面:
@@ -387,7 +387,7 @@ ListView, Bitmap, 线程优化">
 <li>响应速度优化</li>
 <li>ListView, Bitmap, 线程优化<a id="more"></a></li>
 </ul>
-<p>##布局优化<br><strong>布局优化的思想就是尽量较少布局文件的层级,这就可以让Android绘制时的工作量减少</strong></p>
+<h2 id="布局优化"><a href="#布局优化" class="headerlink" title="布局优化"></a>布局优化</h2><p><strong>布局优化的思想就是尽量较少布局文件的层级,这就可以让Android绘制时的工作量减少</strong></p>
 <p>删除无用的控件和层级, 有选择地使用ViewGroup. 例如RelativeLayout和LinearLayout. 都可以的话那么就采用LinearLayout. 因为RelativeLayout的功能比较复杂, 它的布局过程需要花费更多的CPU时间. FrameLayout和LinearLayout都是一种简单高效的ViewGroup. </p>
 <p><em>如果需要嵌套才可以实现的布局那么就是用RelativeLayout.</em></p>
 <p>布局优化的另外一个方法就是采用<include>标签, <merge>标签和ViewStub.</merge></include></p>
@@ -430,15 +430,12 @@ android:layout_height=&quot;60dp&quot;/&gt;
 //View inflate =  ((ViewStub) findViewById(R.id.stub_import)).inflate();
 // 通过inflatedId这个id可以得到加载进来的布局的根布局
 LinearLayout commLv = (LinearLayout) findViewById(R.id.stin_root);
-</code></pre><p>##绘制优化</p>
-<p>绘制优化是指View#onDraw()方法要避免执行大量的操作.两个方面</p>
+</code></pre><h2 id="绘制优化"><a href="#绘制优化" class="headerlink" title="绘制优化"></a>绘制优化</h2><p>绘制优化是指View#onDraw()方法要避免执行大量的操作.两个方面</p>
 <ol>
 <li>onDraw中不要创建新的局部对象, 因为onDraw()方法可能会被频繁调用, 这样就会在一瞬间产生大量的临时对象, 这不仅占用了过多的内存而且还会导致系统频繁的gc, 降低了程序的执行效率.</li>
 <li>不要做耗时任务, 也不能执行成千上万次的循环操作. 即使每次循环都很轻量级, 但是大量的循环仍然十分抢占CPU的时间片, 这会造成View的绘制流程不流畅. 按照官方的规范, View的绘制帧率保证60fps最佳. 也就是16ms的为每一阵帧的绘制时间.</li>
 </ol>
-<p>##内存泄漏优化</p>
-<p>###情况1. 静态变量导致的内存泄漏</p>
-<pre><code>private static View sView;
+<h2 id="内存泄漏优化"><a href="#内存泄漏优化" class="headerlink" title="内存泄漏优化"></a>内存泄漏优化</h2><h3 id="情况1-静态变量导致的内存泄漏"><a href="#情况1-静态变量导致的内存泄漏" class="headerlink" title="情况1. 静态变量导致的内存泄漏"></a>情况1. 静态变量导致的内存泄漏</h3><pre><code>private static View sView;
 @Override
 protected void onCreate(Bundle savedInstanceState) {
 super.onCreate(savedInstanceState);
@@ -446,11 +443,9 @@ setContentView(R.layout.activity_main);
 sView = new View(this);
 }
 </code></pre><p>如非必须传递Activity的引用不要这么做, 如果需要上下文可以传递getApplicationContext()返回的上下文</p>
-<p>###情况2. 单例模式导致的内存泄漏</p>
-<p>常见的就是在使用注册监听的时候, 往往会往一个单例类中传入this本类对象,进行注册, 然后却没有解注册的动作. 那么这个Activity被引用的时间也就是和Application的生命周期持平.</p>
-<p>###情况3. 属性动画导致的内存泄漏</p>
-<p>在Android 3.0中加入了属性动画, 属性动画有一类无限循环的动画, 如果在Activity中播放此类动画且没有在Activity退出的时候没有停止动画. 尽管无法界面上看到效果, 但是创建这个动画所关联的View被动画所持有, 而View又持有了Activity, 最终Activity无法释放. 解决方案, 就是在onDestroy()中调用动画的cancel()来停止动画.</p>
-<p>##响应速度和ANR日志分析<br>响应速度的优化核心就是避免主线程做耗时操作, 响应速度过慢更多体现在Activity启动的速度上. 如果主线程内做太多的事情, 会导致Activity启动时出现黑屏现象, 甚至出现ANR.</p>
+<h3 id="情况2-单例模式导致的内存泄漏"><a href="#情况2-单例模式导致的内存泄漏" class="headerlink" title="情况2. 单例模式导致的内存泄漏"></a>情况2. 单例模式导致的内存泄漏</h3><p>常见的就是在使用注册监听的时候, 往往会往一个单例类中传入this本类对象,进行注册, 然后却没有解注册的动作. 那么这个Activity被引用的时间也就是和Application的生命周期持平.</p>
+<h3 id="情况3-属性动画导致的内存泄漏"><a href="#情况3-属性动画导致的内存泄漏" class="headerlink" title="情况3. 属性动画导致的内存泄漏"></a>情况3. 属性动画导致的内存泄漏</h3><p>在Android 3.0中加入了属性动画, 属性动画有一类无限循环的动画, 如果在Activity中播放此类动画且没有在Activity退出的时候没有停止动画. 尽管无法界面上看到效果, 但是创建这个动画所关联的View被动画所持有, 而View又持有了Activity, 最终Activity无法释放. 解决方案, 就是在onDestroy()中调用动画的cancel()来停止动画.</p>
+<h2 id="响应速度和ANR日志分析"><a href="#响应速度和ANR日志分析" class="headerlink" title="响应速度和ANR日志分析"></a>响应速度和ANR日志分析</h2><p>响应速度的优化核心就是避免主线程做耗时操作, 响应速度过慢更多体现在Activity启动的速度上. 如果主线程内做太多的事情, 会导致Activity启动时出现黑屏现象, 甚至出现ANR.</p>
 <p>Android中规定如果Activity5秒钟之内无法响应屏幕事件或者键盘输入事件就会出现ANR. 而BroadCastReceiver如果10秒之内还未执行完操作也会出现ANR.</p>
 <p>如果进程发生了ANR以后, 系统会在data/anr目录下创建一个文件traces.txt. 通过分析这个文件就定位出原因.(这个文件很长如果需要分析, 请先删除文件生成一个在分析来进行了解)</p>
 <p>通过一个例子来了解如何去分析文件, 首先在onCreate()添加如下代码, 让主线程等待一个锁,然后点击返回5秒后会出现ANR, 贴代码</p>
@@ -503,17 +498,14 @@ at android.os.SystemClock.sleep(SystemClock.java:120)
 at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
 - locked &lt;0x2fbcb3de&gt; (a com.szysky.note.androiddevseek_15.MainActivity)
 - tid = 15 就是相关信息如上, 首行已经标出线程的状态为Sleeping, 原因在50行, 就是SystemClock.sleep(3000 * 1000);这句话. 也就是testANR(). 而最后一行也表明了持有的locked&lt;0x2fbcb3de&gt;就是主线程在等待的那个锁对象.
-</code></pre><p>##ListView和Bitmap优化</p>
-<ul>
+</code></pre><h2 id="ListView和Bitmap优化"><a href="#ListView和Bitmap优化" class="headerlink" title="ListView和Bitmap优化"></a>ListView和Bitmap优化</h2><ul>
 <li><p>ListView: 在前面已经说过了, 主要三个方面: 采用ViewHolder避免在getView中执行耗时操作; 其次要根据列表的滑动状态来控制任务的执行频率; 最后可以尝试开启硬件加速是ListView滑动更加流畅. ListView的优化策略也完全适用于GridView</p>
 </li>
 <li><p>Bitmap: 也已经说过, 主要是通过BitmapFactory.Options根据需要对图片进行采样, 采样率的设置通过inSampleSize属性.</p>
 </li>
 </ul>
-<p>##线程优化</p>
-<p>主要思想就是采用线程池, 避免程序中存在大量的Thread. 线程池可以重用内部的线程, 避免了线程创建和销毁的性能开销. 同时线程池还能有效的控制线程的最大并发数, 避免了大量线程因互相巷战系统资源从而导致阻塞现象的发生.</p>
-<p>##额外的性能优化建议</p>
-<ul>
+<h2 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h2><p>主要思想就是采用线程池, 避免程序中存在大量的Thread. 线程池可以重用内部的线程, 避免了线程创建和销毁的性能开销. 同时线程池还能有效的控制线程的最大并发数, 避免了大量线程因互相巷战系统资源从而导致阻塞现象的发生.</p>
+<h2 id="额外的性能优化建议"><a href="#额外的性能优化建议" class="headerlink" title="额外的性能优化建议"></a>额外的性能优化建议</h2><ul>
 <li>避免创建过多的对象</li>
 <li>不要过多使用枚举, 枚举占用的内存空间比整形还要大,使用Android官方提供的方法可参考另一篇博客链接跳转</li>
 <li>常量请使用 static final 来修饰</li>
@@ -522,7 +514,7 @@ at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
 <li>采用内存缓存和磁盘缓存</li>
 <li>尽量采用静态内部类, 避免潜在的由于内部类而导致的内存泄漏</li>
 </ul>
-<p>##内存泄漏分析工具MAT<br>MAT全程Eclipse Memory Analyzer, 是一个内存泄漏分析工具. 下载后解压即可. 下载地址<a href="http://www.eclipse.org/mat/downloads.php" target="_blank" rel="external">http://www.eclipse.org/mat/downloads.php</a>. 这里仅简单说一下. 这个我没有手动去实践, 就当个记录, 因为现在Android Studio可以直接分析hprof文件.</p>
+<h2 id="内存泄漏分析工具MAT"><a href="#内存泄漏分析工具MAT" class="headerlink" title="内存泄漏分析工具MAT"></a>内存泄漏分析工具MAT</h2><p>MAT全程Eclipse Memory Analyzer, 是一个内存泄漏分析工具. 下载后解压即可. 下载地址<a href="http://www.eclipse.org/mat/downloads.php" target="_blank" rel="external">http://www.eclipse.org/mat/downloads.php</a>. 这里仅简单说一下. 这个我没有手动去实践, 就当个记录, 因为现在Android Studio可以直接分析hprof文件.</p>
 <p>可以手动写一个会造成内存泄漏的代码, 然后打开DDMS, 然后选中要分析的进程, 然后单击Dump HPROF file这个按钮. 等一小段会生成一个文件. 这个文件不能被MAT直接识别. 需要使用Android SDK中的工具进行格式转换一下.这个工具在platform-conv文件夹下</p>
 <p>hprof-conv 要转换的文件名 输出的文件名 文件名的签名有包名.</p>
 <p>然后打开MAT通过菜单打开转换后的这个文件. 这里常用的就有两个</p>
@@ -533,7 +525,7 @@ at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
 <p>存泄漏分析就是通过这个完成的.<br>分析内存泄漏的时候需要分析Dominator Tree里面的内存信息, 一般会不直接显示出来, 可以按照从大到小的顺序去排查一遍. 如果发生了了泄漏, 那么在泄漏对象处右键单击Path To GC Roots-&gt;exclude wake/soft references. 可以看到最终是什么对象导致的无法释放. 刚才的操作之所以排除软引用和弱引用是因为,大部分情况下这两种类型都可以被gc回收掉,所以基本也就不会造成内存泄漏.</p>
 <p>同样这里也可以使用搜索功能, 假如我们手动模拟了内存泄漏, 泄漏的对象就是Activity那么我们back退出重进循环几次, 会发现其实很多个Activit对象.</p>
 <p>更多的东西我也不会,作者也没有说.. 不过这些以后Android Studio都会很有好用对应功能.</p>
-<p>##提高程序的可维护性<br>这里主要说Android的程序设计思想. 主旨是如何提高代码的可维护性和可扩展性, 而程序的可维护性也包含可扩展性. 这里的切入点为: 代码风格, 代码的层次性和单一职责原则, 面向扩展编程以及设计模式</p>
+<h2 id="提高程序的可维护性"><a href="#提高程序的可维护性" class="headerlink" title="提高程序的可维护性"></a>提高程序的可维护性</h2><p>这里主要说Android的程序设计思想. 主旨是如何提高代码的可维护性和可扩展性, 而程序的可维护性也包含可扩展性. 这里的切入点为: 代码风格, 代码的层次性和单一职责原则, 面向扩展编程以及设计模式</p>
 <p>可读性是代码可维护性的前提, 一段只能让机器读懂的代码即使可以跑也属于”坏味道的代码”, 而良好的代码风格在一定程度上可以提高从程序的可读性. 代码的风格有 命名规范, 代码排版, 注释说明.</p>
 <ol>
 <li>命名要规范, 正确传达出变量或者方法的定义, 少用缩写除非业界通用的缩写如String-&gt;str.能让人一眼明白的. 私有成员要以m开头. 静态成员要以s开头. 常量要全部大写.</li>
@@ -639,8 +631,17 @@ at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -705,6 +706,22 @@ at com.szysky.note.androiddevseek_15.MainActivity.testANR(MainActivity.java:50)
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#布局优化"><span class="nav-number">1.</span> <span class="nav-text">布局优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绘制优化"><span class="nav-number">2.</span> <span class="nav-text">绘制优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏优化"><span class="nav-number">3.</span> <span class="nav-text">内存泄漏优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#情况1-静态变量导致的内存泄漏"><span class="nav-number">3.1.</span> <span class="nav-text">情况1. 静态变量导致的内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#情况2-单例模式导致的内存泄漏"><span class="nav-number">3.2.</span> <span class="nav-text">情况2. 单例模式导致的内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#情况3-属性动画导致的内存泄漏"><span class="nav-number">3.3.</span> <span class="nav-text">情况3. 属性动画导致的内存泄漏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应速度和ANR日志分析"><span class="nav-number">4.</span> <span class="nav-text">响应速度和ANR日志分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ListView和Bitmap优化"><span class="nav-number">5.</span> <span class="nav-text">ListView和Bitmap优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程优化"><span class="nav-number">6.</span> <span class="nav-text">线程优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#额外的性能优化建议"><span class="nav-number">7.</span> <span class="nav-text">额外的性能优化建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存泄漏分析工具MAT"><span class="nav-number">8.</span> <span class="nav-text">内存泄漏分析工具MAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提高程序的可维护性"><span class="nav-number">9.</span> <span class="nav-text">提高程序的可维护性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

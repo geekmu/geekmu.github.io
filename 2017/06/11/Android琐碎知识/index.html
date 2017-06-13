@@ -105,7 +105,7 @@
 创建Activity对象时
 
 因此应用程序App共有的Context数目公式为：">
-<meta property="og:updated_time" content="2017-06-12T15:08:37.187Z">
+<meta property="og:updated_time" content="2017-06-13T14:58:59.926Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android琐碎知识">
 <meta name="twitter:description" content="1.一个App有多少个Context应用程序创建Context实例的情况有如下几种情况：
@@ -387,7 +387,7 @@
 </ol>
 <p>因此应用程序App共有的Context数目公式为：<a id="more"></a></p>
 <pre><code>总Context实例个数 = Service个数 + Activity个数 + 1（Application对应的Context实例）  
-</code></pre><h2 id="2-getApplication-和getApplicationContext有什么区别"><a href="#2-getApplication-和getApplicationContext有什么区别" class="headerlink" title="2.getApplication 和getApplicationContext有什么区别"></a>2.getApplication 和getApplicationContext有什么区别</h2><p>###相同点<br>二者使用结果相同，我们写个代码分别打印二者返回结果，发现两个方法获取的是同一个对象。</p>
+</code></pre><h2 id="2-getApplication-和getApplicationContext有什么区别"><a href="#2-getApplication-和getApplicationContext有什么区别" class="headerlink" title="2.getApplication 和getApplicationContext有什么区别"></a>2.getApplication 和getApplicationContext有什么区别</h2><h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h3><p>二者使用结果相同，我们写个代码分别打印二者返回结果，发现两个方法获取的是同一个对象。</p>
 <pre><code>public class   MainActivity extends Activity {
 
 @Override
@@ -400,8 +400,7 @@ protected void onCreate(Bundle savedInstanceState) {
     Log.i(&quot;WY&quot;, &quot;打印getApplicationContext：&quot; + pContext);
 }
 }
-</code></pre><p>###不同点</p>
-<ol>
+</code></pre><h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h3><ol>
 <li>getApplication()是用来获取Application实例的，getApplicationContext是用来获取Application的上下文。</li>
 <li>getApplication只在Activity和Service中才能调用</li>
 <li>在BroadcastReceiver中获取Application实例，需要使用getApplicationContext()方法</li>
@@ -593,7 +592,7 @@ android：configChanges=&quot;oriention | screenSize&quot;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-一个App有多少个Context"><span class="nav-number">1.</span> <span class="nav-text">1.一个App有多少个Context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-getApplication-和getApplicationContext有什么区别"><span class="nav-number">2.</span> <span class="nav-text">2.getApplication 和getApplicationContext有什么区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-设置configChanges避免横竖屏切换Activity重建"><span class="nav-number">3.</span> <span class="nav-text">3.设置configChanges避免横竖屏切换Activity重建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Android中的多进程"><span class="nav-number">4.</span> <span class="nav-text">4.Android中的多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-序列化Serializable"><span class="nav-number">5.</span> <span class="nav-text">4.序列化Serializable</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-一个App有多少个Context"><span class="nav-number">1.</span> <span class="nav-text">1.一个App有多少个Context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-getApplication-和getApplicationContext有什么区别"><span class="nav-number">2.</span> <span class="nav-text">2.getApplication 和getApplicationContext有什么区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相同点"><span class="nav-number">2.1.</span> <span class="nav-text">相同点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同点"><span class="nav-number">2.2.</span> <span class="nav-text">不同点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-设置configChanges避免横竖屏切换Activity重建"><span class="nav-number">3.</span> <span class="nav-text">3.设置configChanges避免横竖屏切换Activity重建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Android中的多进程"><span class="nav-number">4.</span> <span class="nav-text">4.Android中的多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-序列化Serializable"><span class="nav-number">5.</span> <span class="nav-text">4.序列化Serializable</span></a></li></ol></div>
             
 
           </div>

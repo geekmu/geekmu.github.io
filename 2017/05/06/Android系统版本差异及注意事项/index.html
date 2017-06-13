@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://geekmu.github.io/images/kk-print-land-n5.jpg">
 <meta property="og:image" content="https://geekmu.github.io/images/kk-sensors-runtastic-n5.jpg">
 <meta property="og:image" content="https://geekmu.github.io/images/kk-proc-device-overview-n5.jpg">
-<meta property="og:updated_time" content="2017-06-12T15:08:44.059Z">
+<meta property="og:updated_time" content="2017-06-13T14:58:45.985Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android系统版本差异及注意事项">
 <meta name="twitter:description" content="一、Android 7.0 Nougat
@@ -407,7 +407,7 @@
 <li><p>支持VR<a id="more"></a></p>
 </li>
 </ol>
-<p>###支持分屏<br>如果您的应用面向 Android N，您可以对应用的 Activity 是否支持多窗口显示以及显示方式进行配置。<a href="https://developer.android.com/guide/topics/ui/multi-window.html#configuring" target="_blank" rel="external">官方文档</a>有详细的处理流程。</p>
+<h3 id="支持分屏"><a href="#支持分屏" class="headerlink" title="支持分屏"></a>支持分屏</h3><p>如果您的应用面向 Android N，您可以对应用的 Activity 是否支持多窗口显示以及显示方式进行配置。<a href="https://developer.android.com/guide/topics/ui/multi-window.html#configuring" target="_blank" rel="external">官方文档</a>有详细的处理流程。</p>
 <ol>
 <li><p>多窗口模式不会更改 Activity 生命周期<br>在多窗口模式中，在指定时间只有最近与用户交互过的 Activity 为活动状态。 该 Activity 将被视为顶级 Activity。 所有其他 Activity 虽然可见，但均处于暂停状态。 但是，这些已暂停但可见的 Activity 在系统中享有比不可见 Activity 更高的优先级。 如果用户与其中一个暂停的 Activity 交互，该 Activity 将恢复，而之前的顶级 Activity 将暂停。</p>
 </li>
@@ -425,8 +425,7 @@
 
 </li>
 </ol>
-<p>##二、Android 6.0 Marshmallow</p>
-<ol>
+<h2 id="二、Android-6-0-Marshmallow"><a href="#二、Android-6-0-Marshmallow" class="headerlink" title="二、Android 6.0 Marshmallow"></a>二、Android 6.0 Marshmallow</h2><ol>
 <li><p>运行时权限<br>当应用的targetVersion设置为23时，在运行时需要检查和请求<a href="https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous" target="_blank" rel="external">危险权限</a>。checkSelfPermission() 方法用于验证用户是否授予权限；requestPermissions() 方法用于向用户请求权限。</p>
 </li>
 <li><p>低电耗模式和应用待机模式<br>低电耗模式：如果用户拔下设备的电源插头，并在屏幕关闭后的一段时间内使其保持不活动状态，设备会进入低电耗模式，在该模式下设备会尝试让系统保持休眠状态。在该模式下，设备会定期短时间恢复正常工作，以便进行应用同步，还可让系统执行任何挂起的操作。<br>应用待机模式：应用待机模式允许系统判定应用在用户未主动使用它时处于空闲状态。当用户有一段时间未触摸应用时，系统便会作出此判定。如果拔下了设备电源插头，系统会为其视为空闲的应用停用网络访问以及暂停同步和作业。</p>
@@ -441,8 +440,7 @@
 <li><p>文本选择<br>当用户在应用中选择文本时，可以在一个<a href="http://www.google.com/design/spec/patterns/selection.html#selection-text-selection" target="_blank" rel="external">浮动工具栏</a>中显示“剪切”、“复制”和“粘贴”等文本选择操作。</p>
 </li>
 </ol>
-<p>##三、Android 5.0 Lollipop</p>
-<ol>
+<h2 id="三、Android-5-0-Lollipop"><a href="#三、Android-5-0-Lollipop" class="headerlink" title="三、Android 5.0 Lollipop"></a>三、Android 5.0 Lollipop</h2><ol>
 <li>Material design<br>Material design算是Android 系统风格的里程碑，其3D UI风格新颖，贴近人机交互；<br><img src="images/material-design.png" alt=""></li>
 <li>改善通知栏，提升可视化、亲近性、可编辑性。同时支持手机在锁屏状态也可接收到通知，用户可以在锁屏状态下，设置接收全部应用的通知或者接收部分应用的通知或者不接收所有应用的通知；<br><img src="images/notification-headsup.png" alt=""></li>
 <li><p>ART（Android Runtime）运行时取代 Dalvik 成为平台默认设置，实现ahead-of-time (AOT)静态编译与just-in-time (JIT)动态编译交互进行；</p>
@@ -468,15 +466,13 @@
 <ol>
 <li>启用TLSv1.2 和 TLSv1.1 协议<br>某些服务器使用了TLSv1.2，使用WebView打开时，5.0以下的设备页面无法正常打开。</li>
 </ol>
-<p>###使用Material design</p>
-<ul>
+<h3 id="使用Material-design"><a href="#使用Material-design" class="headerlink" title="使用Material design"></a>使用Material design</h3><ul>
 <li>设置应用的 targetSdkVersion 和 targetSdkVersion 为21</li>
 <li>在values目录下的style资源文件中创建一个style，让其继承自 android:Theme.Material</li>
 <li>在AndroidManifest中指定应用的主题或者Activity的主题为我们设定的样式</li>
 <li>谷歌官方我们提供了三种配色风格的Material Design样式：<br>黑色主题 Theme.Material<br>明亮主题 Theme.Material.Light<br>明亮主题黑色ActionBar Theme.Material.Light.DarkActionBar  </li>
 </ul>
-<p>##四、Android 4.4 KitKat</p>
-<ol>
+<h2 id="四、Android-4-4-KitKat"><a href="#四、Android-4-4-KitKat" class="headerlink" title="四、Android 4.4 KitKat"></a>四、Android 4.4 KitKat</h2><ol>
 <li>通过主机卡模拟实现新的 NFC 功能<br><img src="images/kk-contactless-card.png" alt=""></li>
 <li>打印框架<br>Android 应用可以通过 WLAN 或云托管服务（例如 Google 云打印）打印任何类型的内容。在支持打印的应用中，用户可以发现可用的打印机，更改纸张尺寸，选择要打印的特定页面，打印几乎任何种类的文档、图像或文件。<br><img src="images/kk-print-land-n5.jpg" alt=""></li>
 <li>步测器和计步器<br>可以在用户行走、跑步或攀爬楼梯时跟踪步数。<br><img src="images/kk-sensors-runtastic-n5.jpg" alt=""></li>
@@ -486,8 +482,8 @@
 </li>
 <li><p>屏幕录制<br>使用命令 adb shell screenrecord 或者通过 Android Studio 中的 DDMS</p>
 </li>
-<li><p>分析设备内存状态<br>Settings &gt; Developer options &gt; Process stats<br><img src="images/kk-proc-device-overview-n5.jpg" alt=""><br>##五、Android 4.X Jelly Bean</p>
-</li>
+<li><p>分析设备内存状态<br>Settings &gt; Developer options &gt; Process stats<br><img src="images/kk-proc-device-overview-n5.jpg" alt=""></p>
+<h2 id="五、Android-4-X-Jelly-Bean"><a href="#五、Android-4-X-Jelly-Bean" class="headerlink" title="五、Android 4.X Jelly Bean"></a>五、Android 4.X Jelly Bean</h2></li>
 <li><p>UiAutomation自动化UI测试</p>
 </li>
 </ol>
@@ -671,7 +667,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-7-0-Nougat"><span class="nav-number">1.</span> <span class="nav-text">一、Android 7.0 Nougat</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-7-0-Nougat"><span class="nav-number">1.</span> <span class="nav-text">一、Android 7.0 Nougat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#支持分屏"><span class="nav-number">1.1.</span> <span class="nav-text">支持分屏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Android-6-0-Marshmallow"><span class="nav-number">2.</span> <span class="nav-text">二、Android 6.0 Marshmallow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Android-5-0-Lollipop"><span class="nav-number">3.</span> <span class="nav-text">三、Android 5.0 Lollipop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Material-design"><span class="nav-number">3.1.</span> <span class="nav-text">使用Material design</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Android-4-4-KitKat"><span class="nav-number">4.</span> <span class="nav-text">四、Android 4.4 KitKat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Android-4-X-Jelly-Bean"><span class="nav-number">5.</span> <span class="nav-text">五、Android 4.X Jelly Bean</span></a></li></ol></div>
             
 
           </div>

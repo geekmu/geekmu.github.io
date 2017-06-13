@@ -88,18 +88,18 @@
 
 
 <meta name="description" content="进程、服务守护防杀的实现，对于每一位开发者来说，都是一部与某系统、某卫士、某助手、某管家、某大师斗争的血泪史。我们常用的进程守护的套路无外乎以下几种
-####套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高">
+套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Service保活（一）之常用套路">
 <meta property="og:url" content="https://geekmu.github.io/2017/05/27/Android Service保活（一）之常用套路/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
 <meta property="og:description" content="进程、服务守护防杀的实现，对于每一位开发者来说，都是一部与某系统、某卫士、某助手、某管家、某大师斗争的血泪史。我们常用的进程守护的套路无外乎以下几种
-####套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高">
-<meta property="og:updated_time" content="2017-06-12T15:09:16.732Z">
+套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，">
+<meta property="og:updated_time" content="2017-06-13T14:59:43.593Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Service保活（一）之常用套路">
 <meta name="twitter:description" content="进程、服务守护防杀的实现，对于每一位开发者来说，都是一部与某系统、某卫士、某助手、某管家、某大师斗争的血泪史。我们常用的进程守护的套路无外乎以下几种
-####套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高">
+套路一.提高进程的优先级数值对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，">
 
 
 
@@ -365,8 +365,8 @@
 
       
         <p>进程、服务守护防杀的实现，对于每一位开发者来说，都是一部与某系统、某卫士、某助手、某管家、某大师斗争的血泪史。<br>我们常用的进程守护的套路无外乎以下几种</p>
-<p>####套路一.提高进程的优先级数值<br>对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低。</p>
-<p>####套路二.改变进程等级<br>Android中的进程是托管的，当系统进程空间紧张的时候，会依照优先级自动进行进程的回收。Android将进程分为6个等级,它们按优先级顺序由高到低依次是:</p>
+<h4 id="套路一-提高进程的优先级数值"><a href="#套路一-提高进程的优先级数值" class="headerlink" title="套路一.提高进程的优先级数值"></a>套路一.提高进程的优先级数值</h4><p>对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低。</p>
+<h4 id="套路二-改变进程等级"><a href="#套路二-改变进程等级" class="headerlink" title="套路二.改变进程等级"></a>套路二.改变进程等级</h4><p>Android中的进程是托管的，当系统进程空间紧张的时候，会依照优先级自动进行进程的回收。Android将进程分为6个等级,它们按优先级顺序由高到低依次是:</p>
 <ol>
 <li>前台进程( FOREGROUND_APP) </li>
 <li>可视进程(VISIBLE_APP ) </li>
@@ -381,14 +381,13 @@
 <li>如果当前service已经被启动(start)，拥有它的进程则比那些用户可见的进程优先级低一些，但是比那些不可见的进程更重要，这就意味着service一般不会被killed. </li>
 <li>如果客户端已经连接到service<br>(bindService),那么拥有Service的进程则拥有最高的优先级，可以认为service是可见的。 </li>
 <li>如果service可以使用startForeground(int,<br>Notification)方法来将service设置为前台状态，那么系统就认为是对用户可见的，并不会在内存不足时killed。 </li>
-<li><p>如果有其他的应用组件作为Service,Activity等运行在相同的进程中，那么将会增加该进程的重要性。<br>####套路三.设置 android:persistent属性为true  </p>
- <application android:name="com.test.Application" android:allowbackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" <span="" style="color:#ff0000;"> android:persistent=”true”<br> android:theme=”@style/AppTheme” &gt;<br> </application> 
+<li><p>如果有其他的应用组件作为Service,Activity等运行在相同的进程中，那么将会增加该进程的重要性。</p>
+<h4 id="套路三-设置-android-persistent属性为true"><a href="#套路三-设置-android-persistent属性为true" class="headerlink" title="套路三.设置 android:persistent属性为true"></a>套路三.设置 android:persistent属性为true</h4> <application android:name="com.test.Application" android:allowbackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" <span="" style="color:#ff0000;"> android:persistent=”true”<br> android:theme=”@style/AppTheme” &gt;<br> </application> 
 
 </li>
 </ol>
 <p>这个属性设置后，的确发现优先级提高不少，或许是相当于系统级的进程，但是还是无法保证存活</p>
-<p>####套路四.onDestory方法内调用广播，重启Service</p>
-<p>当service执行了onDestory的时候，发送一个自定义的广播，当收到广播的时候，重新启动service  </p>
+<h4 id="套路四-onDestory方法内调用广播，重启Service"><a href="#套路四-onDestory方法内调用广播，重启Service" class="headerlink" title="套路四.onDestory方法内调用广播，重启Service"></a>套路四.onDestory方法内调用广播，重启Service</h4><p>当service执行了onDestory的时候，发送一个自定义的广播，当收到广播的时候，重新启动service  </p>
 <pre><code>@Override 
 public void onDestroy() { 
  Intent sevice = new Intent(this, MainService.class); 
@@ -396,8 +395,7 @@ public void onDestroy() {
  super.onDestroy(); 
 }   
 </code></pre><p>但是当使用类似于360卫士和腾讯管家等第三方应用或是在setting里-应用-强制停止时，APP进程可能就直接被干掉了，onDestroy方法都进不来，所以还是无法保证存活</p>
-<p>####套路五.监听系统广播判断Service状态</p>
-<p>通过系统的一些广播，比如：手机重启、界面唤醒、应用状态改变等等监听并捕获到，然后判断我们的Service是否还存活，记得加权限  </p>
+<h4 id="套路五-监听系统广播判断Service状态"><a href="#套路五-监听系统广播判断Service状态" class="headerlink" title="套路五.监听系统广播判断Service状态"></a>套路五.监听系统广播判断Service状态</h4><p>通过系统的一些广播，比如：手机重启、界面唤醒、应用状态改变等等监听并捕获到，然后判断我们的Service是否还存活，记得加权限  </p>
 <pre><code>&lt;receiver android:name=&quot;com.dbjtech.acbxt.waiqin.BootReceiver&quot; &gt; 
 &lt;intent-filter&gt; 
     &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot; /&gt; 
@@ -418,8 +416,7 @@ if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
 } 
 }   
 </code></pre><p>这个方法监听多了会导致Service很混乱，带来诸多麻烦</p>
-<p>####套路六.将APK安装到/system/app成为系统级应用</p>
-<p>使用ROOT过的手机  </p>
+<h4 id="套路六-将APK安装到-system-app成为系统级应用"><a href="#套路六-将APK安装到-system-app成为系统级应用" class="headerlink" title="套路六.将APK安装到/system/app成为系统级应用"></a>套路六.将APK安装到/system/app成为系统级应用</h4><p>使用ROOT过的手机  </p>
 <ol>
 <li>把代码编写好后，打包导出apk，copy到手机SD卡根目录下。 </li>
 <li>手机连接eclipse，cmd： adb shell </li>
@@ -523,8 +520,17 @@ if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -589,6 +595,22 @@ if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#套路一-提高进程的优先级数值"><span class="nav-number">1.</span> <span class="nav-text">套路一.提高进程的优先级数值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套路二-改变进程等级"><span class="nav-number">2.</span> <span class="nav-text">套路二.改变进程等级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套路三-设置-android-persistent属性为true"><span class="nav-number">3.</span> <span class="nav-text">套路三.设置 android:persistent属性为true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套路四-onDestory方法内调用广播，重启Service"><span class="nav-number">4.</span> <span class="nav-text">套路四.onDestory方法内调用广播，重启Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套路五-监听系统广播判断Service状态"><span class="nav-number">5.</span> <span class="nav-text">套路五.监听系统广播判断Service状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#套路六-将APK安装到-system-app成为系统级应用"><span class="nav-number">6.</span> <span class="nav-text">套路六.将APK安装到/system/app成为系统级应用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -865,8 +865,8 @@
       
         
           <p>进程、服务守护防杀的实现，对于每一位开发者来说，都是一部与某系统、某卫士、某助手、某管家、某大师斗争的血泪史。<br>我们常用的进程守护的套路无外乎以下几种</p>
-<p>####套路一.提高进程的优先级数值<br>对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低。</p>
-<p>####套路二.改变进程等级<br>Android中的进程是托管的，当系统进程空间紧张的时候，会依照优先级自动进行进程的回收。Android将进程分为6个等级,它们按优先级顺序由高到低依次是:</p>
+<h4 id="套路一-提高进程的优先级数值"><a href="#套路一-提高进程的优先级数值" class="headerlink" title="套路一.提高进程的优先级数值"></a>套路一.提高进程的优先级数值</h4><p>对于Service被系统回收，一般做法是通过提高优先级可以解决，在AndroidManifest.xml文件中对于intent-filter可以通过Android:priority = “1000”这个属性设置最高优先级，1000是最高值，如果数字越小则优先级越低。</p>
+<h4 id="套路二-改变进程等级"><a href="#套路二-改变进程等级" class="headerlink" title="套路二.改变进程等级"></a>套路二.改变进程等级</h4><p>Android中的进程是托管的，当系统进程空间紧张的时候，会依照优先级自动进行进程的回收。Android将进程分为6个等级,它们按优先级顺序由高到低依次是:</p>
 <ol>
 <li>前台进程( FOREGROUND_APP) </li>
 <li>可视进程(VISIBLE_APP ) </li>
@@ -1118,7 +1118,7 @@
 
       
         
-          <p>##一、什么是ClassLoader?<br>Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。
+          <h2 id="一、什么是ClassLoader"><a href="#一、什么是ClassLoader" class="headerlink" title="一、什么是ClassLoader?"></a>一、什么是ClassLoader?</h2><p>Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/05/14/Android插件化（一）之谈谈ClassLoader/#more" rel="contents">

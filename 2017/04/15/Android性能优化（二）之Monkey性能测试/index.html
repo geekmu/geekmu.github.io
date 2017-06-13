@@ -87,25 +87,22 @@
 
 
 
-<meta name="description" content="##一、Monkey简介
-Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
+<meta name="description" content="一、Monkey简介Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
 Monkey test是一项压力测试，可以在规定的次数范围内做任何随机的操作，随机操作包括点击、滑动、Application切换、横竖屏、应用关闭等等，用户能做的操作统统可以模拟；
-Monkey test跑出来crash的bu">
+Monkey test跑出来crash的bug等级">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android性能优化（二）之Monkey性能测试">
 <meta property="og:url" content="https://geekmu.github.io/2017/04/15/Android性能优化（二）之Monkey性能测试/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="##一、Monkey简介
-Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
+<meta property="og:description" content="一、Monkey简介Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
 Monkey test是一项压力测试，可以在规定的次数范围内做任何随机的操作，随机操作包括点击、滑动、Application切换、横竖屏、应用关闭等等，用户能做的操作统统可以模拟；
-Monkey test跑出来crash的bu">
-<meta property="og:updated_time" content="2017-06-12T15:05:38.395Z">
+Monkey test跑出来crash的bug等级">
+<meta property="og:updated_time" content="2017-06-13T14:58:25.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android性能优化（二）之Monkey性能测试">
-<meta name="twitter:description" content="##一、Monkey简介
-Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
+<meta name="twitter:description" content="一、Monkey简介Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；
 Monkey test是一项压力测试，可以在规定的次数范围内做任何随机的操作，随机操作包括点击、滑动、Application切换、横竖屏、应用关闭等等，用户能做的操作统统可以模拟；
-Monkey test跑出来crash的bu">
+Monkey test跑出来crash的bug等级">
 
 
 
@@ -370,20 +367,17 @@ Monkey test跑出来crash的bu">
       
 
       
-        <p>##一、Monkey简介</p>
-<p>Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；</p>
+        <h2 id="一、Monkey简介"><a href="#一、Monkey简介" class="headerlink" title="一、Monkey简介"></a>一、Monkey简介</h2><p>Android的SDK 里面，Monkey的tools是一个命令行工具，当连接Android设备时，只要在命令行里输入相应命令就能运行tools；</p>
 <p>Monkey test是一项压力测试，可以在规定的次数范围内做任何随机的操作，随机操作包括点击、滑动、Application切换、横竖屏、应用关闭等等，用户能做的操作统统可以模拟；</p>
 <p>Monkey test跑出来crash的bug等级永远为1，版本release前，Monkey跑出的结果中crash要为0。<br>业内标准：final release前，Monkey跑完的总次数应为25W次，其结果里不允许有nullPointException出现.<a id="more"></a></p>
-<p>##二、Monkey命令</p>
-<p>标准命令：</p>
+<h2 id="二、Monkey命令"><a href="#二、Monkey命令" class="headerlink" title="二、Monkey命令"></a>二、Monkey命令</h2><p>标准命令：</p>
 <ul>
 <li>abd devices 列出所有的已连接的设备（包括真机和虚拟机）</li>
 <li>adb shell 进入shell模式，查看data/data文件夹中的安装包情况</li>
 <li>[adb shell] monkey [options] <eventcount></eventcount></li>
 </ul>
 <p>栗子：<br>adb shell monkey -v 500 产生500次随机事件，作用与系统中所有的activity（其实也不是所有的activity，而是包含 Intent.CATEGORY_LAUNCHER 或Intent.CATEGORY_MONKEY 的activity）。</p>
-<p>##三、命令分类</p>
-<ul>
+<h2 id="三、命令分类"><a href="#三、命令分类" class="headerlink" title="三、命令分类"></a>三、命令分类</h2><ul>
 <li>常用选项：</li>
 </ul>
 <p>-help：打印帮助信息<br>-v：指定打印信息的详细级别，一个 -v增加一个级别 ， 默认级别为 0 ,最高为-v -v -v</p>
@@ -418,8 +412,7 @@ Monkey test跑出来crash的bu">
 --kill-process-after-error：发生错误后直接杀掉进程  
 --monitor-native-crashes：跟踪本地方法的崩溃问题  
 --wait-dbg：直到连接了调试器才执行monkey测试。  
-</code></pre><p>##四、栗子：</p>
-<pre><code>adb shell monkey  -p com.ssjjsy.sdk.hk.demo -s 100 --throttle 10 --ignore-crashes --ignore-timeouts --monitor-native-crashes --pct-appswitch 30 --pct-majornav 20 --pct-nav 20 --pct-touch 20 --pct-motion 10 -v -v -v 10000 &gt; E:\Git\monkey_log.txt
+</code></pre><h2 id="四、栗子："><a href="#四、栗子：" class="headerlink" title="四、栗子："></a>四、栗子：</h2><pre><code>adb shell monkey  -p com.ssjjsy.sdk.hk.demo -s 100 --throttle 10 --ignore-crashes --ignore-timeouts --monitor-native-crashes --pct-appswitch 30 --pct-majornav 20 --pct-nav 20 --pct-touch 20 --pct-motion 10 -v -v -v 10000 &gt; E:\Git\monkey_log.txt
 </code></pre>
       
     </div>
@@ -515,8 +508,17 @@ Monkey test跑出来crash的bu">
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -581,6 +583,22 @@ Monkey test跑出来crash的bu">
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Monkey简介"><span class="nav-number">1.</span> <span class="nav-text">一、Monkey简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Monkey命令"><span class="nav-number">2.</span> <span class="nav-text">二、Monkey命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、命令分类"><span class="nav-number">3.</span> <span class="nav-text">三、命令分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、栗子："><span class="nav-number">4.</span> <span class="nav-text">四、栗子：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

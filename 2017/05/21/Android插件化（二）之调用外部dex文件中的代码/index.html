@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="鸿少爷的城">
 <meta property="og:description" content="Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。
 先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因">
-<meta property="og:updated_time" content="2017-06-12T15:08:00.332Z">
+<meta property="og:updated_time" content="2017-06-13T14:59:23.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android插件化（二）之调用外部dex文件中的代码">
 <meta name="twitter:description" content="Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。
@@ -366,12 +366,10 @@
       
         <p>Java程序中，JVM虚拟机是通过类加载器ClassLoader加载.jar文件里面的类的。Android也类似，不过Android用的是Dalvik/ART虚拟机，不是JVM，也不能直接加载.jar文件，而是加载dex文件。</p>
 <p>先要通过Android SDK提供的DX工具把.jar文件优化成.dex文件，然后Android的虚拟机才能加载。注意，有的Android应用能直接加载.jar文件，那是因为这个.jar文件已经经过优化，只不过后缀名没改（其实已经是.dex文件）。<a id="more"></a></p>
-<p>##一、jar文件优化成.dex文件</p>
-<p>首先我们可以通过JDK的编译命令javac把Java代码编译成.class文件，再使用jar命令把.class文件封装成.jar文件，这与编译普通Java程序的时候完全一样。<br>之后再用Android SDK的DX工具把.jar文件优化成.dex文件（在“android-sdk\build-tools\具体版本\”路径下）  </p>
+<h2 id="一、jar文件优化成-dex文件"><a href="#一、jar文件优化成-dex文件" class="headerlink" title="一、jar文件优化成.dex文件"></a>一、jar文件优化成.dex文件</h2><p>首先我们可以通过JDK的编译命令javac把Java代码编译成.class文件，再使用jar命令把.class文件封装成.jar文件，这与编译普通Java程序的时候完全一样。<br>之后再用Android SDK的DX工具把.jar文件优化成.dex文件（在“android-sdk\build-tools\具体版本\”路径下）  </p>
 <pre><code>dx --dex --output=target.dex origin.jar // target.dex就是我们要的了  
 </code></pre><p>此外，我们可以现把代码编译成APK文件，再把APK里面的.dex文件解压出来，或者直接把APK文件当成.dex使用（只是APK里面的静态资源文件我们暂时还用不到）。至此我们发现，无论加载.jar，还是.apk，其实都和加载.dex是等价的，Android能加载.jar和.apk，是因为它们都包含有.dex，直接加载.apk文件时，ClassLoader也会自动把.apk里的.dex解压出来。</p>
-<p>##二、加载并调用.dex里面的方法</p>
-<p>与JVM不同，Android的虚拟机不能用ClassCload直接加载.dex，而是要用DexClassLoader或者PathClassLoader,他们都是ClassLoader的子类，这两者的区别是<br>1) DexClassLoader：可以加载jar/apk/dex，可以从SD卡中加载未安装的apk；<br>2) PathClassLoader：要传入系统中apk的存放Path，所以只能加载已经安装的apk文件；<br>使用前，先看看DexClassLoader的构造方法  </p>
+<h2 id="二、加载并调用-dex里面的方法"><a href="#二、加载并调用-dex里面的方法" class="headerlink" title="二、加载并调用.dex里面的方法"></a>二、加载并调用.dex里面的方法</h2><p>与JVM不同，Android的虚拟机不能用ClassCload直接加载.dex，而是要用DexClassLoader或者PathClassLoader,他们都是ClassLoader的子类，这两者的区别是<br>1) DexClassLoader：可以加载jar/apk/dex，可以从SD卡中加载未安装的apk；<br>2) PathClassLoader：要传入系统中apk的存放Path，所以只能加载已经安装的apk文件；<br>使用前，先看看DexClassLoader的构造方法  </p>
 <pre><code>public DexClassLoader(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent) {
 super((String) null, (File) null, (String) null, (ClassLoader) null);
 throw new RuntimeException(&quot;Stub!&quot;);
@@ -381,8 +379,7 @@ throw new RuntimeException(&quot;Stub!&quot;);
 File dexOutputDir = this.getDir(&quot;dex&quot;, 0);// 无法直接从外部路径加载.dex文件，需要指定APP内部路径作为缓存目录（.dex文件会被解压到此目录）
 DexClassLoader dexClassLoader = new DexClassLoader(optimizedDexOutputPath.getAbsolutePath(), dexOutputDir.getAbsolutePath(), null, getClassLoader());  
 </code></pre><p>到这里，我们已经成功把.dex文件给加载进来了，接下来就是如何调用.dex里面的代码，主要有两种方式。</p>
-<p>##三、如何调用.dex里面的代码</p>
-<p>使用反射的方式</p>
+<h2 id="三、如何调用-dex里面的代码"><a href="#三、如何调用-dex里面的代码" class="headerlink" title="三、如何调用.dex里面的代码"></a>三、如何调用.dex里面的代码</h2><p>使用反射的方式</p>
 <p>使用DexClassLoader加载进来的类，我们本地并没有这些类的源码，所以无法直接调用，不过可以通过反射的方法调用，简单粗暴。  </p>
 <pre><code>DexClassLoader dexClassLoader = new DexClassLoader(optimizedDexOutputPath.getAbsolutePath(), dexOutputDir.getAbsolutePath(), null, getClassLoader());
 Class libProviderClazz = null;
@@ -508,8 +505,17 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -574,6 +580,22 @@ Toast.makeText(this, string, Toast.LENGTH_LONG).show();
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、jar文件优化成-dex文件"><span class="nav-number">1.</span> <span class="nav-text">一、jar文件优化成.dex文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、加载并调用-dex里面的方法"><span class="nav-number">2.</span> <span class="nav-text">二、加载并调用.dex里面的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、如何调用-dex里面的代码"><span class="nav-number">3.</span> <span class="nav-text">三、如何调用.dex里面的代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

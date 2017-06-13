@@ -96,7 +96,7 @@
 <meta property="og:description" content="在上一章中，我们谈到了Android Service防杀的常用套路，随着越来越多的用户手机安装某卫士，某管家，常用的进程防杀套路并不能够很好的保证我们的APP进程常驻，因此本篇我给大家带来抗某卫士，某管家的双进程守护解决方案。  
 双进程守护，其实原理非常简单，网上也有很多博文讲述，今天我给大家用一个完整的案例来讲述。假设我们的APP中开启了两个Service，分别是A和B，那么：如果A守护B，则">
 <meta property="og:image" content="https://geekmu.github.io/project.png">
-<meta property="og:updated_time" content="2017-06-12T15:09:24.657Z">
+<meta property="og:updated_time" content="2017-06-13T15:00:10.341Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Service保活（二）之双进程守护">
 <meta name="twitter:description" content="在上一章中，我们谈到了Android Service防杀的常用套路，随着越来越多的用户手机安装某卫士，某管家，常用的进程防杀套路并不能够很好的保证我们的APP进程常驻，因此本篇我给大家带来抗某卫士，某管家的双进程守护解决方案。  
@@ -370,8 +370,7 @@
 <p>双进程守护，其实原理非常简单，网上也有很多博文讲述，今天我给大家用一个完整的案例来讲述。<br>假设我们的APP中开启了两个Service，分别是A和B，那么：<br>如果A守护B，则B挂掉的同时，A就应该把B启动起来，反之亦然，也就是说A和B应该是互相守护，无论谁被杀掉，对方就把它拉起来。</p>
 <p>既然提到了两个Service，那么这两个Service就不能让它们同处在一个进程中，否则就会被一次性双杀。这里我们很容易想到IPC技术，在Android中通常我们可以使用AIDL来实现IPC操作。废话不多说，直接上代码。<a id="more"></a><br>先来看下项目整体结构：<br><img src="/project.png" alt="项目结构">  </p>
 <p>这里，我们定义两个Service，分别是LocalCastielService和RemoteCastielService，其中的RemoteCastielService我们通过属性配置android:process=”:com.castiel.remote” ，让它成为远端进程。 </p>
-<p>####LocalCastielService.Java  </p>
-<pre><code>public class LocalCastielService extends Service {
+<h4 id="LocalCastielService-Java"><a href="#LocalCastielService-Java" class="headerlink" title="LocalCastielService.Java"></a>LocalCastielService.Java</h4><pre><code>public class LocalCastielService extends Service {
 
 MyBinder myBinder;
 private PendingIntent pintent;
@@ -432,8 +431,7 @@ public IBinder onBind(Intent arg0) {
 }
 
 }  
-</code></pre><p>####RemoteCastielService.java  </p>
-<pre><code>public class RemoteCastielService extends Service {
+</code></pre><h4 id="RemoteCastielService-java"><a href="#RemoteCastielService-java" class="headerlink" title="RemoteCastielService.java"></a>RemoteCastielService.java</h4><pre><code>public class RemoteCastielService extends Service {
 MyBinder myBinder;
 private PendingIntent pintent;
 MyServiceConnection myServiceConnection;
@@ -495,13 +493,11 @@ public IBinder onBind(Intent arg0) {
 }
 
 }  
-</code></pre><p>####aidl文件  </p>
-<pre><code>package com.castiel.aidl;
+</code></pre><h4 id="aidl文件"><a href="#aidl文件" class="headerlink" title="aidl文件"></a>aidl文件</h4><pre><code>package com.castiel.aidl;
 interface CastielProgressConnection{
 String getProName();
 }  
-</code></pre><p>####启动服务</p>
-<pre><code>public class MainActivity extends Activity {
+</code></pre><h4 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h4><pre><code>public class MainActivity extends Activity {
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -607,8 +603,17 @@ protected void onCreate(Bundle savedInstanceState) {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -673,6 +678,22 @@ protected void onCreate(Bundle savedInstanceState) {
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#LocalCastielService-Java"><span class="nav-number">1.</span> <span class="nav-text">LocalCastielService.Java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RemoteCastielService-java"><span class="nav-number">2.</span> <span class="nav-text">RemoteCastielService.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#aidl文件"><span class="nav-number">3.</span> <span class="nav-text">aidl文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动服务"><span class="nav-number">4.</span> <span class="nav-text">启动服务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
