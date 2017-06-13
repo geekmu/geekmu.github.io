@@ -93,13 +93,13 @@
 <meta property="og:url" content="https://geekmu.github.io/2017/05/21/Android插件化（一）之谈谈ClassLoader/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
 <meta property="og:description" content="一、什么是ClassLoader?Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。">
-<meta property="og:image" content="https://geekmu.github.io/log.png">
-<meta property="og:image" content="https://geekmu.github.io/loader.png">
-<meta property="og:updated_time" content="2017-06-13T15:09:30.457Z">
+<meta property="og:image" content="http://geekmu.me/images/log.png">
+<meta property="og:image" content="http://geekmu.me/images/loader.png">
+<meta property="og:updated_time" content="2017-06-13T15:30:00.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android插件化（一）之谈谈ClassLoader">
 <meta name="twitter:description" content="一、什么是ClassLoader?Java程序是由若干.class文件组成，程序运行在虚拟机上时，会调用该程序的入口函数来调用系统的相关功能，而这些功能都被封装在不同的.class文件中。虚拟机根据程序的需要，通过Java的类加载机制来动态加载某个class文件到内存当中，只有class文件被载入到了内存之后，才能被其它class所引用，而完成这一个加载工作的角色就是ClassLoader。">
-<meta name="twitter:image" content="https://geekmu.github.io/log.png">
+<meta name="twitter:image" content="http://geekmu.me/images/log.png">
 
 
 
@@ -378,9 +378,9 @@ protected void onCreate(Bundle savedInstanceState) {
         }  
     }  
 }  
-</code></pre><p><img src="/log.png" alt="log">   </p>
+</code></pre><p><img src="http://geekmu.me/images/log.png" alt="log">   </p>
 <p>可以看见有2个Classloader实例，一个是BootClassLoader，另一个是PathClassLoader,由此也可以看出，一个运行的Android应用至少有2个ClassLoader。<br>查看<a href="https://developer.android.com/reference/java/lang/ClassLoader.html" target="_blank" rel="external">官方文档</a>我们可以知道Android中类加载器有BootClassLoader,URLClassLoader,<br>PathClassLoader,DexClassLoader,BaseDexClassLoader 等都最终继承自java.lang.ClassLoader。  </p>
-<h2 id="三、使用ClassLoader加载类"><a href="#三、使用ClassLoader加载类" class="headerlink" title="三、使用ClassLoader加载类"></a>三、使用ClassLoader加载类</h2><p>在前面我们看到，Android程序启动过程中，会有一个dalvik.system.PathClassLoader,查看官方文档<a href="https://developer.android.com/reference/dalvik/system/PathClassLoader.html" target="_blank" rel="external">PathClassLoader</a>,可以得知，PathClassLoader是ClassLoader的一个简单实现，主要用于加载系统类和加载应用中的类。<br><img src="/loader.png" alt="pathClassLoader">   </p>
+<h2 id="三、使用ClassLoader加载类"><a href="#三、使用ClassLoader加载类" class="headerlink" title="三、使用ClassLoader加载类"></a>三、使用ClassLoader加载类</h2><p>在前面我们看到，Android程序启动过程中，会有一个dalvik.system.PathClassLoader,查看官方文档<a href="https://developer.android.com/reference/dalvik/system/PathClassLoader.html" target="_blank" rel="external">PathClassLoader</a>,可以得知，PathClassLoader是ClassLoader的一个简单实现，主要用于加载系统类和加载应用中的类。<br><img src="http://geekmu.me/images/loader.png" alt="pathClassLoader">   </p>
 <p>查看父类BaseDexClassLoader可以看到ClassLoader还有一个实现：<a href="https://developer.android.com/reference/dalvik/system/DexClassLoader.html" target="_blank" rel="external">DexClassLoader</a>,通过官方文档可以得知，DexClassLoader加载.jar或者apk里面的class.dex文件，可以用于加载未安装的代码。而我们研究动态加载的目的主要是用于插件化或者热更新功能，加载的代码必然也是未安装的，所以我们要用的就是DexClassLoader。</p>
 <ol>
 <li>实例化DexClassLoader<br>首先我们看下DexClassLoader的构造函数<br> public class DexClassLoader extends BaseDexClassLoader {<br> public DexClassLoader(String dexPath, String optimizedDirectory, String libraryPath, ClassLoader parent) {<pre><code>super(dexPath, new File(optimizedDirectory), libraryPath, parent);
