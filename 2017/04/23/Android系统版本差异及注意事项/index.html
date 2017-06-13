@@ -87,16 +87,46 @@
 
 
 
-<meta name="description" content="按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常">
+<meta name="description" content="一、Android 7.0 Nougat
+分屏，实现多任务管理。用户可以一次在屏幕上打开两个应用。
+
+在手机上，两个应用可以在“分屏”模式中左右并排或上下并排显示。 在电视设备上，应用可以使用“画中画”模式，在用户与另一个应用交互的同时继续播放视频。
+
+通知栏快捷回复。实时通信应用，Android 系统支持内联回复，以便用户可以直接在通知界面中快速回复短信
+
+引入全新的JIT编译器，使得App安装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谈谈Android MVP模式">
-<meta property="og:url" content="https://geekmu.github.io/2017/04/01/谈谈Android MVP模式/index.html">
+<meta property="og:title" content="Android系统版本差异及注意事项">
+<meta property="og:url" content="https://geekmu.github.io/2017/04/23/Android系统版本差异及注意事项/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常">
-<meta property="og:updated_time" content="2017-06-13T14:56:14.439Z">
+<meta property="og:description" content="一、Android 7.0 Nougat
+分屏，实现多任务管理。用户可以一次在屏幕上打开两个应用。
+
+在手机上，两个应用可以在“分屏”模式中左右并排或上下并排显示。 在电视设备上，应用可以使用“画中画”模式，在用户与另一个应用交互的同时继续播放视频。
+
+通知栏快捷回复。实时通信应用，Android 系统支持内联回复，以便用户可以直接在通知界面中快速回复短信
+
+引入全新的JIT编译器，使得App安装">
+<meta property="og:image" content="https://geekmu.github.io/images/mw-portrait.png">
+<meta property="og:image" content="https://geekmu.github.io/images/notifications-replay.png">
+<meta property="og:image" content="https://geekmu.github.io/images/material-design.png">
+<meta property="og:image" content="https://geekmu.github.io/images/notification-headsup.png">
+<meta property="og:image" content="https://geekmu.github.io/images/kk-contactless-card.png">
+<meta property="og:image" content="https://geekmu.github.io/images/kk-print-land-n5.jpg">
+<meta property="og:image" content="https://geekmu.github.io/images/kk-sensors-runtastic-n5.jpg">
+<meta property="og:image" content="https://geekmu.github.io/images/kk-proc-device-overview-n5.jpg">
+<meta property="og:updated_time" content="2017-06-13T15:08:31.862Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="谈谈Android MVP模式">
-<meta name="twitter:description" content="按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常">
+<meta name="twitter:title" content="Android系统版本差异及注意事项">
+<meta name="twitter:description" content="一、Android 7.0 Nougat
+分屏，实现多任务管理。用户可以一次在屏幕上打开两个应用。
+
+在手机上，两个应用可以在“分屏”模式中左右并排或上下并排显示。 在电视设备上，应用可以使用“画中画”模式，在用户与另一个应用交互的同时继续播放视频。
+
+通知栏快捷回复。实时通信应用，Android 系统支持内联回复，以便用户可以直接在通知界面中快速回复短信
+
+引入全新的JIT编译器，使得App安装">
+<meta name="twitter:image" content="https://geekmu.github.io/images/mw-portrait.png">
 
 
 
@@ -124,13 +154,13 @@
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/2017/04/01/谈谈Android MVP模式/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/04/23/Android系统版本差异及注意事项/"/>
 
 
 
 
 
-  <title> 谈谈Android MVP模式 | 鸿少爷的城 </title>
+  <title> Android系统版本差异及注意事项 | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -289,7 +319,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/04/01/谈谈Android MVP模式/">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/04/23/Android系统版本差异及注意事项/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chicxiaomu">
@@ -310,7 +340,7 @@
             
             
               
-                谈谈Android MVP模式
+                Android系统版本差异及注意事项
               
             
           </h1>
@@ -325,8 +355,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-01T11:10:48+08:00">
-                2017-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-23T21:39:56+08:00">
+                2017-04-23
               </time>
             
 
@@ -361,25 +391,100 @@
       
 
       
-        <p>按照MVC的分层，Activity和Fragment（后面只说Activity）应该属于View层，用于展示UI界面，以及接收用户的输入，此外还要承担一些生命周期的工作。Activity是在Android开发中充当非常重要的角色，特别是TA的生命周期的功能，所以开发的时候我们经常把一些业务逻辑直接写在Activity里面，这非常直观方便，代价就是Activity会越来越臃肿，超过1000行代码是常有的事，而且如果是一些可以通用的业务逻辑（比如用户登录），写在具体的Activity里就意味着这个逻辑不能复用了。如果有进行代码重构经验的人，看到1000+行的类肯定会有所顾虑。因此，Activity不仅承担了View的角色，还承担了一部分的Controller角色，这样一来V和C就耦合在一起了，虽然这样写方便，但是如果业务调整的话，要维护起来就难了，而且在一个臃肿的Activity类查找业务逻辑的代码也会非常蛋疼，所以看起来有必要在Activity中，把View和Controller抽离开来，而这就是MVP模式的工作了。<a id="more"></a></p>
-<h3 id="MVP模式的核心思想："><a href="#MVP模式的核心思想：" class="headerlink" title="MVP模式的核心思想："></a>MVP模式的核心思想：</h3><ul>
-<li>MVP把Activity中的UI逻辑抽象成View接口，把业务逻辑抽象成Presenter接口，Model类还是原来的Model。</li>
-</ul>
-<p>这就是MVP模式，现在这样的话，Activity的工作的简单了，只用来响应生命周期，其他工作都丢到Presenter中去完成。从上图可以看出，Presenter是Model和View之间的桥梁，为了让结构变得更加简单，View并不能直接对Model进行操作，这也是MVP与MVC最大的不同之处。</p>
-<h3 id="MVP模式的作用"><a href="#MVP模式的作用" class="headerlink" title="MVP模式的作用"></a>MVP模式的作用</h3><ul>
-<li>分离了视图逻辑和业务逻辑，降低了耦合</li>
-<li>Activity只处理生命周期的任务，代码变得更加简洁</li>
-<li>视图逻辑和业务逻辑分别抽象到了View和Presenter的接口中去，提高代码的可阅读性</li>
-<li>Presenter被抽象成接口，可以有多种具体的实现，所以方便进行单元测试</li>
-<li>把业务逻辑抽到Presenter中去，避免后台线程引用着Activity导致Activity的资源无法被系统回收从而引起内存泄露和OOM</li>
-</ul>
-<p>其中最重要的有三点：</p>
+        <h2 id="一、Android-7-0-Nougat"><a href="#一、Android-7-0-Nougat" class="headerlink" title="一、Android 7.0 Nougat"></a>一、Android 7.0 Nougat</h2><ol>
+<li>分屏，实现多任务管理。用户可以一次在屏幕上打开两个应用。<br><img src="images/mw-portrait.png" alt=""></li>
+</ol>
+<p>在手机上，两个应用可以在“分屏”模式中左右并排或上下并排显示。 在电视设备上，应用可以使用“画中画”模式，在用户与另一个应用交互的同时继续播放视频。</p>
 <ol>
-<li><p>Activity 代码变得更加简洁<br>相信很多人阅读代码的时候，都是从Activity开始的，对着一个1000+行代码的Activity，看了都觉得难受。<br>使用MVP之后，Activity就能瘦身许多了，基本上只有FindView、SetListener以及Init的代码。其他的就是对Presenter的调用，还有对View接口的实现。这种情形下阅读代码就容易多了，而且你只要看Presenter的接口，就能明白这个模块都有哪些业务，很快就能定位到具体代码。Activity变得容易看懂，容易维护，以后要调整业务、删减功能也就变得简单许多。</p>
+<li><p>通知栏快捷回复。实时通信应用，Android 系统支持内联回复，以便用户可以直接在通知界面中快速回复短信<br><img src="images/notifications-replay.png" alt=""></p>
 </li>
-<li><p>方便进行单元测试<br>一般单元测试都是用来测试某些新加的业务逻辑有没有问题，如果采用传统的代码风格（习惯性上叫做MV模式，少了P），我们可能要先在Activity里写一段测试代码，测试完了再把测试代码删掉换成正式代码，这时如果发现业务有问题又得换回测试代码，咦，测试代码已经删掉了！好吧重新写吧……<br>MVP中，由于业务逻辑都在Presenter里，我们完全可以写一个PresenterTest的实现类继承Presenter的接口，现在只要在Activity里把Presenter的创建换成PresenterTest，就能进行单元测试了，测试完再换回来即可。万一发现还得进行测试，那就再换成PresenterTest吧。</p>
+<li><p>引入全新的JIT编译器，使得App安装速度快了75%，编译代码的规模减少了50%  </p>
 </li>
-<li><p>避免 Activity 的内存泄露<br>Android APP 发生OOM的最大原因就是出现内存泄露造成APP的内存不够用，而造成内存泄露的两大原因之一就是Activity泄露（Activity Leak）（另一个原因是Bitmap泄露（Bitmap Leak））。<br>Java一个强大的功能就是其虚拟机的内存回收机制，这个功能使得Java用户在设计代码的时候，不用像C++用户那样考虑对象的回收问题。然而，Java用户总是喜欢随便写一大堆对象，然后幻想着虚拟机能帮他们处理好内存的回收工作。可是虚拟机在回收内存的时候，只会回收那些没有被引用的对象，被引用着的对象因为还可能会被调用，所以不能回收。<br>Activity是有生命周期的，用户随时可能切换Activity，当APP的内存不够用的时候，系统会回收处于后台的Activity的资源以避免OOM。<br>采用传统的MV模式，一大堆异步任务和对UI的操作都放在Activity里面，比如你可能从网络下载一张图片，在下载成功的回调里把图片加载到 Activity 的 ImageView 里面，所以异步任务保留着对Activity的引用。这样一来，即使Activity已经被切换到后台（onDestroy已经执行），这些异步任务仍然保留着对Activity实例的引用，所以系统就无法回收这个Activity实例了，结果就是Activity Leak。Android的组件中，Activity对象往往是在堆（Java Heap）里占最多内存的，所以系统会优先回收Activity对象，如果有Activity Leak，APP很容易因为内存不够而OOM。<br>采用MVP模式，只要在当前的Activity的onDestroy里，分离异步任务对Activity的引用，就能避免 Activity Leak。</p>
+<li><p>移除三项广播：CONNECTIVITY_ACTION（监听网络变化）、ACTION_NEW_PICTURE 和ACTION_NEW_VIDEO（监听相机）</p>
+</li>
+<li><p>新增省流量模式  </p>
+</li>
+<li><p>支持VR<a id="more"></a></p>
+</li>
+</ol>
+<h3 id="支持分屏"><a href="#支持分屏" class="headerlink" title="支持分屏"></a>支持分屏</h3><p>如果您的应用面向 Android N，您可以对应用的 Activity 是否支持多窗口显示以及显示方式进行配置。<a href="https://developer.android.com/guide/topics/ui/multi-window.html#configuring" target="_blank" rel="external">官方文档</a>有详细的处理流程。</p>
+<ol>
+<li><p>多窗口模式不会更改 Activity 生命周期<br>在多窗口模式中，在指定时间只有最近与用户交互过的 Activity 为活动状态。 该 Activity 将被视为顶级 Activity。 所有其他 Activity 虽然可见，但均处于暂停状态。 但是，这些已暂停但可见的 Activity 在系统中享有比不可见 Activity 更高的优先级。 如果用户与其中一个暂停的 Activity 交互，该 Activity 将恢复，而之前的顶级 Activity 将暂停。</p>
+</li>
+<li><p>启用或禁用多窗口显示<br>在AndroidMainfest.xml文件的 <activity> 或 <application> 节点中设置该属性<br> android:resizeableActivity=[“true” | “false”]</application></activity></p>
+</li>
+</ol>
+<p>如果该属性设置为 true，Activity 将能以分屏和自由形状模式启动。 如果此属性设置为 false，Activity 将不支持多窗口模式。 如果该值为 false，且用户尝试在多窗口模式下启动 Activity，该 Activity 将全屏显示。</p>
+<p>如果您的应用的targetVersion为24，但未对该属性指定值，则该属性的值默认设为 true。</p>
+<ol>
+<li><p>支持画中画显示<br>在清单文件的 <activity> 节点中设置该属性，指明 Activity 是否支持画中画显示。 如果 android:resizeableActivity 为 false，将忽略该属性。</activity></p>
+<p> android:supportsPictureInPicture=[“true” | “false”]</p>
+</li>
+<li><p>分屏和自由形状模式中 Activity 的最小高度和最小宽度<br>android:minimalHeight、android:minimalWidth<br>例如，以下节点显示了如何指定 Activity 在自由形状模式中显示时 Activity 的默认大小、位置和最小尺寸：</p>
+ <activity android:name=".MyActivity"><br>    <layout android:defaultheight="500dp" android:defaultwidth="600dp" android:gravity="top|end" android:minimalheight="450dp" android:minimalwidth="300dp"><br> </layout></activity>
+
+</li>
+</ol>
+<h2 id="二、Android-6-0-Marshmallow"><a href="#二、Android-6-0-Marshmallow" class="headerlink" title="二、Android 6.0 Marshmallow"></a>二、Android 6.0 Marshmallow</h2><ol>
+<li><p>运行时权限<br>当应用的targetVersion设置为23时，在运行时需要检查和请求<a href="https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous" target="_blank" rel="external">危险权限</a>。checkSelfPermission() 方法用于验证用户是否授予权限；requestPermissions() 方法用于向用户请求权限。</p>
+</li>
+<li><p>低电耗模式和应用待机模式<br>低电耗模式：如果用户拔下设备的电源插头，并在屏幕关闭后的一段时间内使其保持不活动状态，设备会进入低电耗模式，在该模式下设备会尝试让系统保持休眠状态。在该模式下，设备会定期短时间恢复正常工作，以便进行应用同步，还可让系统执行任何挂起的操作。<br>应用待机模式：应用待机模式允许系统判定应用在用户未主动使用它时处于空闲状态。当用户有一段时间未触摸应用时，系统便会作出此判定。如果拔下了设备电源插头，系统会为其视为空闲的应用停用网络访问以及暂停同步和作业。</p>
+</li>
+<li><p>移除对Apache HTTP client的支持<br>建议使用HttpURLConnection。如果还是想用Apache HTTP client，那么需要在build.gradle中添加</p>
+<p> android {</p>
+<pre><code>useLibrary &apos;org.apache.http.legacy&apos;
+</code></pre><p> }</p>
+</li>
+<li><p>移除了 Notification.setLatestEventInfo() 方法。构建通知用 Notification.Builder 类  </p>
+</li>
+<li><p>文本选择<br>当用户在应用中选择文本时，可以在一个<a href="http://www.google.com/design/spec/patterns/selection.html#selection-text-selection" target="_blank" rel="external">浮动工具栏</a>中显示“剪切”、“复制”和“粘贴”等文本选择操作。</p>
+</li>
+</ol>
+<h2 id="三、Android-5-0-Lollipop"><a href="#三、Android-5-0-Lollipop" class="headerlink" title="三、Android 5.0 Lollipop"></a>三、Android 5.0 Lollipop</h2><ol>
+<li>Material design<br>Material design算是Android 系统风格的里程碑，其3D UI风格新颖，贴近人机交互；<br><img src="images/material-design.png" alt=""></li>
+<li>改善通知栏，提升可视化、亲近性、可编辑性。同时支持手机在锁屏状态也可接收到通知，用户可以在锁屏状态下，设置接收全部应用的通知或者接收部分应用的通知或者不接收所有应用的通知；<br><img src="images/notification-headsup.png" alt=""></li>
+<li><p>ART（Android Runtime）运行时取代 Dalvik 成为平台默认设置，实现ahead-of-time (AOT)静态编译与just-in-time (JIT)动态编译交互进行；</p>
+</li>
+<li><p>V7中引入CardView和RecycleView等新控件；</p>
+</li>
+<li><p>开放屏幕采集API<br>通过<a href="https://developer.android.com/reference/android/media/projection/MediaProjection.html" target="_blank" rel="external">MediaProjection</a>屏幕采集API，可以实现录屏功能。</p>
+</li>
+<li><p>新增 JobScheduler API<br>JobScheduler API允许推迟或指定条件下（如设备充电或连入 WLAN 时）创建执行在后台的任务。</p>
+</li>
+<li><p>Context.bindService() 方法现在需要显式 Intent，如果提供隐式 intent，将引发异常。为确保应用的安全性，请使用显式 intent 启动或绑定 Service，且不要为服务声明 intent 过滤器。</p>
+</li>
+<li><p>新安装和更新需要验证自定义权限<br>如果应用定义了一个已安装应用定义的自定义权限，且应用没有使用与该已安装应用相同的签名密钥，则系统不会重新安装应用。</p>
+</li>
+<li><p>支持64位系统；</p>
+</li>
+<li><p>处理 Intent<br>在触发任何 intent 之前检查是否至少有一个适合此 intent 的处理程序。要检查是否存在有效的处理程序，可以调用 Intent.resolveActivity()，避免导致 ActivityNotFoundException。</p>
+</li>
+<li><p>电池使用情况统计<br>新增的 dumpsys batterystats 命令可生成电池使用情况统计信息，通过它了解整个系统的耗电情况，以及了解应用对设备电池的影响。可以查看耗电事件历史记录、每个 UID 和系统组件的近似耗电情况以及其他信息。</p>
+</li>
+</ol>
+<p>新增了<a href="https://github.com/google/battery-historian" target="_blank" rel="external">“电池耗电历史”工具</a>，可将来自 dumpsys batterystats 的统计数据转换成可视化格式，以便进行与电池有关的调试。</p>
+<ol>
+<li>启用TLSv1.2 和 TLSv1.1 协议<br>某些服务器使用了TLSv1.2，使用WebView打开时，5.0以下的设备页面无法正常打开。</li>
+</ol>
+<h3 id="使用Material-design"><a href="#使用Material-design" class="headerlink" title="使用Material design"></a>使用Material design</h3><ul>
+<li>设置应用的 targetSdkVersion 和 targetSdkVersion 为21</li>
+<li>在values目录下的style资源文件中创建一个style，让其继承自 android:Theme.Material</li>
+<li>在AndroidManifest中指定应用的主题或者Activity的主题为我们设定的样式</li>
+<li>谷歌官方我们提供了三种配色风格的Material Design样式：<br>黑色主题 Theme.Material<br>明亮主题 Theme.Material.Light<br>明亮主题黑色ActionBar Theme.Material.Light.DarkActionBar  </li>
+</ul>
+<h2 id="四、Android-4-4-KitKat"><a href="#四、Android-4-4-KitKat" class="headerlink" title="四、Android 4.4 KitKat"></a>四、Android 4.4 KitKat</h2><ol>
+<li>通过主机卡模拟实现新的 NFC 功能<br><img src="images/kk-contactless-card.png" alt=""></li>
+<li>打印框架<br>Android 应用可以通过 WLAN 或云托管服务（例如 Google 云打印）打印任何类型的内容。在支持打印的应用中，用户可以发现可用的打印机，更改纸张尺寸，选择要打印的特定页面，打印几乎任何种类的文档、图像或文件。<br><img src="images/kk-print-land-n5.jpg" alt=""></li>
+<li>步测器和计步器<br>可以在用户行走、跑步或攀爬楼梯时跟踪步数。<br><img src="images/kk-sensors-runtastic-n5.jpg" alt=""></li>
+<li><p>全屏沉浸模式<br>系统 UI 保持隐藏状态，在沉浸模式中，从屏幕顶部或底部边缘滑动手指可以显示系统 UI。</p>
+</li>
+<li><p>Chromium WebView<br>支持使用 <a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging#debugging-webviews" target="_blank" rel="external">Chrome DevTools</a> 进行远程调试。例如，可以在开发机器上使用 Chrome DevTools 检测、调试和分析移动设备中存储的 WebView 内容。</p>
+</li>
+<li><p>屏幕录制<br>使用命令 adb shell screenrecord 或者通过 Android Studio 中的 DDMS</p>
+</li>
+<li><p>分析设备内存状态<br>Settings &gt; Developer options &gt; Process stats<br><img src="images/kk-proc-device-overview-n5.jpg" alt=""></p>
+<h2 id="五、Android-4-X-Jelly-Bean"><a href="#五、Android-4-X-Jelly-Bean" class="headerlink" title="五、Android 4.X Jelly Bean"></a>五、Android 4.X Jelly Bean</h2></li>
+<li><p>UiAutomation自动化UI测试</p>
 </li>
 </ol>
 
@@ -418,8 +523,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/21/Java服务端开发环境搭建/" rel="next" title="Java服务端开发环境搭建">
-                <i class="fa fa-chevron-left"></i> Java服务端开发环境搭建
+              <a href="/2017/04/15/Android琐碎知识/" rel="next" title="Android琐碎知识">
+                <i class="fa fa-chevron-left"></i> Android琐碎知识
               </a>
             
           </div>
@@ -428,8 +533,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/04/09/Android Studio调试技巧/" rel="prev" title="Android Studio调试技巧">
-                Android Studio调试技巧 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/29/Android Service保活（一）之常用套路/" rel="prev" title="Android Service保活（一）之常用套路">
+                Android Service保活（一）之常用套路 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -562,7 +667,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP模式的核心思想："><span class="nav-number">1.</span> <span class="nav-text">MVP模式的核心思想：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP模式的作用"><span class="nav-number">2.</span> <span class="nav-text">MVP模式的作用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Android-7-0-Nougat"><span class="nav-number">1.</span> <span class="nav-text">一、Android 7.0 Nougat</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#支持分屏"><span class="nav-number">1.1.</span> <span class="nav-text">支持分屏</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Android-6-0-Marshmallow"><span class="nav-number">2.</span> <span class="nav-text">二、Android 6.0 Marshmallow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Android-5-0-Lollipop"><span class="nav-number">3.</span> <span class="nav-text">三、Android 5.0 Lollipop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Material-design"><span class="nav-number">3.1.</span> <span class="nav-text">使用Material design</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Android-4-4-KitKat"><span class="nav-number">4.</span> <span class="nav-text">四、Android 4.4 KitKat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Android-4-X-Jelly-Bean"><span class="nav-number">5.</span> <span class="nav-text">五、Android 4.X Jelly Bean</span></a></li></ol></div>
             
 
           </div>
