@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
+<meta name="description" content="一、引言通过Android官方文档可以知道，View的绘制有三个主要的流程，也就是measure、layout和draw。那View绘制为什么要走这三个流程呢？源码中有答案。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android源码阅读系列（一）之SharedPreferences">
-<meta property="og:url" content="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/index.html">
+<meta property="og:title" content="Android源码阅读系列（五）之View绘制流程">
+<meta property="og:url" content="https://geekmu.github.io/2017/06/18/Android源码阅读系列（五）之View绘制流程/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
-<meta property="og:updated_time" content="2017-07-08T12:50:53.801Z">
+<meta property="og:description" content="一、引言通过Android官方文档可以知道，View的绘制有三个主要的流程，也就是measure、layout和draw。那View绘制为什么要走这三个流程呢？源码中有答案。">
+<meta property="og:updated_time" content="2017-07-08T13:04:09.698Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android源码阅读系列（一）之SharedPreferences">
-<meta name="twitter:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
+<meta name="twitter:title" content="Android源码阅读系列（五）之View绘制流程">
+<meta name="twitter:description" content="一、引言通过Android官方文档可以知道，View的绘制有三个主要的流程，也就是measure、layout和draw。那View绘制为什么要走这三个流程呢？源码中有答案。">
 
 
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/06/18/Android源码阅读系列（五）之View绘制流程/"/>
 
 
 
 
 
-  <title> Android源码阅读系列（一）之SharedPreferences | 鸿少爷的城 </title>
+  <title> Android源码阅读系列（五）之View绘制流程 | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -289,7 +289,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/18/Android源码阅读系列（五）之View绘制流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chicxiaomu">
@@ -310,7 +310,7 @@
             
             
               
-                Android源码阅读系列（一）之SharedPreferences
+                Android源码阅读系列（五）之View绘制流程
               
             
           </h1>
@@ -325,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T20:44:47+08:00">
-                2017-06-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-18T21:07:17+08:00">
+                2017-06-18
               </time>
             
 
@@ -361,57 +361,223 @@
       
 
       
-        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><p>SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。<a id="more"></a></p>
-<h2 id="二、数据丢了"><a href="#二、数据丢了" class="headerlink" title="二、数据丢了"></a>二、数据丢了</h2><p>之前项目中为了实现Service保活，使用了多进程的方式，Service开了一个新的进程，程序里面很多配置信息都是用的SharedPreferences实现的，并且读写操作都有。通过查看google官方文档可以知道，SharedPreferences提供了跨进程的模式MODE_MULTI_PROCESS</p>
-<blockquote>
-<p>This constant was deprecated in API level 23.<br>MODE_MULTI_PROCESS does not work reliably in some versions of Android, and furthermore does not provide any mechanism for reconciling concurrent modifications across processes. Applications should not attempt to use it. Instead, they should use an explicit cross-process data management approach such as ContentProvider.</p>
-</blockquote>
-<p>官方文档里面这种跨进程方式在某些Android版本上不可靠，并且未来也不会提供任何支持，要是用跨进程数据传输需要使用类似ContentProvider的东西。考虑到当时使用Android6.0的设备占比很低，而且由于项目里面很多地方都使用了SharedPreferences，换一种方案代价会比较大，最终还是抱着试试的态度直接通过设置MODE_MULTI_PROCESS这种模式在多进程里面使用SharedPreferences读写数据了。</p>
-<p>然而，结果很悲催，测试发现时不时就会出现数据丢失的情况。无果，只能看源码了</p>
-<h2 id="三、神奇的mode"><a href="#三、神奇的mode" class="headerlink" title="三、神奇的mode"></a>三、神奇的mode</h2><p>在上面的实例中，使用了MODE_MULTI_PROCESS这种模式来操作SharedPreferences，结果发现多进程中出现了数据丢失的情况，说明在多进程中，SharedPreferences的MODE_MULTI_PROCESS并不能实现进程安全。既然如此，看下MODE_MULTI_PROCESS到底做了什么。<br>Context是一个抽象类，其实现是ContextImpl，去到ContextImpl类里面的getSharedPreference方法</p>
-<pre><code>public SharedPreferences getSharedPreferences(File file, int mode) {
-    checkMode(mode);
-    SharedPreferencesImpl sp;
-    synchronized (ContextImpl.class) {
-        final ArrayMap&lt;File, SharedPreferencesImpl&gt; cache = getSharedPreferencesCacheLocked();
-        sp = cache.get(file);
-        if (sp == null) {
-            sp = new SharedPreferencesImpl(file, mode);
-            cache.put(file, sp);
-            return sp;
-        }
-    }
-    if ((mode &amp; Context.MODE_MULTI_PROCESS) != 0 ||
-        getApplicationInfo().targetSdkVersion &lt; android.os.Build.VERSION_CODES.HONEYCOMB) {
-        // If somebody else (some other process) changed the prefs
-        // file behind our back, we reload it.  This has been the
-        // historical (if undocumented) behavior.
-        sp.startReloadIfChangedUnexpectedly();
-    }
-    return sp;
+        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><p>通过Android官方文档可以知道，View的绘制有三个主要的流程，也就是measure、layout和draw。那View绘制为什么要走这三个流程呢？源码中有答案。<a id="more"></a></p>
+<h2 id="二、measure源码分析"><a href="#二、measure源码分析" class="headerlink" title="二、measure源码分析"></a>二、measure源码分析</h2><p>先看一下measure的源码</p>
+<pre><code>/**
+ * &lt;p&gt;
+ * This is called to find out how big a view should be. The parent
+ * supplies constraint information in the width and height parameters.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * The actual measurement work of a view is performed in
+ * {@link #onMeasure(int, int)}, called by this method. Therefore, only
+ * {@link #onMeasure(int, int)} can and must be overridden by subclasses.
+ * &lt;/p&gt;
+ *
+ *
+ * @param widthMeasureSpec Horizontal space requirements as imposed by the
+ *        parent
+ * @param heightMeasureSpec Vertical space requirements as imposed by the
+ *        parent
+ *
+ * @see #onMeasure(int, int)
+ */
+public final void measure(int widthMeasureSpec, int heightMeasureSpec) {
+    ......
+
+     onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    ......
 }
-</code></pre><p>再去到SharedPreferencesImpl里面</p>
-<pre><code>void startReloadIfChangedUnexpectedly() {
-    synchronized (this) {
-        // TODO: wait for any pending writes to disk?
-        if (!hasFileChangedUnexpectedly()) {
-            return;
-        }
-        startLoadFromDisk();
+</code></pre><p>从方法说明可以得知，这个方法是用于计算View的大小，View的宽高是由父视图决定的。实际的测量工作是在onMeasure方法进行，由于measure是final，所以在View的子类只能重写onMeasure方法。从源码可以看出，measure方法调用了View的onMeasure方法，看下View的onMeasure源码</p>
+<pre><code>/**
+ * &lt;p&gt;
+ * Measure the view and its content to determine the measured width and the
+ * measured height. This method is invoked by {@link #measure(int, int)} and
+ * should be overridden by subclasses to provide accurate and efficient
+ * measurement of their contents.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * &lt;strong&gt;CONTRACT:&lt;/strong&gt; When overriding this method, you
+ * &lt;em&gt;must&lt;/em&gt; call {@link #setMeasuredDimension(int, int)} to store the
+ * measured width and height of this view. Failure to do so will trigger an
+ * &lt;code&gt;IllegalStateException&lt;/code&gt;, thrown by
+ * {@link #measure(int, int)}. Calling the superclass&apos;
+ * {@link #onMeasure(int, int)} is a valid use.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * The base class implementation of measure defaults to the background size,
+ * unless a larger size is allowed by the MeasureSpec. Subclasses should
+ * override {@link #onMeasure(int, int)} to provide better measurements of
+ * their content.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * If this method is overridden, it is the subclass&apos;s responsibility to make
+ * sure the measured height and width are at least the view&apos;s minimum height
+ * and width ({@link #getSuggestedMinimumHeight()} and
+ * {@link #getSuggestedMinimumWidth()}).
+ * &lt;/p&gt;
+ *
+ * @param widthMeasureSpec horizontal space requirements as imposed by the parent.
+ *                         The requirements are encoded with
+ *                         {@link android.view.View.MeasureSpec}.
+ * @param heightMeasureSpec vertical space requirements as imposed by the parent.
+ *                         The requirements are encoded with
+ *                         {@link android.view.View.MeasureSpec}.
+ *
+ * @see #getMeasuredWidth()
+ * @see #getMeasuredHeight()
+ * @see #setMeasuredDimension(int, int)
+ * @see #getSuggestedMinimumHeight()
+ * @see #getSuggestedMinimumWidth()
+ * @see android.view.View.MeasureSpec#getMode(int)
+ * @see android.view.View.MeasureSpec#getSize(int)
+ */
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+}
+</code></pre><p>方法说明里面也强调了这个方法是需要在子类重写的，看方法源码里面就调用了一个函数，设置View宽高的测量值，再看一下getDefaultSize方法</p>
+<pre><code>/**
+ * Utility to return a default size. Uses the supplied size if the
+ * MeasureSpec imposed no constraints. Will get larger if allowed
+ * by the MeasureSpec.
+ *
+ * @param size Default size for this view
+ * @param measureSpec Constraints imposed by the parent
+ * @return The size this view should be.
+ */
+public static int getDefaultSize(int size, int measureSpec) {
+    int result = size;
+    int specMode = MeasureSpec.getMode(measureSpec);
+    int specSize = MeasureSpec.getSize(measureSpec);
+    switch (specMode) {
+    case MeasureSpec.UNSPECIFIED:
+        result = size;
+        break;
+    case MeasureSpec.AT_MOST:
+    case MeasureSpec.EXACTLY:
+        result = specSize;
+        break;
     }
+    return result;
+}
+</code></pre><p>可以看出返回值分两种情况，先看第一种MeasureSpec.UNSPECIFIED，在onMeasure我们可以得知，size这个值是通过getSuggestedMinimumWidth/getSuggestedMinimumHeight得到的，看下它们的源码</p>
+<pre><code>protected int getSuggestedMinimumWidth() {
+    return (mBackground == null) ? mMinWidth : max(mMinWidth, mBackground.getMinimumWidth());
 }
 
-private void startLoadFromDisk() {
-    synchronized (this) {
-        mLoaded = false;
-    }
-    new Thread(&quot;SharedPreferencesImpl-load&quot;) {
-        public void run() {
-            loadFromDisk();
-        }
-    }.start();
+protected int getSuggestedMinimumHeight() {
+    return (mBackground == null) ? mMinHeight : max(mMinHeight, mBackground.getMinimumHeight());
 }
-</code></pre><p>通过源码可以看到这个mode用于API11以前的系统上，次获取这个sp的时候，如果有这个mode，会重新读一遍文件，而且后续读取过程并没有再用到MODE_MULTI_PROCESS这个mode。所以，如果这个mode并没有用来处理进程安全，如果多进程中使用，必然是会出现上面实例中的时不时丢数据的情况。</p>
+</code></pre><p>以getSuggestedMinimumWidth为例，如果View没有设置背景，那么View的宽度即为mMinWidth，也即android：minWidth这个参数的值；如果View设置了背景，需要看下mBackground.getMinimumWidth的源码</p>
+<pre><code>public int getMinimumWidth() {
+    final int intrinsicWidth = getIntrinsicWidth();
+    return intrinsicWidth &gt; 0 ? intrinsicWidth : 0;
+}
+
+/**
+ * Returns the drawable&apos;s intrinsic width.
+ * &lt;p&gt;
+ * Intrinsic width is the width at which the drawable would like to be laid
+ * out, including any inherent padding. If the drawable has no intrinsic
+ * width, such as a solid color, this method returns -1.
+ *
+ * @return the intrinsic width, or -1 if no intrinsic width
+ */
+public int getIntrinsicWidth() {
+    return -1;
+}
+</code></pre><p>可以看出getMinimumWidth返回了Drawable的原始宽度，如果没有原始宽度，返回了0。通过上面的分析可以知道，MeasureSpec.UNSPECIFIED这种情况是由系统测量的。所以我们应该关注MeasureSpec.AT_MOST和MeasureSpec.EXACTLY这两种情况，也就是说如果是自定义View，那View的宽高是由specSize决定的。</p>
+<p>上面提到三种MeasureSpec，可以分别看下他们的实际含义</p>
+<pre><code>MeasureSpec.EXACTLY //确定模式，父View希望子View的大小是确定的，由specSize决定；
+MeasureSpec.AT_MOST //最多模式，父View希望子View的大小最多是specSize指定的值；
+MeasureSpec.UNSPECIFIED //未指定模式，父View完全依据子View的设计值来决定； 
+</code></pre><h2 id="三、layout源码分析"><a href="#三、layout源码分析" class="headerlink" title="三、layout源码分析"></a>三、layout源码分析</h2><p>看了measure过程，知道了View绘制流程里面第一个流程的原理，接下来我们看下第二个流程，layout</p>
+<pre><code>public void layout(int l, int t, int r, int b) {
+    if ((mPrivateFlags3 &amp; PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT) != 0) {
+        onMeasure(mOldWidthMeasureSpec, mOldHeightMeasureSpec);
+        mPrivateFlags3 &amp;= ~PFLAG3_MEASURE_NEEDED_BEFORE_LAYOUT;
+    }
+    int oldL = mLeft;
+    int oldT = mTop;
+    int oldB = mBottom;
+    int oldR = mRight;
+    boolean changed = isLayoutModeOptical(mParent) ?
+            setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);
+    if (changed || (mPrivateFlags &amp; PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) {
+        onLayout(changed, l, t, r, b);
+        if (shouldDrawRoundScrollbar()) {
+            if(mRoundScrollbarRenderer == null) {
+                mRoundScrollbarRenderer = new RoundScrollbarRenderer(this);
+            }
+        } else {
+            mRoundScrollbarRenderer = null;
+        }
+        mPrivateFlags &amp;= ~PFLAG_LAYOUT_REQUIRED;
+        ListenerInfo li = mListenerInfo;
+        if (li != null &amp;&amp; li.mOnLayoutChangeListeners != null) {
+            ArrayList&lt;OnLayoutChangeListener&gt; listenersCopy =
+                    (ArrayList&lt;OnLayoutChangeListener&gt;)li.mOnLayoutChangeListeners.clone();
+            int numListeners = listenersCopy.size();
+            for (int i = 0; i &lt; numListeners; ++i) {
+                listenersCopy.get(i).onLayoutChange(this, l, t, r, b, oldL, oldT, oldR, oldB);
+            }
+        }
+    }
+    mPrivateFlags &amp;= ~PFLAG_FORCE_LAYOUT;
+    mPrivateFlags3 |= PFLAG3_IS_LAID_OUT;
+}
+</code></pre><p>从源码可以得知，layout首先确定了View四个顶点的位置，顶点位置确定，其在父视图中的位置也就确定了。接着类似measure过程，又调用了onLayout方法</p>
+<pre><code>protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+}
+</code></pre><p>可以看到，View里面这是一个空方法，我们需要到具体实现里面看了，这里可以看下LinearLayout</p>
+<pre><code>@Override
+protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    if (mOrientation == VERTICAL) {
+        layoutVertical(l, t, r, b);
+    } else {
+        layoutHorizontal(l, t, r, b);
+    }
+}
+</code></pre><p>可以看到LinearLayout里面的实现和onMeasure实现过程类似。</p>
+<h2 id="三、draw源码分析"><a href="#三、draw源码分析" class="headerlink" title="三、draw源码分析"></a>三、draw源码分析</h2><p>通过measure和layout，View的大小和位置已经确定了，接下来就要绘制View到屏幕了。</p>
+<pre><code>public void draw(Canvas canvas) {
+    ......
+    /*
+     * Draw traversal performs several drawing steps which must be executed
+     * in the appropriate order:
+     *
+     *      1. Draw the background
+     *      2. If necessary, save the canvas&apos; layers to prepare for fading
+     *      3. Draw view&apos;s content
+     *      4. Draw children
+     *      5. If necessary, draw the fading edges and restore layers
+     *      6. Draw decorations (scrollbars for instance)
+     */
+
+    // 第一步，对View的背景进行绘制
+    ......
+    if (!dirtyOpaque) {
+        drawBackground(canvas);
+    }
+    ......
+
+    // 第二步，绘制内容
+    if (!dirtyOpaque) onDraw(canvas);
+
+    // 第三步，绘制子View
+    dispatchDraw(canvas);
+
+    // 第四步，绘制滚动条
+    onDrawScrollBars(canvas);
+    ......
+}
+</code></pre><p>可以看到，通过上面4个步骤，将View绘制到了屏幕上。</p>
 
       
     </div>
@@ -442,8 +608,8 @@ private void startLoadFromDisk() {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/27/Android插件化（二）之调用外部dex文件中的代码/" rel="next" title="Android插件化（二）之调用外部dex文件中的代码">
-                <i class="fa fa-chevron-left"></i> Android插件化（二）之调用外部dex文件中的代码
+              <a href="/2017/06/17/Android多线程实现方式对比/" rel="next" title="Android多线程实现方式对比">
+                <i class="fa fa-chevron-left"></i> Android多线程实现方式对比
               </a>
             
           </div>
@@ -452,8 +618,8 @@ private void startLoadFromDisk() {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/07/Android源码阅读系列（二）之Toast显示原理/" rel="prev" title="Android源码阅读系列（二）之Toast显示原理">
-                Android源码阅读系列（二）之Toast显示原理 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/22/Android性能优化（一）之常用工具/" rel="prev" title="Android性能优化（一）之常用工具">
+                Android性能优化（一）之常用工具 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -586,7 +752,7 @@ private void startLoadFromDisk() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据丢了"><span class="nav-number">2.</span> <span class="nav-text">二、数据丢了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、神奇的mode"><span class="nav-number">3.</span> <span class="nav-text">三、神奇的mode</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、measure源码分析"><span class="nav-number">2.</span> <span class="nav-text">二、measure源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、layout源码分析"><span class="nav-number">3.</span> <span class="nav-text">三、layout源码分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、draw源码分析"><span class="nav-number">4.</span> <span class="nav-text">三、draw源码分析</span></a></li></ol></div>
             
 
           </div>
