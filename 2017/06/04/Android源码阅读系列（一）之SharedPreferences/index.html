@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="随笔," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -87,22 +87,16 @@
 
 
 
-<meta name="description" content="一、前言Android中线程分为主线程（UI线程）和子线程，主线程主要处理和界面相关的事情，而子线程则用于执行耗时操作。如果在主线程中执行耗时操作，比如网络请求操作，则会报NetworkOnMainThreadException；如果是其他耗时操作，界面卡顿时间超过5秒则会导致程序无法及时响应（ANR）。因此耗时操作必须在子线程去执行。Android提供了五种常用的线程实现方式，分别是：
-
-Thr">
+<meta name="description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android多线程实现方式">
-<meta property="og:url" content="https://geekmu.github.io/2017/06/15/Android多线程实现方式/index.html">
+<meta property="og:title" content="Android源码阅读系列（一）之SharedPreferences">
+<meta property="og:url" content="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="一、前言Android中线程分为主线程（UI线程）和子线程，主线程主要处理和界面相关的事情，而子线程则用于执行耗时操作。如果在主线程中执行耗时操作，比如网络请求操作，则会报NetworkOnMainThreadException；如果是其他耗时操作，界面卡顿时间超过5秒则会导致程序无法及时响应（ANR）。因此耗时操作必须在子线程去执行。Android提供了五种常用的线程实现方式，分别是：
-
-Thr">
-<meta property="og:updated_time" content="2017-06-15T14:36:20.748Z">
+<meta property="og:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
+<meta property="og:updated_time" content="2017-07-08T12:50:53.801Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android多线程实现方式">
-<meta name="twitter:description" content="一、前言Android中线程分为主线程（UI线程）和子线程，主线程主要处理和界面相关的事情，而子线程则用于执行耗时操作。如果在主线程中执行耗时操作，比如网络请求操作，则会报NetworkOnMainThreadException；如果是其他耗时操作，界面卡顿时间超过5秒则会导致程序无法及时响应（ANR）。因此耗时操作必须在子线程去执行。Android提供了五种常用的线程实现方式，分别是：
-
-Thr">
+<meta name="twitter:title" content="Android源码阅读系列（一）之SharedPreferences">
+<meta name="twitter:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
 
 
 
@@ -130,13 +124,13 @@ Thr">
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/2017/06/15/Android多线程实现方式/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/"/>
 
 
 
 
 
-  <title> Android多线程实现方式 | 鸿少爷的城 </title>
+  <title> Android源码阅读系列（一）之SharedPreferences | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -295,7 +289,7 @@ Thr">
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/15/Android多线程实现方式/">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/04/Android源码阅读系列（一）之SharedPreferences/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chicxiaomu">
@@ -316,7 +310,7 @@ Thr">
             
             
               
-                Android多线程实现方式
+                Android源码阅读系列（一）之SharedPreferences
               
             
           </h1>
@@ -331,8 +325,8 @@ Thr">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T22:33:26+08:00">
-                2017-06-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T20:44:47+08:00">
+                2017-06-04
               </time>
             
 
@@ -367,142 +361,57 @@ Thr">
       
 
       
-        <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>Android中线程分为主线程（UI线程）和子线程，主线程主要处理和界面相关的事情，而子线程则用于执行耗时操作。如果在主线程中执行耗时操作，比如网络请求操作，则会报NetworkOnMainThreadException；如果是其他耗时操作，界面卡顿时间超过5秒则会导致程序无法及时响应（ANR）。因此耗时操作必须在子线程去执行。Android提供了五种常用的线程实现方式，分别是：</p>
-<ol>
-<li>Thread</li>
-<li>AsyncTask</li>
-<li>HandlerThread</li>
-<li>IntentService</li>
-<li>ThreadPoolExecutor <a id="more"></a></li>
-</ol>
-<h2 id="二、线程使用"><a href="#二、线程使用" class="headerlink" title="二、线程使用"></a>二、线程使用</h2><h3 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h3><pre><code>new Thread(){
-@Override
-public void run() {
-    super.run();
-    // NetWork or DataBase Operation
+        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><p>SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。<a id="more"></a></p>
+<h2 id="二、数据丢了"><a href="#二、数据丢了" class="headerlink" title="二、数据丢了"></a>二、数据丢了</h2><p>之前项目中为了实现Service保活，使用了多进程的方式，Service开了一个新的进程，程序里面很多配置信息都是用的SharedPreferences实现的，并且读写操作都有。通过查看google官方文档可以知道，SharedPreferences提供了跨进程的模式MODE_MULTI_PROCESS</p>
+<blockquote>
+<p>This constant was deprecated in API level 23.<br>MODE_MULTI_PROCESS does not work reliably in some versions of Android, and furthermore does not provide any mechanism for reconciling concurrent modifications across processes. Applications should not attempt to use it. Instead, they should use an explicit cross-process data management approach such as ContentProvider.</p>
+</blockquote>
+<p>官方文档里面这种跨进程方式在某些Android版本上不可靠，并且未来也不会提供任何支持，要是用跨进程数据传输需要使用类似ContentProvider的东西。考虑到当时使用Android6.0的设备占比很低，而且由于项目里面很多地方都使用了SharedPreferences，换一种方案代价会比较大，最终还是抱着试试的态度直接通过设置MODE_MULTI_PROCESS这种模式在多进程里面使用SharedPreferences读写数据了。</p>
+<p>然而，结果很悲催，测试发现时不时就会出现数据丢失的情况。无果，只能看源码了</p>
+<h2 id="三、神奇的mode"><a href="#三、神奇的mode" class="headerlink" title="三、神奇的mode"></a>三、神奇的mode</h2><p>在上面的实例中，使用了MODE_MULTI_PROCESS这种模式来操作SharedPreferences，结果发现多进程中出现了数据丢失的情况，说明在多进程中，SharedPreferences的MODE_MULTI_PROCESS并不能实现进程安全。既然如此，看下MODE_MULTI_PROCESS到底做了什么。<br>Context是一个抽象类，其实现是ContextImpl，去到ContextImpl类里面的getSharedPreference方法</p>
+<pre><code>public SharedPreferences getSharedPreferences(File file, int mode) {
+    checkMode(mode);
+    SharedPreferencesImpl sp;
+    synchronized (ContextImpl.class) {
+        final ArrayMap&lt;File, SharedPreferencesImpl&gt; cache = getSharedPreferencesCacheLocked();
+        sp = cache.get(file);
+        if (sp == null) {
+            sp = new SharedPreferencesImpl(file, mode);
+            cache.put(file, sp);
+            return sp;
+        }
+    }
+    if ((mode &amp; Context.MODE_MULTI_PROCESS) != 0 ||
+        getApplicationInfo().targetSdkVersion &lt; android.os.Build.VERSION_CODES.HONEYCOMB) {
+        // If somebody else (some other process) changed the prefs
+        // file behind our back, we reload it.  This has been the
+        // historical (if undocumented) behavior.
+        sp.startReloadIfChangedUnexpectedly();
+    }
+    return sp;
 }
-}.start();
-</code></pre><p>这是最简单的创建异步线程的姿势了，但是每当项目中出现这类代码，我都忍不了要把它改掉的冲动。</p>
-<p>缺点：</p>
-<ul>
-<li>创建及销毁线程消耗性能较大；</li>
-<li>缺乏统一的管理；</li>
-<li>优先级与UI线程一致，抢占资源处于同一起跑线；</li>
-<li>匿名内部类默认持有外部类的引用，有内存泄漏的风险;</li>
-<li><p>需要自己处理线程切换。<br>备注：此种姿势最好不要使用，特定场景下（例如App启动阶段为避免在主线程创建线程池的资源消耗）使用的话务必加上优先级的设置。</p>
-<pre><code>Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-</code></pre></li>
-</ul>
-<h3 id="AysncTask"><a href="#AysncTask" class="headerlink" title="AysncTask"></a>AysncTask</h3><p>AsyncTask是Android1.5提供了工具类，它使创建异步任务变得更加简单，同时屏蔽了线程切换。</p>
-<p>下面代码是官方文档的示例代码，在doInBackground()方法中处理耗时操作，处理的进度由onProgressUpdate()方法进行回调，耗时操作处理完成之后会调用onPostExecute()方法，在UI线程中执行。</p>
-<pre><code> private class DownloadFilesTask extends AsyncTask&lt;URL, Integer, Long&gt; {
- protected Long doInBackground(URL... urls) {
-     int count = urls.length;
-     long totalSize = 0;
-     for (int i = 0; i &lt; count; i++) {
-         totalSize += Downloader.downloadFile(urls[i]);
-         publishProgress((int) ((i / (float) count) * 100));
-         // Escape early if cancel() is called
-         if (isCancelled()) break;
-     }
-     return totalSize;
- }
-
- protected void onProgressUpdate(Integer... progress) {
-     setProgressPercent(progress[0]);
- }
-
- protected void onPostExecute(Long result) {
-     showDialog(&quot;Downloaded &quot; + result + &quot; bytes&quot;);
- }
-}
-</code></pre><p>优点：</p>
-<ul>
-<li>创建异步任务变得更加简单，同时屏蔽了线程切换；</li>
-<li>在AsyncTask.java中我们可以看到，异步线程的优先级已经被默认设置成了：THREAD_PRIORITY_BACKGROUND，不会与UI线程抢占资源；</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li><p>Api实现版本不一致问题：在Android1.5时AsyncTask的执行是串行的，在Android1.5——3.0之间- AsyncTask是并行的，而到了Android3.0之后AsyncTask的执行又回归到了串行。当然目前我们兼容的最低版本一般都会是最低4.0，那么就不需要对其进行过多的自定义适配，但是一定要注意AsyncTask默认是串行的，用于多线程场景下的话需要调用其重载方法executeOnExecutor()传入自定义的线程池，并且自己处理好同步问题；</p>
-</li>
-<li><p>匿名内部类默认持有外部类的引用，有内存泄漏的风险。<br>备注：对于AsyncTask正确的使用姿势，就是区分场景调用不同的执行方法；并且避免出现内存泄漏的问题。</p>
-</li>
-</ul>
-<h3 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h3><p>通过HandlerThread可以创建一个带有looper的线程，引入了Handler、Looper、MessageQueue等概念，可以实现对工作线程的调度。</p>
-<p>以下是HandlerThread的使用示例：</p>
-<pre><code>HandlerThread handlerThread = new HandlerThread(&quot;DataBase Opeartion&quot;, Process.THREAD_PRIORITY_BACKGROUND);
-handlerThread.start();
-
-Handler handler = new Handler(handlerThread.getLooper()){
-@Override
-public void handleMessage(Message msg) {
-    // Do DataBase Opeartion
-}
-};
-</code></pre><p>优点：</p>
-<ul>
-<li>串行执行，没有并发带来的问题；</li>
-<li>不退出的前提下一直存在，避免线程相关的对象频繁重建和销毁造成的资源消耗。</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>串行执行（不同的视角优点也变缺点），并发场景下无能为力；</li>
-<li>不指定优先级的情景下默认优先级为THREAD_PRIORITY_DEFAULT，与UI线程同级别。<br>备注：HandlerThread的正确使用姿势：串行场景，并在构造方法中明确指定优先级。</li>
-</ul>
-<h3 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h3><p>根据官方文档的描述：IntentService是继承于Service并处理异步请求的一个类，在IntentService内有一个工作线程来处理耗时操作，启动IntentService的方式和启动传统Service一样，同时，当任务执行完后，IntentService会自动停止，而不需要我们去手动控制。另外，可以启动IntentService多次，而每一个耗时操作会以工作队列的方式在IntentService的onHandleIntent回调方法中执行，并且，每次只会执行一个耗时操作，依次执行。<br>实际上IntentService是Service与HandlerThread的组合，内部的工作线程以及调度机制都依赖于HandlerThread。</p>
-<pre><code>@Override
-public void onCreate() {
-    // TODO: It would be nice to have an option to hold a partial wakelock
-    // during processing, and to have a static startService(Context, Intent)
-    // method that would launch the service &amp; hand off a wakelock.
-    super.onCreate();
-    HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);
-    thread.start();
-    mServiceLooper = thread.getLooper();
-    mServiceHandler = new ServiceHandler(mServiceLooper);
+</code></pre><p>再去到SharedPreferencesImpl里面</p>
+<pre><code>void startReloadIfChangedUnexpectedly() {
+    synchronized (this) {
+        // TODO: wait for any pending writes to disk?
+        if (!hasFileChangedUnexpectedly()) {
+            return;
+        }
+        startLoadFromDisk();
+    }
 }
 
-@Override
-public void onDestroy() {
-    mServiceLooper.quit();
+private void startLoadFromDisk() {
+    synchronized (this) {
+        mLoaded = false;
+    }
+    new Thread(&quot;SharedPreferencesImpl-load&quot;) {
+        public void run() {
+            loadFromDisk();
+        }
+    }.start();
 }
-</code></pre><p>优势：</p>
-<ul>
-<li>同HandlerThread的优势；</li>
-<li>开启服务，进程优先级会提升；</li>
-<li>无需手动关闭，执行完之后自动结束。</li>
-</ul>
-<h2 id="三、线程池"><a href="#三、线程池" class="headerlink" title="三、线程池"></a>三、线程池</h2><p>线程池：基本思想是一种对象池的思想，开辟一块内存空间，里面存放了众多(存活状态)的线程，池中线程执行调度由池管理器来处理。当有线程任务时，从池中取一个，执行完成后线程对象归池，这样可以避免反复创建线程对象所带来的性能开销，节省了系统的资源。</p>
-<h3 id="优势："><a href="#优势：" class="headerlink" title="优势："></a>优势：</h3><ul>
-<li>线程的创建和销毁由线程池维护，一个线程在完成任务后并不会立即销毁，而是由后续的任务复用这个线程，从而减少线程的创建和销毁，节约系统的开销；</li>
-<li>线程池旨在线程的复用，这就可以节约我们用以往的方式创建线程和销毁所消耗的时间，减少线程频繁调度的开销，从而节约系统资源，提高系统吞吐量；</li>
-<li>在执行大量异步任务时提高了性能；</li>
-<li>Java内置的一套ExecutorService线程池相关的api，可以更方便的控制线程的最大并发数、线程的定时任务、单线程的顺序执行等。</li>
-</ul>
-<h3 id="备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？"><a href="#备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？" class="headerlink" title="备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？"></a>备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？</h3><ul>
-<li>使用线程池需要特别注意同时并发线程数量的控制。因为CPU只能同时执行固定数量的线程数，一旦同时并发的线程数量超过CPU能够同时执行的阈值，CPU就需要花费精力来判断到底哪些线程的优先级比较高，在不同的线程之间进行调度切换。一旦同时并发的线程数量达到一定的量级，CPU在不同线程之间进行调度的时间就可能过长，反而导致性能严重下降；</li>
-<li>每开一个新的线程，都会耗费至少64K以上的内存。线程池中存在了过多的并发数量不仅会影响CPU的调度时间而且会减少可用内存；</li>
-<li>线程的优先级具有继承性，在某线程中创建的线程会继承此线程的优先级。那么我们在UI线程中创建了线程池，其中的线程优先级是和UI线程优先级一样的；所以仍然可能出现20个同样优先级的线程平等的和UI线程抢占资源。</li>
-</ul>
-<p>对于线程池中线程数量的限制，可以参考AsyncTask中的配置，基于7.0源码，不同版本的实现可能有细微差别;</p>
-<pre><code>// We want at least 2 threads and at most 4 threads in the core pool,
-// preferring to have 1 less than the CPU count to avoid saturating
-// the CPU with background work 核心池数量被限定在2到4之间。
-private static final int CORE_POOL_SIZE = Math.max(2, Math.min(CPU_COUNT - 1, 4));
-private static final int MAXIMUM_POOL_SIZE = CPU_COUNT * 2 + 1;
-private static final int KEEP_ALIVE_SECONDS = 30;
-
-ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
-            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
-            sPoolWorkQueue, sThreadFactory);
-</code></pre><h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><ul>
-<li>Thread、AsyncTask适合处理单个任务的场景；</li>
-<li>HandlerThread适合串行处理多任务的场景；</li>
-<li>IntentService适合处理与UI无关的多任务场景；</li>
-<li>当需要并行的处理多任务之时，ThreadPoolExecutor是更好的选择，当然也可以使用AsyncTask传入自定义的线程池；</li>
-<li>注意线程优先级的设置；</li>
-<li>特别注意对不同场景下异步方式的选择。</li>
-</ul>
+</code></pre><p>通过源码可以看到这个mode用于API11以前的系统上，次获取这个sp的时候，如果有这个mode，会重新读一遍文件，而且后续读取过程并没有再用到MODE_MULTI_PROCESS这个mode。所以，如果这个mode并没有用来处理进程安全，如果多进程中使用，必然是会出现上面实例中的时不时丢数据的情况。</p>
 
       
     </div>
@@ -524,12 +433,6 @@ ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/随笔/" rel="tag"># 随笔</a>
-          
-        </div>
-      
 
       
         
@@ -539,8 +442,8 @@ ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/13/Android性能优化（四）之启动速度优化/" rel="next" title="Android性能优化（四）之启动速度优化">
-                <i class="fa fa-chevron-left"></i> Android性能优化（四）之启动速度优化
+              <a href="/2017/06/04/Android性能优化（一）之常用工具/" rel="next" title="Android性能优化（一）之常用工具">
+                <i class="fa fa-chevron-left"></i> Android性能优化（一）之常用工具
               </a>
             
           </div>
@@ -548,6 +451,10 @@ ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/07/Android性能优化（二）之Monkey性能测试/" rel="prev" title="Android性能优化（二）之Monkey性能测试">
+                Android性能优化（二）之Monkey性能测试 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -679,7 +586,7 @@ ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、前言"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、线程使用"><span class="nav-number">2.</span> <span class="nav-text">二、线程使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread"><span class="nav-number">2.1.</span> <span class="nav-text">Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AysncTask"><span class="nav-number">2.2.</span> <span class="nav-text">AysncTask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HandlerThread"><span class="nav-number">2.3.</span> <span class="nav-text">HandlerThread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IntentService"><span class="nav-number">2.4.</span> <span class="nav-text">IntentService</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、线程池"><span class="nav-number">3.</span> <span class="nav-text">三、线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优势："><span class="nav-number">3.1.</span> <span class="nav-text">优势：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？"><span class="nav-number">3.2.</span> <span class="nav-text">备注：回到我们上面提的第三个问题：线程池一定会提升效率吗？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、总结"><span class="nav-number">4.</span> <span class="nav-text">四、总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据丢了"><span class="nav-number">2.</span> <span class="nav-text">二、数据丢了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、神奇的mode"><span class="nav-number">3.</span> <span class="nav-text">三、神奇的mode</span></a></li></ol></div>
             
 
           </div>
