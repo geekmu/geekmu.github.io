@@ -87,22 +87,16 @@
 
 
 
-<meta name="description" content="一、引言在Android中Toast使用频率是相当高的，可以用来做用户提示，也可以在测试的时候方便的显示测试结果，关键是它使用方法非常简单，一行代码就搞定了
-Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
-但是使用久了就有个疑问，Toast.LENGTH_SHORT和Toast.LENGTH_LONG是用于设置Toast显示时长的，但是">
+<meta name="description" content="一、引用Android中线程分为主线程和子线程，主线程主要处理和UI相关的操作，而主线程中则往往用于执行耗时操作，比如网络请求和I/O操作。除了Thread之外，Android中还有一些可以用来作为线程使用的类，如AsyncTask、HandlerThread 和 IntentService。经管他们的表现形式都和Thread有区别，但是本质上依然是线程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android源码阅读系列（二）之Toast显示原理">
-<meta property="og:url" content="https://geekmu.github.io/2017/06/07/Android源码阅读系列（二）之Toast显示原理/index.html">
+<meta property="og:title" content="Android源码阅读系列（四）之Android中的线程">
+<meta property="og:url" content="https://geekmu.github.io/2017/06/13/Android源码阅读系列（四）之Android中的线程/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="一、引言在Android中Toast使用频率是相当高的，可以用来做用户提示，也可以在测试的时候方便的显示测试结果，关键是它使用方法非常简单，一行代码就搞定了
-Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
-但是使用久了就有个疑问，Toast.LENGTH_SHORT和Toast.LENGTH_LONG是用于设置Toast显示时长的，但是">
-<meta property="og:updated_time" content="2017-07-08T12:52:37.363Z">
+<meta property="og:description" content="一、引用Android中线程分为主线程和子线程，主线程主要处理和UI相关的操作，而主线程中则往往用于执行耗时操作，比如网络请求和I/O操作。除了Thread之外，Android中还有一些可以用来作为线程使用的类，如AsyncTask、HandlerThread 和 IntentService。经管他们的表现形式都和Thread有区别，但是本质上依然是线程。">
+<meta property="og:updated_time" content="2017-07-08T12:55:56.891Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android源码阅读系列（二）之Toast显示原理">
-<meta name="twitter:description" content="一、引言在Android中Toast使用频率是相当高的，可以用来做用户提示，也可以在测试的时候方便的显示测试结果，关键是它使用方法非常简单，一行代码就搞定了
-Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
-但是使用久了就有个疑问，Toast.LENGTH_SHORT和Toast.LENGTH_LONG是用于设置Toast显示时长的，但是">
+<meta name="twitter:title" content="Android源码阅读系列（四）之Android中的线程">
+<meta name="twitter:description" content="一、引用Android中线程分为主线程和子线程，主线程主要处理和UI相关的操作，而主线程中则往往用于执行耗时操作，比如网络请求和I/O操作。除了Thread之外，Android中还有一些可以用来作为线程使用的类，如AsyncTask、HandlerThread 和 IntentService。经管他们的表现形式都和Thread有区别，但是本质上依然是线程。">
 
 
 
@@ -130,13 +124,13 @@ Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/2017/06/07/Android源码阅读系列（二）之Toast显示原理/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/06/13/Android源码阅读系列（四）之Android中的线程/"/>
 
 
 
 
 
-  <title> Android源码阅读系列（二）之Toast显示原理 | 鸿少爷的城 </title>
+  <title> Android源码阅读系列（四）之Android中的线程 | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -295,7 +289,7 @@ Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/07/Android源码阅读系列（二）之Toast显示原理/">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/06/13/Android源码阅读系列（四）之Android中的线程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chicxiaomu">
@@ -316,7 +310,7 @@ Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
             
             
               
-                Android源码阅读系列（二）之Toast显示原理
+                Android源码阅读系列（四）之Android中的线程
               
             
           </h1>
@@ -331,8 +325,8 @@ Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-07T21:51:28+08:00">
-                2017-06-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T20:55:13+08:00">
+                2017-06-13
               </time>
             
 
@@ -367,189 +361,253 @@ Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
       
 
       
-        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><p>在Android中Toast使用频率是相当高的，可以用来做用户提示，也可以在测试的时候方便的显示测试结果，关键是它使用方法非常简单，一行代码就搞定了</p>
-<pre><code>Toast.makeText(this, msg , Toast.LENGTH_SHORT).show();
-</code></pre><p>但是使用久了就有个疑问，Toast.LENGTH_SHORT和Toast.LENGTH_LONG是用于设置Toast显示时长的，但是这两个时长到底是多少呢？<a id="more"></a>去到Toast源码发现这两个参数是final类型的</p>
-<pre><code>public static final int LENGTH_LONG = 1;
-public static final int LENGTH_SHORT = 0;
-</code></pre><p>LENGTH_LONG的值是1，LENGTH_SHORT的值是0，理论上当我们设置显示时长为LENGTH_SHORT时，Toast应该会一闪而逝，毕竟是0嘛，但是我们知道，实际使用并不是这样的，设置显示时长为LENGTH_SHORT时，Toast依然会停留2秒左右。看来，这个参数不是那么简单了。无果，只能深入源码分析下Toast的显示原理了。</p>
-<h2 id="二、Toast显示原理"><a href="#二、Toast显示原理" class="headerlink" title="二、Toast显示原理"></a>二、Toast显示原理</h2><p>首先我们看下显示Toast时所用到的show方法</p>
-<pre><code>public void show() {
-    if (mNextView == null) {
-        throw new RuntimeException(&quot;setView must have been called&quot;);
-    }
-    INotificationManager service = getService();
-    String pkg = mContext.getOpPackageName();
-    TN tn = mTN;
-    tn.mNextView = mNextView;
-    try {
-        service.enqueueToast(pkg, tn, mDuration);
-    } catch (RemoteException e) {
-        // Empty
-    }
+        <h2 id="一、引用"><a href="#一、引用" class="headerlink" title="一、引用"></a>一、引用</h2><p>Android中线程分为主线程和子线程，主线程主要处理和UI相关的操作，而主线程中则往往用于执行耗时操作，比如网络请求和I/O操作。除了Thread之外，Android中还有一些可以用来作为线程使用的类，如AsyncTask、HandlerThread 和 IntentService。经管他们的表现形式都和Thread有区别，但是本质上依然是线程。<a id="more"></a></p>
+<h2 id="二、Thread用法"><a href="#二、Thread用法" class="headerlink" title="二、Thread用法"></a>二、Thread用法</h2><pre><code>new Thread(){
+@Override
+public void run() {
+    super.run();
+    // NetWork or DataBase Operation
 }
-</code></pre><p>从上面的代码可以看到，显示Toast的过程用到了NotificationManagerService的enqueueToast方法</p>
-<pre><code>// Toasts
-// ============================================================================
-public void enqueueToast(String pkg, ITransientNotification callback, int duration)
-{
-    if (DBG) Slog.i(TAG, &quot;enqueueToast pkg=&quot; + pkg + &quot; callback=&quot; + callback + &quot; duration=&quot; + duration);
-    if (pkg == null || callback == null) {
-        Slog.e(TAG, &quot;Not doing toast. pkg=&quot; + pkg + &quot; callback=&quot; + callback);
-        return ;
-    }
-    final boolean isSystemToast = isCallerSystem() || (&quot;android&quot;.equals(pkg));
-    if (ENABLE_BLOCKED_TOASTS &amp;&amp; !noteNotificationOp(pkg, Binder.getCallingUid())) {
-        if (!isSystemToast) {
-            Slog.e(TAG, &quot;Suppressing toast from package &quot; + pkg + &quot; by user request.&quot;);
-            return;
+}.start();
+</code></pre><p>这是最简单的创建异步线程的姿势了，但是这样处理存在一些缺点：</p>
+<ul>
+<li>创建及销毁线程消耗性能较大；</li>
+<li>缺乏统一的管理；</li>
+<li>优先级与UI线程一致，抢占资源处于同一起跑线；</li>
+<li>匿名内部类默认持有外部类的引用，有内存泄漏的风险;</li>
+<li>需要自己处理线程切换。</li>
+</ul>
+<p>App启动阶段为避免在主线程创建线程池的资源消耗，使用的时候可以加上优先级的设置</p>
+<pre><code>new Thread () {
+@Override
+public void run() {
+    super.run();
+    android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+    // NetWork or DataBase Operation
+}
+}.start();
+</code></pre><h2 id="三、AsyncTask"><a href="#三、AsyncTask" class="headerlink" title="三、AsyncTask"></a>三、AsyncTask</h2><p>AsyncTask是一种轻量级的异步任务类，可以在线程池中执行后台任务，然后把任务执行的进度和结果传递给主线程并在主线程中更新UI。</p>
+<pre><code>public abstract class AsyncTask&lt;Params, Progress, Result&gt;
+</code></pre><p>AsyncTask是一个抽象类，它提供了Params, Progress 和 Result这三个泛型参数，其中Params表示参数的类型，Progress表示任务执行的进度的参数类型，Result则表示任务返回的结果的参数类型，实际使用中如果不需要传递具体的参数，可以使用Void。<br>通常我们使用execute来启动AsyncTask</p>
+<pre><code>@MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) {
+    return executeOnExecutor(sDefaultExecutor, params);
+}
+
+@MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,
+        Params... params) {
+    if (mStatus != Status.PENDING) {
+        switch (mStatus) {
+            case RUNNING:
+                throw new IllegalStateException(&quot;Cannot execute task:&quot;
+                        + &quot; the task is already running.&quot;);
+            case FINISHED:
+                throw new IllegalStateException(&quot;Cannot execute task:&quot;
+                        + &quot; the task has already been executed &quot;
+                        + &quot;(a task can be executed only once)&quot;);
         }
     }
-    synchronized (mToastQueue) {
-        int callingPid = Binder.getCallingPid();
-        long callingId = Binder.clearCallingIdentity();
-        try {
-            ToastRecord record;
-            int index = indexOfToastLocked(pkg, callback);
-            // If it&apos;s already in the queue, we update it in place, we don&apos;t
-            // move it to the end of the queue.
-            if (index &gt;= 0) {
-                record = mToastQueue.get(index);
-                record.update(duration);
-            } else {
-                // Limit the number of toasts that any given package except the android
-                // package can enqueue.  Prevents DOS attacks and deals with leaks.
-                if (!isSystemToast) {
-                    int count = 0;
-                    final int N = mToastQueue.size();
-                    for (int i=0; i&lt;N; i++) {
-                         final ToastRecord r = mToastQueue.get(i);
-                         if (r.pkg.equals(pkg)) {
-                             count++;
-                             if (count &gt;= MAX_PACKAGE_NOTIFICATIONS) {
-                                 Slog.e(TAG, &quot;Package has already posted &quot; + count
-                                        + &quot; toasts. Not showing more. Package=&quot; + pkg);
-                                 return;
-                             }
-                         }
-                    }
+    mStatus = Status.RUNNING;
+    onPreExecute();
+    mWorker.mParams = params;
+    exec.execute(mFuture);
+    return this;
+}
+
+public static final Executor SERIAL_EXECUTOR = new SerialExecutor();
+private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;
+</code></pre><p>可以看到execute方法会调用executeOnExecutor，其中exec也就是sDefaultExecutor是一个线程池</p>
+<pre><code>private static class SerialExecutor implements Executor {
+    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+    Runnable mActive;
+    public synchronized void execute(final Runnable r) {
+        mTasks.offer(new Runnable() {
+            public void run() {
+                try {
+                    r.run();
+                } finally {
+                    scheduleNext();
                 }
-                record = new ToastRecord(callingPid, pkg, callback, duration);
-                mToastQueue.add(record);
-                index = mToastQueue.size() - 1;
-                keepProcessAliveLocked(callingPid);
             }
-            // If it&apos;s at index 0, it&apos;s the current toast.  It doesn&apos;t matter if it&apos;s
-            // new or just been updated.  Call back and tell it to show itself.
-            // If the callback fails, this will remove it from the list, so don&apos;t
-            // assume that it&apos;s valid after this.
-            if (index == 0) {
-                showNextToastLocked();
-            }
-        } finally {
-            Binder.restoreCallingIdentity(callingId);
+        });
+        if (mActive == null) {
+            scheduleNext();
+        }
+    }
+    protected synchronized void scheduleNext() {
+        if ((mActive = mTasks.poll()) != null) {
+            THREAD_POOL_EXECUTOR.execute(mActive);
         }
     }
 }
-</code></pre><p>enqueueToast方法有三个参数，第一个参数当前应用的包名，第二个参数是一个callback，第三个参数duration，就是我们创建Toast时设置的显示时长，这个参数又参与了ToastRecord的初始化</p>
-<pre><code>private static final class ToastRecord
-{
-    final int pid;
-    final String pkg;
-    final ITransientNotification callback;
-    int duration;
-    ToastRecord(int pid, String pkg, ITransientNotification callback, int duration)
-    {
-        this.pid = pid;
-        this.pkg = pkg;
-        this.callback = callback;
-        this.duration = duration;
+</code></pre><p>SerialExecutor的execute方法会把mFuture对象插入到mTasks这个队列中，如果这时mActive == null（没有正在活动的AsyncTask任务），就会调用SerialExecutor的scheduleNext方法使用线程池THREAD_POOL_EXECUTOR来执行任务，当一个任务执行完成后，会继续执行其他任务，直到所有任务都被执行。</p>
+<p>AsyncTask中有两个线程池（SerialExecutor和THREAD_POOL_EXECUTOR），其中SerialExecutor用于任务的排队，THREAD_POOL_EXECUTOR用于任务的执行。</p>
+<p>从上面的分析可以看出，在默认情况下，AsyncTask是串行执行的。</p>
+<p>其实AsyncTask不同版本是有差异的，比如Android1.5是串行的，1.6之后是并行的，但是到3.0以后的版本又改为串行了。<br>当然，如果我们想在3.0以后也使用并行的方式执行任务，根据上面的分析，我们可以直接调用executeOnExecutor，直接传入一个THREAD_POOL_EXECUTOR（执行任务的线程池），这样就可以直接执行，不用将任务加到SerialExecutor这个排队的线程池了。</p>
+<p>在使用AsyncTask过程中，我们通常会在onPostExecute做一些涉及到UI的操作</p>
+<pre><code>@WorkerThread
+protected abstract Result doInBackground(Params... params);
+
+@MainThread
+protected void onPostExecute(Result result) {
+}
+</code></pre><p>从源码可以得知，任务是在doInBackground这个子线程中进行的，最终任务执行结果会通过onPostExecute返回，而onPostExecute是在主线程中，那么根据Android消息机制可以推测，这中间必然会用到Handler</p>
+<pre><code>private void finish(Result result) {
+    if (isCancelled()) {
+        onCancelled(result);
+    } else {
+        onPostExecute(result);
     }
-...
+    mStatus = Status.FINISHED;
 }
-</code></pre><p>继续往下看，会执行showNextToastLocked()方法</p>
-<pre><code>private void showNextToastLocked() {
-    ToastRecord record = mToastQueue.get(0);
-    while (record != null) {
-        if (DBG) Slog.d(TAG, &quot;Show pkg=&quot; + record.pkg + &quot; callback=&quot; + record.callback);
-        try {
-            record.callback.show();
-            scheduleTimeoutLocked(record, false);
-            return;
-        } catch (RemoteException e) {
-            Slog.w(TAG, &quot;Object died trying to show notification &quot; + record.callback
-                    + &quot; in package &quot; + record.pkg);
-            // remove it from the list and let the process die
-            int index = mToastQueue.indexOf(record);
-            if (index &gt;= 0) {
-                mToastQueue.remove(index);
-            }
-            keepProcessAliveLocked(record.pid);
-            if (mToastQueue.size() &gt; 0) {
-                record = mToastQueue.get(0);
-            } else {
-                record = null;
-            }
-        }
+</code></pre><p>finish方法里面将result传递给了onPostExecute</p>
+<pre><code>private static class InternalHandler extends Handler {
+    public InternalHandler() {
+        super(Looper.getMainLooper());
     }
-}
-</code></pre><p>里面有一个scheduleTimeoutLocked方法，考虑到我们要研究的是显示时长，这个方法很明显和超时设置有关，进去看一下</p>
-<pre><code>private void scheduleTimeoutLocked(ToastRecord r, boolean immediate)
-{
-    Message m = Message.obtain(mHandler, MESSAGE_TIMEOUT, r);
-    long delay = immediate ? 0 : (r.duration == Toast.LENGTH_LONG ? LONG_DELAY : SHORT_DELAY);
-    mHandler.removeCallbacksAndMessages(r);
-    mHandler.sendMessageDelayed(m, delay);
-}
-</code></pre><p>太好了，Toast.LENGTH_LONG这个参数出现了，这里面根据r.duration计算出了delay的值，通过上面的分析，r.duration就是我们创建Toast时设置的时长，所以当我们设置的时长是Toast.LENGTH_LONG时，delay为LONG_DELAY，当设置LENGTH_SHORT时，delay为SHORT_DELAY</p>
-<pre><code>private static final int LONG_DELAY = 3500; // 3.5 seconds
-private static final int SHORT_DELAY = 2000; // 2 seconds
-</code></pre><p>通过源码我们可以看到这两个时长分别的3.5秒和2秒，从scheduleTimeoutLocked的源码里面也可以大概看出scheduleTimeoutLocked通过Handler发送了一个延时消息，最终WorkerHandler会接收消息并处理</p>
-<pre><code>private final class WorkerHandler extends Handler
-{
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;})
     @Override
-    public void handleMessage(Message msg)
-    {
-        switch (msg.what)
-        {
-            case MESSAGE_TIMEOUT:
-                handleTimeout((ToastRecord)msg.obj);
+    public void handleMessage(Message msg) {
+        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+        switch (msg.what) {
+            case MESSAGE_POST_RESULT:
+                // There is only one result
+                result.mTask.finish(result.mData[0]);
+                break;
+            case MESSAGE_POST_PROGRESS:
+                result.mTask.onProgressUpdate(result.mData);
                 break;
         }
     }
 }
+</code></pre><p>InternalHandler的handleMessage里面调用了finish方法</p>
+<pre><code>private static Handler getHandler() {
+    synchronized (AsyncTask.class) {
+        if (sHandler == null) {
+            sHandler = new InternalHandler();
+        }
+        return sHandler;
+    }
+}
 
-private void handleTimeout(ToastRecord record)
-{
-    if (DBG) Slog.d(TAG, &quot;Timeout pkg=&quot; + record.pkg + &quot; callback=&quot; + record.callback);
-    synchronized (mToastQueue) {
-        int index = indexOfToastLocked(record.pkg, record.callback);
-        if (index &gt;= 0) {
-            cancelToastLocked(index);
+private Result postResult(Result result) {
+    @SuppressWarnings(&quot;unchecked&quot;)
+    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+            new AsyncTaskResult&lt;Result&gt;(this, result));
+    message.sendToTarget();
+    return result;
+}
+
+public AsyncTask() {
+    mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+        public Result call() throws Exception {
+            mTaskInvoked.set(true);
+            Result result = null;
+            try {
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                //noinspection unchecked
+                result = doInBackground(mParams);
+                Binder.flushPendingCommands();
+            } catch (Throwable tr) {
+                mCancelled.set(true);
+                throw tr;
+            } finally {
+                postResult(result);
+            }
+            return result;
+        }
+    };
+
+...
+} 
+</code></pre><p>从源码可以看到，任务在doInBackground里面执行完成后，借助InternalHandler实现了从子线程到主线程的切换。</p>
+<p>由于getHandler方法是静态方法，返回的sHandler是一个静态对象，为了能够从工作线程切换到主线程，getHandler这个方法必须在主线程中调用了，而静态方法是在加载类的时候初始化的，所以最终结果就是AsyncTask必须在主线程中加载。</p>
+<h2 id="四、HandlerThread"><a href="#四、HandlerThread" class="headerlink" title="四、HandlerThread"></a>四、HandlerThread</h2><p>Android中Handler一般都在主线程中使用，使用Handler需要创建Looper消息循环和MessageQueue消息队列，由于主线程里面系统已经自动帮我们执行了创建上传创建，所以我们可以很方便的使用Handler。但是如果需要在子线程里面使用Handler，就需要严格按照流程，先创建Looper消息循环和MessageQueue消息队列了。<br>比如像下面这样：</p>
+<pre><code>Thread thread = new Thread(new Runnable()
+{    
+@Override    
+public void run() {        
+  Looper.prepare();        
+  Looper.loop();    
+}
+});
+thread.start();
+Handler handler = new Handler(newThread.getLooper());
+</code></pre><p>这种使用方式是有问题的，thread的looper是在线程运行之后创建的，当执行到Handler handler = new Handler(thread.getLooper())的时候，thread的looper可能还没有创建好。</p>
+<p>为此，Android专门提供了HandlerThread类</p>
+<blockquote>
+<p>Handy class for starting a new thread that has a looper. The looper can then be used to create handler classes. Note that start() must still be called.</p>
+</blockquote>
+<pre><code>public class HandlerThread extends Thread {
+...
+
+@Override
+public void run() {
+    mTid = Process.myTid();
+    Looper.prepare();
+    synchronized (this) {
+        mLooper = Looper.myLooper();
+        notifyAll();
+    }
+    Process.setThreadPriority(mPriority);
+    onLooperPrepared();
+    Looper.loop();
+    mTid = -1;
+}
+
+...
+
+public Looper getLooper() {
+    if (!isAlive()) {
+        return null;
+    }
+
+    // If the thread has been started, wait until the looper has been created.
+    synchronized (this) {
+        while (isAlive() &amp;&amp; mLooper == null) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
         }
     }
+    return mLooper;
 }
 
-private void cancelToastLocked(int index) {
-    ToastRecord record = mToastQueue.get(index);
-    try {
-        record.callback.hide();
-    } catch (RemoteException e) {
-        Slog.w(TAG, &quot;Object died trying to hide notification &quot; + record.callback
-                + &quot; in package &quot; + record.pkg);
-        // don&apos;t worry about this, we&apos;re about to remove it from
-        // the list anyway
-    }
-    mToastQueue.remove(index);
-    keepProcessAliveLocked(record.pid);
-    if (mToastQueue.size() &gt; 0) {
-        // Show the next one. If the callback fails, this will remove
-        // it from the list, so don&apos;t assume that the list hasn&apos;t changed
-        // after this point.
-        showNextToastLocked();
-    }
+...
 }
-</code></pre><p>可以看到，在指定延时之后，Toast被隐藏了。</p>
+</code></pre><p>从文档说明可以看到，HandlerThread帮我们创建好了Looper，进一步分析源码，HandlerThread继承了Thread，他的run方法里面通过Looper.prepare()创建了消息队列，并通过Looper.loop()开启了消息循环，getLooper()方法里面当Looper未创建时会调用wait方法，当run方法里面Looper创建完成后调用notifyAll返回创建的Looper对象。这样就解决了上面例子中存在的异步问题。不过从源码也可以看到，HandlerThread只是帮我们处理异步问题，由于run方法是一个无限循环，因此当结束时有HandlerThread时，我们需要手动调用quit或者quitSafely方法来终止线程的执行。</p>
+<h2 id="五、IntentService"><a href="#五、IntentService" class="headerlink" title="五、IntentService"></a>五、IntentService</h2><p>IntentService是一种特殊的Service，可以用来执行后台耗时的任务，由于IntentSerice是服务，所以它的优先级会比单纯的线程高很多，不容易被系统杀死，因此比较适合执行一些高优先级的后台任务。</p>
+<pre><code>public abstract class IntentService extends Service {
+...
+
+@Override
+public void onCreate() {
+    // TODO: It would be nice to have an option to hold a partial wakelock
+    // during processing, and to have a static startService(Context, Intent)
+    // method that would launch the service &amp; hand off a wakelock.
+    super.onCreate();
+    HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);
+    thread.start();
+    mServiceLooper = thread.getLooper();
+    mServiceHandler = new ServiceHandler(mServiceLooper);
+}
+...
+
+}
+</code></pre><p>从onCreate里面可以看到IntentService使用了HandlerThread和Handler，从上面关于HandlerThread的分析可以知道这里的Handler是子线程的，里面是可以执行耗时任务的，这也是IntentService可以执行后台耗时任务的原因。当IntentService启动后执行到onStartCommand时，会再执行onStart</p>
+<pre><code>@Override
+public void onStart(@Nullable Intent intent, int startId) {
+    Message msg = mServiceHandler.obtainMessage();
+    msg.arg1 = startId;
+    msg.obj = intent;
+    mServiceHandler.sendMessage(msg);
+}
+</code></pre><p>可以看到，在onStart里面，通过mServiceHandler发送了一条消息，这个消息会在HandlerThread中处理。</p>
+<pre><code>@WorkerThread
+protected abstract void onHandleIntent(@Nullable Intent intent);
+</code></pre><p>在onHandleIntent就可以执行后台耗时任务了。</p>
 
       
     </div>
@@ -580,8 +638,8 @@ private void cancelToastLocked(int index) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/07/Android性能优化（二）之Monkey性能测试/" rel="next" title="Android性能优化（二）之Monkey性能测试">
-                <i class="fa fa-chevron-left"></i> Android性能优化（二）之Monkey性能测试
+              <a href="/2017/06/11/Android源码阅读系列（三）之Android消息机制/" rel="next" title="Android源码阅读系列（三）之Android消息机制">
+                <i class="fa fa-chevron-left"></i> Android源码阅读系列（三）之Android消息机制
               </a>
             
           </div>
@@ -590,8 +648,8 @@ private void cancelToastLocked(int index) {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/11/Android性能优化（三）之读书笔记/" rel="prev" title="Android性能优化（三）之读书笔记">
-                Android性能优化（三）之读书笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/13/Android性能优化（四）之启动速度优化/" rel="prev" title="Android性能优化（四）之启动速度优化">
+                Android性能优化（四）之启动速度优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -724,7 +782,7 @@ private void cancelToastLocked(int index) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Toast显示原理"><span class="nav-number">2.</span> <span class="nav-text">二、Toast显示原理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引用"><span class="nav-number">1.</span> <span class="nav-text">一、引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Thread用法"><span class="nav-number">2.</span> <span class="nav-text">二、Thread用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、AsyncTask"><span class="nav-number">3.</span> <span class="nav-text">三、AsyncTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、HandlerThread"><span class="nav-number">4.</span> <span class="nav-text">四、HandlerThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、IntentService"><span class="nav-number">5.</span> <span class="nav-text">五、IntentService</span></a></li></ol></div>
             
 
           </div>
