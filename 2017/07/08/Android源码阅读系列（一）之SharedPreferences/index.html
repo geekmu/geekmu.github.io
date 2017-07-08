@@ -87,15 +87,16 @@
 
 
 
-<meta name="description" content="Android,PHP,Google,Github,技术博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="鸿少爷的城">
-<meta property="og:url" content="https://geekmu.github.io/archives/2017/page/2/index.html">
+<meta name="description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android源码阅读系列（一）之SharedPreferences">
+<meta property="og:url" content="https://geekmu.github.io/2017/07/08/Android源码阅读系列（一）之SharedPreferences/index.html">
 <meta property="og:site_name" content="鸿少爷的城">
-<meta property="og:description" content="Android,PHP,Google,Github,技术博客">
+<meta property="og:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
+<meta property="og:updated_time" content="2017-07-08T12:46:21.274Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鸿少爷的城">
-<meta name="twitter:description" content="Android,PHP,Google,Github,技术博客">
+<meta name="twitter:title" content="Android源码阅读系列（一）之SharedPreferences">
+<meta name="twitter:description" content="一、引言SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。">
 
 
 
@@ -123,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://geekmu.github.io/archives/2017/page/2/"/>
+  <link rel="canonical" href="https://geekmu.github.io/2017/07/08/Android源码阅读系列（一）之SharedPreferences/"/>
 
 
 
 
 
-  <title> 归档 | 鸿少爷的城 </title>
+  <title> Android源码阅读系列（一）之SharedPreferences | 鸿少爷的城 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -160,7 +161,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -278,181 +279,194 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 14 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://geekmu.github.io/2017/07/08/Android源码阅读系列（一）之SharedPreferences/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chicxiaomu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="鸿少爷的城">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android源码阅读系列（一）之SharedPreferences
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T20:44:47+08:00">
+                2017-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
+
+      
+        <h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><p>SharedPreferences使用方法非常简单，是Android开发中使用频率非常高的轻量级存储方式，经常被用来存放一些键值对数据，比如配置信息等，得到了很多很多开发者的青睐。但是SharedPreferences并不是万能的，如果使用不当，会造成严重的后果，下面记录一个工作中遇到的实例。<a id="more"></a></p>
+<h2 id="二、数据丢了"><a href="#二、数据丢了" class="headerlink" title="二、数据丢了"></a>二、数据丢了</h2><p>之前项目中为了实现Service保活，使用了多进程的方式，Service开了一个新的进程，程序里面很多配置信息都是用的SharedPreferences实现的，并且读写操作都有。通过查看google官方文档可以知道，SharedPreferences提供了跨进程的模式MODE_MULTI_PROCESS</p>
+<blockquote>
+<p>This constant was deprecated in API level 23.<br>MODE_MULTI_PROCESS does not work reliably in some versions of Android, and furthermore does not provide any mechanism for reconciling concurrent modifications across processes. Applications should not attempt to use it. Instead, they should use an explicit cross-process data management approach such as ContentProvider.</p>
+</blockquote>
+<p>官方文档里面这种跨进程方式在某些Android版本上不可靠，并且未来也不会提供任何支持，要是用跨进程数据传输需要使用类似ContentProvider的东西。考虑到当时使用Android6.0的设备占比很低，而且由于项目里面很多地方都使用了SharedPreferences，换一种方案代价会比较大，最终还是抱着试试的态度直接通过设置MODE_MULTI_PROCESS这种模式在多进程里面使用SharedPreferences读写数据了。</p>
+<p>然而，结果很悲催，测试发现时不时就会出现数据丢失的情况。无果，只能看源码了</p>
+<h2 id="三、神奇的mode"><a href="#三、神奇的mode" class="headerlink" title="三、神奇的mode"></a>三、神奇的mode</h2><p>在上面的实例中，使用了MODE_MULTI_PROCESS这种模式来操作SharedPreferences，结果发现多进程中出现了数据丢失的情况，说明在多进程中，SharedPreferences的MODE_MULTI_PROCESS并不能实现进程安全。既然如此，看下MODE_MULTI_PROCESS到底做了什么。<br>Context是一个抽象类，其实现是ContextImpl，去到ContextImpl类里面的getSharedPreference方法</p>
+<pre><code>public SharedPreferences getSharedPreferences(File file, int mode) {
+    checkMode(mode);
+    SharedPreferencesImpl sp;
+    synchronized (ContextImpl.class) {
+        final ArrayMap&lt;File, SharedPreferencesImpl&gt; cache = getSharedPreferencesCacheLocked();
+        sp = cache.get(file);
+        if (sp == null) {
+            sp = new SharedPreferencesImpl(file, mode);
+            cache.put(file, sp);
+            return sp;
+        }
+    }
+    if ((mode &amp; Context.MODE_MULTI_PROCESS) != 0 ||
+        getApplicationInfo().targetSdkVersion &lt; android.os.Build.VERSION_CODES.HONEYCOMB) {
+        // If somebody else (some other process) changed the prefs
+        // file behind our back, we reload it.  This has been the
+        // historical (if undocumented) behavior.
+        sp.startReloadIfChangedUnexpectedly();
+    }
+    return sp;
+}
+</code></pre><p>再去到SharedPreferencesImpl里面</p>
+<pre><code>void startReloadIfChangedUnexpectedly() {
+    synchronized (this) {
+        // TODO: wait for any pending writes to disk?
+        if (!hasFileChangedUnexpectedly()) {
+            return;
+        }
+        startLoadFromDisk();
+    }
+}
+
+private void startLoadFromDisk() {
+    synchronized (this) {
+        mLoaded = false;
+    }
+    new Thread(&quot;SharedPreferencesImpl-load&quot;) {
+        public void run() {
+            loadFromDisk();
+        }
+    }.start();
+}
+</code></pre><p>通过源码可以看到这个mode用于API11以前的系统上，次获取这个sp的时候，如果有这个mode，会重新读一遍文件，而且后续读取过程并没有再用到MODE_MULTI_PROCESS这个mode。所以，如果这个mode并没有用来处理进程安全，如果多进程中使用，必然是会出现上面实例中的时不时丢数据的情况。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
       
 
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/15/Android多线程实现方式/" rel="next" title="Android多线程实现方式">
+                <i class="fa fa-chevron-left"></i> Android多线程实现方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
         </div>
       
-      
 
       
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/09/Android Studio调试技巧/" itemprop="url">
-              
-                <span itemprop="name">Android Studio调试技巧</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-09T09:13:57+08:00"
-              content="2017-04-09" >
-          04-09
-        </time>
-      </div>
-
-    </header>
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/04/01/谈谈Android MVP模式/" itemprop="url">
-              
-                <span itemprop="name">谈谈Android MVP模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-01T11:10:48+08:00"
-              content="2017-04-01" >
-          04-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/21/Java服务端开发环境搭建/" itemprop="url">
-              
-                <span itemprop="name">Java服务端开发环境搭建</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-21T23:21:34+08:00"
-              content="2017-03-21" >
-          03-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/03/03/我和我的博客/" itemprop="url">
-              
-                <span itemprop="name">我和我的博客</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-03-03T23:05:20+08:00"
-              content="2017-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2017/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2017/">1</a><span class="page-number current">2</span>
-  </nav>
-
-
+    </div>
+  </div>
 
           
           </div>
@@ -460,6 +474,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -479,8 +497,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -545,6 +572,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、引言"><span class="nav-number">1.</span> <span class="nav-text">一、引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据丢了"><span class="nav-number">2.</span> <span class="nav-text">二、数据丢了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、神奇的mode"><span class="nav-number">3.</span> <span class="nav-text">三、神奇的mode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -650,11 +693,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
